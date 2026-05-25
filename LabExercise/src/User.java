@@ -27,4 +27,21 @@ public class User {
     }
 
     //do we need getUserPassword?
+
+    //Setters
+    public void setUserID(int userID){
+        user_ID = userID;
+    }
+
+    public void setUserName(String userName){
+        user_Name = userName;
+    }
+
+    public void setUserAge(int userAge){
+        user_Age = userAge;
+    }
+    
+    public void setUserGender(String userGender){
+        user_Gender = userGender;
+    }
 }
