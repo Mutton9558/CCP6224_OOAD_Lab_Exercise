@@ -11,15 +11,15 @@ public class HomePageUI extends JFrame {
         setSize(1366, 768);
 
         ImageIcon bgImage = new ImageIcon(getClass().getResource("/images/mainbg.jpg"));
-
         Image sizedBgImage = bgImage.getImage().getScaledInstance(1366, 768, Image.SCALE_SMOOTH);
         ImageIcon mainBg = new ImageIcon(sizedBgImage);
         JLabel mainBackground = new JLabel(mainBg);
         setContentPane(mainBackground);
-        mainBackground.setLayout(new BorderLayout());
+        mainBackground.setLayout(new BorderLayout(0,48));
 
         // COLOR VARIABLES
         Color DarkBlue = new Color(0x3b91fe);
+        Color LightBlue = new Color(0xe2f8fd);
         //
 
         JPanel upperPanel = new JPanel(new BorderLayout());
@@ -36,7 +36,7 @@ public class HomePageUI extends JFrame {
         upperPanel_1.add(MeowMeowLogo);
         upperPanel.add(upperPanel_1, BorderLayout.WEST);
 
-        // all the buttons
+        // buttons
         JButton butt1 = new JButton("Contact Us");
         butt1.setBackground(DarkBlue);
         butt1.setForeground(Color.WHITE);
@@ -52,8 +52,8 @@ public class HomePageUI extends JFrame {
         JButton butt4 = new JButton("Login");
         butt4.setBackground(DarkBlue);
         butt4.setForeground(Color.WHITE);
-        //
-        
+        // buttons
+
         JPanel upperPanel_2 = new JPanel(new FlowLayout());
         upperPanel_2.setBackground(DarkBlue);
         upperPanel_2.setPreferredSize(new Dimension(100, 40));
@@ -63,12 +63,15 @@ public class HomePageUI extends JFrame {
         upperPanel_2.add(butt4);
         upperPanel.add(upperPanel_2, BorderLayout.SOUTH);
 
+        JPanel centerPanel = new JPanel();
+        centerPanel.setBackground(LightBlue);
+        
         mainBackground.add(upperPanel, BorderLayout.NORTH);
+        mainBackground.add(centerPanel, BorderLayout.CENTER);
         setVisible(true);
     }
 
-    public static void main(String[] args) {
-
+    public static void main(String[] args){
         new HomePageUI();
     }
 }
