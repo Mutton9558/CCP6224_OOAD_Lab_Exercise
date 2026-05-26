@@ -7,14 +7,15 @@ public class MainPageUI extends JFrame {
 
         super("Mao Mao Hospital Main Page!");
         setVisible(true);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(960, 1200);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(1280, 720);
 
-        ImageIcon bgImage = new ImageIcon(getClass().getResource("/images/mainbg.jpg"));
+        ImageIcon bgImage = new ImageIcon(getClass().getResource("/images/bluebg.webp"));
         JLabel mainBackground = new JLabel(bgImage);
-
         mainBackground.setLayout(new FlowLayout());
 
+        setContentPane(mainBackground);
+        setVisible(true);
     }
 
     public static void main(String[] args) {
