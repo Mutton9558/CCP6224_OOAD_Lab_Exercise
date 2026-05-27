@@ -5,22 +5,28 @@ public class HomePageUI extends JFrame {
 
     public HomePageUI() {
 
-        super("Mao Mao Hospital Main Page!");
+        super("Meow Meow Hospital Main Page!");
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1366, 768);
+        setResizable(false);
+
+        // set the image icon of the window
+        ImageIcon windowIcon = new ImageIcon("imgIcon.png");
+        setIconImage(windowIcon.getImage());
+        //
 
         ImageIcon bgImage = new ImageIcon(getClass().getResource("/images/mainbg.jpg"));
         Image sizedBgImage = bgImage.getImage().getScaledInstance(1366, 768, Image.SCALE_SMOOTH);
         ImageIcon mainBg = new ImageIcon(sizedBgImage);
         JLabel mainBackground = new JLabel(mainBg);
         setContentPane(mainBackground);
-        mainBackground.setLayout(new BorderLayout(0,48));
+        mainBackground.setLayout(new BorderLayout(0, 48));
 
         // COLOR VARIABLES
         Color DarkBlue = new Color(0x3b91fe);
         Color LightBlue = new Color(0xe2f8fd);
-        //
+        // COLOR VARIABLES
 
         JPanel upperPanel = new JPanel(new BorderLayout());
         upperPanel.setBackground(DarkBlue);
@@ -31,7 +37,7 @@ public class HomePageUI extends JFrame {
 
         ImageIcon MMIcon = new ImageIcon(getClass().getResource("/images/meowmeowlogo.png"));
         Image sizedMMIcon = MMIcon.getImage().getScaledInstance(343, 104, Image.SCALE_SMOOTH);
-        ImageIcon MMlogo = new ImageIcon(sizedMMIcon);       
+        ImageIcon MMlogo = new ImageIcon(sizedMMIcon);
         JLabel MeowMeowLogo = new JLabel(MMlogo);
         upperPanel_1.add(MeowMeowLogo);
         upperPanel.add(upperPanel_1, BorderLayout.WEST);
@@ -65,13 +71,13 @@ public class HomePageUI extends JFrame {
 
         JPanel centerPanel = new JPanel();
         centerPanel.setBackground(LightBlue);
-        
+
         mainBackground.add(upperPanel, BorderLayout.NORTH);
         mainBackground.add(centerPanel, BorderLayout.CENTER);
         setVisible(true);
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         new HomePageUI();
     }
 }
