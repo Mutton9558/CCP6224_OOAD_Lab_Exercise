@@ -2,16 +2,17 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Appointment {
-    private int patientID;
-    private int doctorID;
+    private int patient_ID;
+    private int doctor_ID;
+    private int appointment_ID;
     private LocalDate appointmentDate;
     private LocalTime appointmentTime;
     private String location;
     private String status;
     
     public Appointment(int patient, int doctor, LocalDate date, LocalTime time, String location, String status){
-        this.patientID = patient;
-        this.doctorID = doctor;
+        this.patient_ID = patient;
+        this.doctor_ID = doctor;
         this.appointmentDate = date;
         this.appointmentTime = time;
         this.location = location;
