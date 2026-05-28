@@ -31,6 +31,10 @@ public class Appointment {
         return assignedDoctor;
     }
     
+    public int getAppointmentID(){
+        return this.appointment_ID;
+    }
+
     public LocalDate getAppointmentDate(){
         return this.appointmentDate;
     }

@@ -3,7 +3,7 @@ import java.util.*;
 public class Doctor extends User{
     private int doctor_ID, user_Age;
     private String user_Name, password, office, specialisation, user_Gender;
-    private Map<Integer, Patient> patientList = new HashMap<>(); //Key is patient_ID, Value is Patient
+    private Map<Integer, Patient> PatientList = new HashMap<>(); //Key is patient_ID, Value is Patient
     private Map<Integer, Appointment> AppointmentList = new HashMap(); //Key is appointment_ID, Value is Appointment
 
     public Doctor(String username, String password, String gender, int age, String office, String specialisation){
@@ -29,7 +29,7 @@ public class Doctor extends User{
     }
 
     public Map<Integer, Patient> getPatientList(){
-        return this.patientList;
+        return this.PatientList;
     }
 
     public Map<Integer, Appointment> getAppointmentList(){
@@ -43,5 +43,13 @@ public class Doctor extends User{
 
     public void setSpecialisation(String specialisation){
         this.specialisation = specialisation;
+    }
+
+    public void setPatientList(Map<Integer, Patient> patientList){
+        this.PatientList = patientList;
+    }
+
+    public void setAppointmentList(Map<Integer, Appointment> appointmentList){
+        this.AppointmentList = appointmentList;
     }
 }
