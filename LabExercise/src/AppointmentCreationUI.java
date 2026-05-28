@@ -5,6 +5,7 @@ import java.util.Date;
 import java.awt.event.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashMap;
 
 public class AppointmentCreationUI extends JFrame implements FocusListener, ActionListener{
     private AppointmentController appointmentController;
@@ -14,6 +15,8 @@ public class AppointmentCreationUI extends JFrame implements FocusListener, Acti
     private JSpinner appointmentTimeField;
     private JTextField locationTextField;
     private JButton submitButton;
+    
+    private HashMap<JTextField, String> placeholderText = new HashMap<>();
     
     public AppointmentCreationUI(AppointmentController controller){
         super("Appointment Creation Screen");
@@ -47,12 +50,14 @@ public class AppointmentCreationUI extends JFrame implements FocusListener, Acti
         formBoxConstraints.gridy = 1;
         formBoxConstraints.gridwidth = 1;
         patientTextField = new JTextField("Enter Patient ID", 24);
+        placeholderText.put(patientTextField, "Enter Patient ID");
         patientTextField.addFocusListener(this);
         formElementBox.add(patientTextField, formBoxConstraints);
         
         formBoxConstraints.gridx = 1;
         formBoxConstraints.gridy = 1;
         doctorTextField = new JTextField("Enter Doctor ID", 24);
+        placeholderText.put(doctorTextField, "Enter Doctor ID");
         doctorTextField.addFocusListener(this);
         formElementBox.add(doctorTextField, formBoxConstraints);
         
@@ -78,6 +83,7 @@ public class AppointmentCreationUI extends JFrame implements FocusListener, Acti
         formBoxConstraints.gridx = 0;
         formBoxConstraints.gridy = 3;
         locationTextField = new JTextField("Enter Appointment Location", 48);
+        placeholderText.put(locationTextField, "Enter Appointment Location");
         locationTextField.addFocusListener(this);
         formElementBox.add(locationTextField, formBoxConstraints);
         
@@ -98,28 +104,23 @@ public class AppointmentCreationUI extends JFrame implements FocusListener, Acti
     public void focusGained(FocusEvent e){
         JTextField textField = (JTextField) e.getSource();
         String text = textField.getText();
-        if(text.equals("Enter Patient ID") || text.equals("Enter Doctor ID") || text.equals("Enter Appointment Location")){
-            textField.setText("");
+        for(String p : placeholderText.values()){
+            if(text.equals(p)){
+                textField.setText("");
+            }
         }
     }
     
     @Override
     public void focusLost(FocusEvent e){
         JTextField textField = (JTextField) e.getSource();
-        if(textField.getText().equals(""))
-            if(textField == patientTextField){
-                textField.setText("Enter Patient ID");
-            } else if (textField == doctorTextField){
-                textField.setText("Enter Doctor ID");
-            } else {
-                textField.setText("Enter Appointment Location");
-            }
+        if(textField.getText().equals("")){
+            textField.setText(placeholderText.get(textField));
+        }
     }
     
     @Override
     public void actionPerformed(ActionEvent e){
-        
-        
         int patientID;
         int doctorID;
         LocalDate appointmentDateValue;
@@ -142,7 +143,7 @@ public class AppointmentCreationUI extends JFrame implements FocusListener, Acti
             appointmentTimeValue = timeValue.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalTime();
             location = locationTextField.getText();
             
-            if(location.equals("") || location.equals(" ") || location.equals("Enter Appointment Location")){
+            if(location.equals("") || location.equals(" ") || location.equals(placeholderText.get(locationTextField))){
                 JLabel label = new JLabel("Location cannot be empty");
                 errorMessage.add(label);
                 errorMessage.setVisible(true);
