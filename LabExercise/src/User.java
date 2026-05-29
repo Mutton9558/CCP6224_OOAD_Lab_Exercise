@@ -104,12 +104,12 @@ public abstract class User implements UserPermission{
         this.password = password;
     }
     
-    public abstract String returnRole();
+    public abstract int returnRole();
     
     public abstract boolean canViewPrescriptions();
 //    patient records
     public abstract boolean canViewSelfRecords();
-    
+    public abstract boolean canViewActiveAppointments();
     public abstract boolean canViewPatientRecords();
     public abstract boolean canViewDoctorRecords();
     public abstract boolean canViewReceptionistRecords();

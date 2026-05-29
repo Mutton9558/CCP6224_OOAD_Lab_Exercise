@@ -11,6 +11,11 @@ public class Patient extends User {
         super(username, password, gender, age);
         this.patient_ID = this.setUserID("PATIENT");
     }
+    
+    public Patient(String username, String password){
+        super(username, password);
+        this.patient_ID = this.setUserID("PATIENT");
+    }
 
     public Patient(){}
 
@@ -35,6 +40,80 @@ public class Patient extends User {
     public void setAppointmentList(Map<Integer, Appointment> appointmentList){
         this.AppointmentList = appointmentList;
     }
-
+    
+    @Override
+    public int returnRole(){
+        return patient_ID;
+    }
+    
+    @Override
+    public boolean canViewPrescriptions(){
+        return true;
+    };
+//    patient records
+    @Override
+    public boolean canViewSelfRecords(){
+        return true;
+    };
+    
+    public boolean canViewActiveAppointments(){
+        return true;
+    }
+    
+    @Override
+    public boolean canViewPatientRecords(){
+        return false;
+    };
+    
+    @Override
+    public boolean canViewDoctorRecords(){
+        return false;
+    };
+    
+    @Override
+    public boolean canViewReceptionistRecords(){
+        return false;
+    };
+    
+    @Override
+    public boolean canUpdateAppointments(){
+        return false;
+    };
+    
+    @Override
+    public boolean canAddPrescriptions(){
+        return false;
+    };
+    
+    @Override
+    public boolean canAddDiagnosis(){
+        return false;
+    };
+    
+//    doctor records
+    @Override
+    public boolean canViewMedicalRecords(){
+        return false;
+    };
+    
+    @Override
+    public boolean canEditProfile(){
+        return false;
+    };
+    
+    @Override
+    public boolean canAddAppointments(){
+        return false;
+    };
+    
+    @Override
+    public boolean canGenerateReport(){
+        return false;
+    };
+    
+    @Override
+    public boolean canSearchAppointments(){
+        return false;
+    }
 }
 

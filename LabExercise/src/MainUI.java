@@ -3,8 +3,7 @@ import javax.swing.*;
 
 public class MainUI extends JFrame{
 
-    public MainUI(){
-
+    public MainUI(User client){
         super("MeowMeow Hospital Main Page!");
         CardLayout cardLayout = new CardLayout();
         UIConstants UIconst = new UIConstants();
@@ -22,7 +21,7 @@ public class MainUI extends JFrame{
 
         // create instance of the main UIs
         HomePageUI homepage = new HomePageUI();
-        DashboardUI dashboard = new DashboardUI();
+        DashboardUI dashboard = new DashboardUI(client);
 
         mainPanel.add(homepage, "HOME");
         mainPanel.add(dashboard, "DASHBOARD");
@@ -42,7 +41,7 @@ public class MainUI extends JFrame{
 
     }
     public static void main(String[] args) {
-
-        MainUI test1 = new MainUI();
+        User tempUser = new Receptionist("Shawn", "1");
+        MainUI test1 = new MainUI(tempUser);
     }
 }
