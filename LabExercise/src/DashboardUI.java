@@ -100,7 +100,7 @@ public class DashboardUI extends JPanel {
         // if other people want to test their UI, kindly change patient into whatever role u want 
 
         // TO DELETE
-        String role = "patient";
+        String role = "doctor";
 
         switch (role) {
 
@@ -170,3 +170,4 @@ public class DashboardUI extends JPanel {
         add(mainPanel, BorderLayout.CENTER);
     }
 }
+
