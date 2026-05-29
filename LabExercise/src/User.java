@@ -1,4 +1,4 @@
-public class User {
+public abstract class User implements UserPermission{
 
     private int user_ID, user_Age;
     private String password, user_Gender;
@@ -45,4 +45,25 @@ public class User {
     public void setUserGender(String userGender) {
         user_Gender = userGender;
     }
+    
+    public abstract String returnRole();
+    
+    public abstract boolean canViewPrescriptions();
+//    patient records
+    public abstract boolean canViewSelfRecords();
+    
+    public abstract boolean canViewPatientRecords();
+    public abstract boolean canViewDoctorRecords();
+    public abstract boolean canViewReceptionistRecords();
+    public abstract boolean canUpdateAppointments();
+    public abstract boolean canAddPrescriptions();
+    public abstract boolean canAddDiagnosis();
+    
+//    doctor records
+    public abstract boolean canViewMedicalRecords();
+    
+    public abstract boolean canEditProfile();
+    public abstract boolean canAddAppointments();
+    public abstract boolean canGenerateReport();  
+    public abstract boolean canSearchAppointments();
 }
