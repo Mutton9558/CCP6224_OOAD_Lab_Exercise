@@ -11,6 +11,11 @@ public class Patient extends User {
         super(username, password, gender, age);
         this.patient_ID = this.setUserID("PATIENT");
     }
+    
+    public Patient(String username, String password){
+        super(username, password);
+        this.patient_ID = this.setUserID("PATIENT");
+    }
 
     public Patient(){}
 
@@ -35,23 +40,47 @@ public class Patient extends User {
     public void setAppointmentList(Map<Integer, Appointment> appointmentList){
         this.AppointmentList = appointmentList;
     }
+<<<<<<< HEAD
 
     @Override
     public String returnRole(){
         return "Admin";
+=======
+    
+    @Override
+    public int returnRole(){
+        return patient_ID;
+>>>>>>> main
     }
     
     @Override
     public boolean canViewPrescriptions(){
+<<<<<<< HEAD
         return false;
+=======
+        return true;
+>>>>>>> main
     };
 //    patient records
     @Override
     public boolean canViewSelfRecords(){
+<<<<<<< HEAD
+=======
+        return true;
+    };
+    
+    public boolean canViewActiveAppointments(){
+        return true;
+    }
+    
+    @Override
+    public boolean canViewPatientRecords(){
+>>>>>>> main
         return false;
     };
     
     @Override
+<<<<<<< HEAD
     public boolean canViewPatientRecords(){
         return true;
     };
@@ -59,11 +88,19 @@ public class Patient extends User {
     @Override
     public boolean canViewDoctorRecords(){
         return true;
+=======
+    public boolean canViewDoctorRecords(){
+        return false;
+>>>>>>> main
     };
     
     @Override
     public boolean canViewReceptionistRecords(){
+<<<<<<< HEAD
         return true;
+=======
+        return false;
+>>>>>>> main
     };
     
     @Override
@@ -89,7 +126,11 @@ public class Patient extends User {
     
     @Override
     public boolean canEditProfile(){
+<<<<<<< HEAD
         return true;
+=======
+        return false;
+>>>>>>> main
     };
     
     @Override
@@ -99,11 +140,16 @@ public class Patient extends User {
     
     @Override
     public boolean canGenerateReport(){
+<<<<<<< HEAD
         return true;
+=======
+        return false;
+>>>>>>> main
     };
     
     @Override
     public boolean canSearchAppointments(){
+<<<<<<< HEAD
         return true;
     }
 
@@ -112,5 +158,9 @@ public class Patient extends User {
         return true;
     }
 
+=======
+        return false;
+    }
+>>>>>>> main
 }
 
