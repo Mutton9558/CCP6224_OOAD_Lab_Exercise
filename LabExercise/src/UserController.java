@@ -1,19 +1,40 @@
-public class UserController {
+import java.util.HashMap;
+import java.util.Map;
 
-    //public void UserController();
+public class UserController{
 
-    public void createUser(int userID, String username, String password, String gender, int age){
+    private Map<Integer, User> userList = new HashMap<>(); //Map (More advanced version of Dictionary) to store the Users (Key is the user ID, value is the User)
+                                                          // And username is key for convenience, could use ID but need to implement system for serial 
+
+    public void UserController(){}
+
+    //Admin/Receptionist
+    public void createUser(String username, String password, String gender, int age){
+        User createdUser = new User(username,password,gender, age);
+        userList.put(createdUser.getUserID(), createdUser);
     }
 
-    //I think that maybe userController having the getUserXXXX function is redundant since
-    //the User class already has it (bcs either way since it is private we will need to have a get function)
-    //so it will be repeating it 
-    // maybe the controller can have the setUserXXXX function tho? and other functions
-
+    //User own registration
     public void registerUser(String username, String password){
+        User createdUser = new User(username,password);        
+        userList.put(createdUser.getUserID(), createdUser);
     }
 
-    public void loginUser(String username, String password){
+    public void loginUser(int userID, String password){
+        if(userList.containsKey(userID)) {
+            User attemptLoginUser = userList.get(userID);
+            if(attemptLoginUser.getUserPassword().equals(password)){
+                System.out.println("Successful Login!");
+                //Send to Login Interface to change to DashboardUI
+            }
+            else{
+                //Loop getting password until get correct password
+                while(!attemptLoginUser.getUserPassword().equals(password)){
+                    System.out.println("Username or password is incorrect! Please try again");
+                    // Send to Login Interface to grab the keyed in username & password
+                    loginUser(userID, password);
+                }
+            }
+        }
     }
-    
 }

@@ -1,49 +1,107 @@
+import java.util.concurrent.atomic.AtomicInteger;
+
 public abstract class User implements UserPermission{
+  
+    public enum UserRole {
+        PATIENT(100),
+        DOCTOR(200),
+        RECEPTIONIST(300),
+        ADMIN(400);
 
-    private int user_ID, user_Age;
-    private String password, user_Gender;
+        private final AtomicInteger serial_ID;
 
-    // username is made my the receotionist and it is the USER ID !!!!
-    public User(int username, String password) {
+        //Initialie the base ID value for each role
+        UserRole(int role_ID) {
+            this.serial_ID = new AtomicInteger(role_ID);
+        }
 
-        this.user_ID = username;
-        this.password = password;
+        // Increments the current role ID and provide it for the user
+        public int getRoleID() {
+            return this.serial_ID.incrementAndGet();
+        }
     }
 
-    // Getters
+    private int user_ID;
+    private int user_Age;
+    private UserRole user_Role;
+    private String user_Name, password, user_Gender;
+
+    public User() {
+        this.user_Name = "";
+        this.password = "";
+    }
+  
+    public User(String username, String password) {
+        this.user_Name = username;
+        this.password = password;
+        this.user_ID = setUserID(" ");
+    }
+  
+    // username is made my the receotionist and it is the USER ID !!!!
+    public User(String username, String password, String gender, int age) {
+        this.user_ID = setUserID(" ");
+        this.user_Name = username;
+        this.password = password;
+        this.user_Gender = gender;
+        this.user_Age = age;
+    }
+
     public int getUserID() {
-        return user_ID;
+        return this.user_ID;
     }
 
     public String getUserName() {
-        return user_Name;
+        return this.user_Name;
     }
 
     public int getUserAge() {
-        return user_Age;
+        return this.user_Age;
     }
 
     public String getUserGender() {
-        return user_Gender;
+        return this.user_Gender;
     }
 
-    // do we need getUserPassword?
+    public String getUserPassword() {
+        return this.password;
+    }
 
-    // Setters
-    public void setUserID(int userID) {
-        user_ID = userID;
+    //Setters
+    public int setUserID(String role){
+        switch(role){
+            case "PATIENT":
+                user_Role = UserRole.PATIENT;
+                break;
+            case "DOCTOR":
+                user_Role = UserRole.DOCTOR;
+                break;
+            case "RECEPTIONIST":
+                user_Role = UserRole.RECEPTIONIST;
+                break;
+            case "ADMIN":
+                user_Role = UserRole.DOCTOR;
+                break;
+            default:
+                user_Role = UserRole.PATIENT;
+                break;
+        }
+        return user_Role.getRoleID();
     }
 
     public void setUserName(String userName) {
-        user_Name = userName;
+        this.user_Name = userName;
     }
 
     public void setUserAge(int userAge) {
-        user_Age = userAge;
+        this.user_Age = userAge;
     }
 
     public void setUserGender(String userGender) {
-        user_Gender = userGender;
+        this.user_Gender = userGender;
+    }
+
+    public void setUserPassword(String password) {
+        this.password = password;
     }
     
     public abstract String returnRole();
