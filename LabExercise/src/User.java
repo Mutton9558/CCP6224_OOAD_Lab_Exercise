@@ -1,7 +1,7 @@
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class User {
-
+public abstract class User implements UserPermission{
+  
     public enum UserRole {
         PATIENT(100),
         DOCTOR(200),
@@ -21,7 +21,6 @@ public class User {
         }
     }
 
-    //Gonna serialise  
     private int user_ID;
     private int user_Age;
     private UserRole user_Role;
@@ -31,13 +30,14 @@ public class User {
         this.user_Name = "";
         this.password = "";
     }
-
+  
     public User(String username, String password) {
         this.user_Name = username;
         this.password = password;
         this.user_ID = setUserID(" ");
     }
-
+  
+    // username is made my the receotionist and it is the USER ID !!!!
     public User(String username, String password, String gender, int age) {
         this.user_ID = setUserID(" ");
         this.user_Name = username;
@@ -103,4 +103,25 @@ public class User {
     public void setUserPassword(String password) {
         this.password = password;
     }
+    
+    public abstract String returnRole();
+    
+    public abstract boolean canViewPrescriptions();
+//    patient records
+    public abstract boolean canViewSelfRecords();
+    
+    public abstract boolean canViewPatientRecords();
+    public abstract boolean canViewDoctorRecords();
+    public abstract boolean canViewReceptionistRecords();
+    public abstract boolean canUpdateAppointments();
+    public abstract boolean canAddPrescriptions();
+    public abstract boolean canAddDiagnosis();
+    
+//    doctor records
+    public abstract boolean canViewMedicalRecords();
+    
+    public abstract boolean canEditProfile();
+    public abstract boolean canAddAppointments();
+    public abstract boolean canGenerateReport();  
+    public abstract boolean canSearchAppointments();
 }

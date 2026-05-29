@@ -35,5 +35,6 @@ public class Patient extends User {
     public void setAppointmentList(Map<Integer, Appointment> appointmentList){
         this.AppointmentList = appointmentList;
     }
+
 }
 
