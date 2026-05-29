@@ -40,32 +40,19 @@ public class Patient extends User {
     public void setAppointmentList(Map<Integer, Appointment> appointmentList){
         this.AppointmentList = appointmentList;
     }
-<<<<<<< HEAD
-
-    @Override
-    public String returnRole(){
-        return "Admin";
-=======
     
     @Override
     public int returnRole(){
         return patient_ID;
->>>>>>> main
     }
     
     @Override
     public boolean canViewPrescriptions(){
-<<<<<<< HEAD
-        return false;
-=======
         return true;
->>>>>>> main
     };
 //    patient records
     @Override
     public boolean canViewSelfRecords(){
-<<<<<<< HEAD
-=======
         return true;
     };
     
@@ -75,32 +62,17 @@ public class Patient extends User {
     
     @Override
     public boolean canViewPatientRecords(){
->>>>>>> main
         return false;
     };
     
     @Override
-<<<<<<< HEAD
-    public boolean canViewPatientRecords(){
-        return true;
-    };
-    
-    @Override
-    public boolean canViewDoctorRecords(){
-        return true;
-=======
     public boolean canViewDoctorRecords(){
         return false;
->>>>>>> main
     };
     
     @Override
     public boolean canViewReceptionistRecords(){
-<<<<<<< HEAD
-        return true;
-=======
         return false;
->>>>>>> main
     };
     
     @Override
@@ -126,11 +98,7 @@ public class Patient extends User {
     
     @Override
     public boolean canEditProfile(){
-<<<<<<< HEAD
-        return true;
-=======
         return false;
->>>>>>> main
     };
     
     @Override
@@ -140,27 +108,17 @@ public class Patient extends User {
     
     @Override
     public boolean canGenerateReport(){
-<<<<<<< HEAD
-        return true;
-=======
         return false;
->>>>>>> main
     };
     
     @Override
     public boolean canSearchAppointments(){
-<<<<<<< HEAD
-        return true;
+        return false;
     }
 
     @Override
     public boolean canSearchRecords(){
-        return true;
-    }
-
-=======
         return false;
     }
->>>>>>> main
 }
 

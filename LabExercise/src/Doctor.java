@@ -20,10 +20,6 @@ public class Doctor extends User{
 
     public Doctor(){}
 
-    public Doctor(String username, String password){
-        super(username, password);
-    }
-
     @Override
     public int getUserID(){
         return this.doctor_ID;
@@ -108,30 +104,18 @@ public class Doctor extends User{
     
     @Override
     public boolean canAddDiagnosis(){
-<<<<<<< HEAD
-        return false;
-=======
         return true;
->>>>>>> main
     };
     
 //    doctor records
     @Override
     public boolean canViewMedicalRecords(){
-<<<<<<< HEAD
-        return false;
-=======
         return true;
->>>>>>> main
     };
     
     @Override
     public boolean canEditProfile(){
-<<<<<<< HEAD
-        return true;
-=======
         return false;
->>>>>>> main
     };
     
     @Override
@@ -141,23 +125,16 @@ public class Doctor extends User{
     
     @Override
     public boolean canGenerateReport(){
-<<<<<<< HEAD
-        return true;
-=======
         return false;
->>>>>>> main
     };
     
     @Override
     public boolean canSearchAppointments(){
         return true;
     }
-<<<<<<< HEAD
 
     @Override
     public boolean canSearchRecords(){
         return true;
     }
-=======
->>>>>>> main
 }

@@ -5,51 +5,63 @@ import java.util.Map;
 import javax.swing.*;
 import javax.swing.table.TableColumnModel;
 
-public class DoctorRecordsUI extends JPanel implements FocusListener, ActionListener{
+public class DoctorRecordsUI extends JPanel{
     User activeClient;
-
-    private DoctorController doctorController;
-    private JTextField searchDoctorTextField;
-    private JButton searchButton;
-    UIConstants UIConst = new UIConstants();
-    private HashMap<JTextField, String> placeholderText = new HashMap<>();
+    UIConstants uiConstant = new UIConstants();
 
     public DoctorRecordsUI(User client) {
         this.activeClient = client;
-        UIConstants UIConst = new UIConstants();
         
-        this.setLayout(new CardLayout());
-        this.setSize(600, 400);
-        this.setBackground(UIConst.Azure);
+        this.setLayout(new GridBagLayout());
+        GridBagConstraints adj = new GridBagConstraints();
+        this.setBackground(uiConstant.Azure);
         
-        JLabel panelTitle = new JLabel("Search for Doctor");
+        adj.gridwidth = GridBagConstraints.REMAINDER;
+        adj.anchor = GridBagConstraints.CENTER;
+        adj.insets = new Insets(20, 0, 15, 0);
+        adj.weightx = 1.0;
+        adj.weighty = 0.0;
+        adj.fill = GridBagConstraints.NONE;
+        adj.gridy = 0;
+        JLabel panelTitle = new JLabel("Search for Doctors");
         panelTitle.setFont(new Font("Sans-Serif", Font.BOLD, 24));
         panelTitle.setForeground(Color.WHITE);
-        this.add(panelTitle);
-
-        JTextField searchField = new JTextField("Search", 24);
-        searchField.setVisible(activeClient.canSearchRecords());
-        this.add(searchField);
-        searchButton = new JButton("Search");
-        searchButton.addActionListener(this);
-        this.add(searchButton);
+        this.add(panelTitle, adj);
+        
+        adj.fill = GridBagConstraints.HORIZONTAL; 
+        adj.gridy = 1;
+        adj.gridwidth = 1;
+        adj.insets = new Insets(0, 40, 15, 15); 
+        TextFieldWithPlaceholder searchField = new TextFieldWithPlaceholder("Search by Doctor Name", 24);
+        searchField.returnTextField().setVisible(activeClient.canSearchAppointments());
+        this.add(searchField.returnTextField(), adj);
+        
+        adj.gridy = 1;
+        adj.gridwidth = 1;
+        JButton searchButton = new JButton("Search");
+        searchButton.setVisible(activeClient.canSearchAppointments());
+        searchButton.setPreferredSize(new Dimension(30, 20));
+        this.add(searchButton, adj);
         
         int recordsFound = 30;
-        JLabel tableTitle = new JLabel("Appointment List (" + recordsFound + " found)");
+        adj.gridy = 2;
+        adj.insets = new Insets(10, 0, 10, 0);
+        adj.fill = GridBagConstraints.NONE; 
+        JLabel tableTitle = new JLabel("Doctor List: (" + recordsFound + " found)");
         tableTitle.setFont(new Font("Sans-Serif", Font.BOLD, 14));
         tableTitle.setForeground(Color.WHITE);
-        this.add(tableTitle);
+        this.add(tableTitle, adj);
         
-        String[] columns = {"ID", "Patient", "Doctor", "Date", "Time", "Status"};
+        String[] columns = {"ID", "Username", "Age", "Gender", "Office", "Specialisation"};
         Object[][] data = {
-            {1, "Shawn Huang Qi Yang", "Imran", "1/6/2026", "09:30", "Scheduled"},    
-            {2, "Wan Wei Siang", "Imran", "27/5/2026", "16.30", "Concluded"},
-            {3, "Syed Zaki Husain Wafa bin Syed Riyad Reza", "Imran", "26/5/2026", "20:30", "Cancelled"},
+            {1, "Imran", "18", "Male", "Ground Floor, Room 2", "Dermatologist"},    
+            {2, "Elsa", "19", "?", "2nd Floor, Room 1", "Radiologist"},
+            {3, "Muhammad Yusuf", "20", "Male", "1st Floor, Room 3", "Neurologist"},
         };
         
         JTable table = new JTable(data, columns);
         
-        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
         
         TableColumnModel columnModel = table.getColumnModel();
         for (int column = 0; column < table.getColumnCount(); column++) {
@@ -75,47 +87,14 @@ public class DoctorRecordsUI extends JPanel implements FocusListener, ActionList
         JScrollPane scrollPane = new JScrollPane(table);
         
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        scrollPane.setPreferredSize(new Dimension(500, 220));     
-        this.add(scrollPane);   
-        this.setVisible(true);
-    }
-
-    JLabel lb1;
-    public DoctorRecordsUI() {
-
-        //table of active appointments 
-        //placeHOLDER for shawn 
-        setBackground(Color.YELLOW);
-        lb1 = new JLabel("ACTIVE APPOINTMENT BUTTON WAS PRESSED");
-        add(lb1);
-        setVisible(true);
-    }
-
-    @Override
-    public void focusGained(FocusEvent e){
-        JTextField textField = (JTextField) e.getSource();
-        String text = textField.getText();
-        for(String p : placeholderText.values()){
-            if(text.equals(p)){
-                textField.setText("");
-            }
-        }
-    }
-
-    @Override
-    public void focusLost(FocusEvent e){
-        JTextField textField = (JTextField) e.getSource();
-        if(textField.getText().equals("")){
-            textField.setText(placeholderText.get(textField));
-        }
-    }
-    
-    @Override
-    public void actionPerformed(ActionEvent e){
-    }
-    
-    public static void main(String[] args){
-        User client = new Doctor("Shawn", "1");
-        new DoctorRecordsUI(client);
+        scrollPane.setPreferredSize(new Dimension(550, 300));
+        
+        adj.gridy = 3;
+        adj.weightx = 3.0;
+        adj.weighty = 1.0; 
+        adj.fill = GridBagConstraints.BOTH; 
+        adj.insets = new Insets(0, 40, 25, 40);
+        this.add(scrollPane, adj);
+        this.setFocusable(true);
     }
 }

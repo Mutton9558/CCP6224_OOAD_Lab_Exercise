@@ -1,13 +1,16 @@
 public class Admin extends User{
+    private int admin_ID, user_Age;
+    private String user_Name, password, user_Gender;
     public Admin(String username, String password){
         super(username, password);
     }
-    
+
     @Override
-    public String returnRole(){
-        return "Admin";
+    public int returnRole(){
+        return admin_ID;
     }
-    
+
+
     @Override
     public boolean canViewPrescriptions(){
         return false;
@@ -32,6 +35,10 @@ public class Admin extends User{
     public boolean canViewReceptionistRecords(){
         return true;
     };
+
+    public boolean canViewActiveAppointments(){
+        return true;
+    }
     
     @Override
     public boolean canUpdateAppointments(){
