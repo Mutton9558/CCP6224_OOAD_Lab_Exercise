@@ -6,7 +6,7 @@ public class UIConstants {
     // constant images 
     public static ImageIcon windowIcon = new ImageIcon(UIConstants.class.getResource("/images/imgIcon.png"));
 
-    // MMlogo rwctangle
+    // MMlogo rectangle
     public static ImageIcon logoImg = new ImageIcon(UIConstants.class.getResource("/images/meowmeowlogo.png"));
     public static Image sizedMMIcon = logoImg.getImage().getScaledInstance(343, 104, Image.SCALE_SMOOTH);
     public static ImageIcon MMlogo = new ImageIcon(sizedMMIcon);

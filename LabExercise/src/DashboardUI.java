@@ -108,7 +108,7 @@ public class DashboardUI extends JPanel {
                 cardLayout1.show(westPanel, "doctorPanel");
                 break;
             case "patient":
-                cardLayout1.show(westPanel, "patientrPanel");
+                cardLayout1.show(westPanel, "patientPanel");
                 break;
             case "receptionist":
                 cardLayout1.show(westPanel, "receptionistPanel");
