@@ -1,22 +1,29 @@
 public class Receptionist extends User{
+    private int receptionist_ID, user_Age;
+    private String user_Name, password, user_Gender;
     public Receptionist(String username, String password){
         super(username, password);
+        this.receptionist_ID = this.setUserID("RECEPTIONIST");
     }
     
     @Override
-    public String returnRole(){
-        return "Receptionist";
+    public int returnRole(){
+        return this.receptionist_ID;
     }
     
     @Override
     public boolean canViewPrescriptions(){
-        return true;
+        return false;
     };
 //    patient records
     @Override
     public boolean canViewSelfRecords(){
         return false;
     };
+    
+    public boolean canViewActiveAppointments(){
+        return true;
+    }
     
     @Override
     public boolean canViewPatientRecords(){
