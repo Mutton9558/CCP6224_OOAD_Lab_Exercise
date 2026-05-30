@@ -132,4 +132,9 @@ public class Doctor extends User{
     public boolean canSearchAppointments(){
         return true;
     }
+
+    @Override
+    public boolean canSearchRecords(){
+        return true;
+    }
 }

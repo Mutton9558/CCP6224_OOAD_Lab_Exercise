@@ -1,16 +1,16 @@
-public class Receptionist extends User{
-    private int receptionist_ID, user_Age;
+public class Admin extends User{
+    private int admin_ID, user_Age;
     private String user_Name, password, user_Gender;
-    public Receptionist(String username, String password){
+    public Admin(String username, String password){
         super(username, password);
-        this.receptionist_ID = this.setUserID("RECEPTIONIST");
     }
-    
+
     @Override
     public int returnRole(){
-        return this.receptionist_ID;
+        return admin_ID;
     }
-    
+
+
     @Override
     public boolean canViewPrescriptions(){
         return false;
@@ -21,10 +21,6 @@ public class Receptionist extends User{
         return false;
     };
     
-    public boolean canViewActiveAppointments(){
-        return true;
-    }
-    
     @Override
     public boolean canViewPatientRecords(){
         return true;
@@ -32,17 +28,21 @@ public class Receptionist extends User{
     
     @Override
     public boolean canViewDoctorRecords(){
-        return false;
+        return true;
     };
     
     @Override
     public boolean canViewReceptionistRecords(){
-        return false;
+        return true;
     };
+
+    public boolean canViewActiveAppointments(){
+        return true;
+    }
     
     @Override
     public boolean canUpdateAppointments(){
-        return true;
+        return false;
     };
     
     @Override
@@ -58,7 +58,7 @@ public class Receptionist extends User{
 //    doctor records
     @Override
     public boolean canViewMedicalRecords(){
-        return true;
+        return false;
     };
     
     @Override
@@ -68,12 +68,12 @@ public class Receptionist extends User{
     
     @Override
     public boolean canAddAppointments(){
-        return true;
+        return false;
     };
     
     @Override
     public boolean canGenerateReport(){
-        return false;
+        return true;
     };
     
     @Override
@@ -86,3 +86,5 @@ public class Receptionist extends User{
         return true;
     }
 }
+
+
