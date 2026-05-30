@@ -27,7 +27,7 @@ public class PatientController extends UserController {
         Patient wantedPatient = null;
         
         if(patientList.containsKey(patient_ID)){
-            patient patientpatient = patientList.get(patient_ID);
+            Patient patientpatient = patientList.get(patient_ID);
             Map<Integer, Patient> patientList = patientpatient.getPatientList();
             if(patientList.containsKey(patient_ID)){
                 wantedPatient = patientList.get(patient_ID);

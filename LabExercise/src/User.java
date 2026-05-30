@@ -124,4 +124,6 @@ public abstract class User implements UserPermission{
     public abstract boolean canAddAppointments();
     public abstract boolean canGenerateReport();  
     public abstract boolean canSearchAppointments();
+    public abstract boolean canSearchRecords();
+
 }

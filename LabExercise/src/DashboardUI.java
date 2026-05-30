@@ -112,23 +112,23 @@ public class DashboardUI extends JPanel {
         // if other people want to test their UI, kindly change patient into whatever role u want 
 
         // TO DELETE
-//        String role = "patient";
-//
-//        switch (role) {
-//
-//            case "doctor":
-//                cardLayout1.show(westPanel, "doctorPanel");
-//                break;
-//            case "patient":
-//                cardLayout1.show(westPanel, "patientrPanel");
-//                break;
-//            case "receptionist":
-//                cardLayout1.show(westPanel, "receptionistPanel");
-//                break;
-//            case "admin":
-//                cardLayout1.show(westPanel, "adminPanel");
-//                break;
-//        }
+    //    String role = "patient";
+
+    //    switch (role) {
+
+    //        case "doctor":
+    //            cardLayout1.show(westPanel, "doctorPanel");
+    //            break;
+    //        case "patient":
+    //            cardLayout1.show(westPanel, "patientrPanel");
+    //            break;
+    //        case "receptionist":
+    //            cardLayout1.show(westPanel, "receptionistPanel");
+    //            break;
+    //        case "admin":
+    //            cardLayout1.show(westPanel, "adminPanel");
+    //            break;
+    //    }
         // TO DELETE
 
 
@@ -142,8 +142,8 @@ public class DashboardUI extends JPanel {
         PatientRecordsUI patientRecordsUI = new PatientRecordsUI();
 
         //Admin only
-        DoctorRecordsUI doctorRecordsUI = new DoctorRecordsUI();
-        ReceptionistRecordsUI receptionistRecordsUI = new ReceptionistRecordsUI();
+        DoctorRecordsUI doctorRecordsUI = new DoctorRecordsUI(client);
+        ReceptionistRecordsUI receptionistRecordsUI = new ReceptionistRecordsUI(client);
         GenerateReportUI generateReportUI = new GenerateReportUI();
 
         //adding these instances into the content panel 
@@ -182,3 +182,4 @@ public class DashboardUI extends JPanel {
         add(mainPanel, BorderLayout.CENTER);
     }
 }
+

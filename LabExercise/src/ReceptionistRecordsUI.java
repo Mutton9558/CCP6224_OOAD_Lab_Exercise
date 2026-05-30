@@ -1,18 +1,100 @@
 import java.awt.*;
+import java.awt.event.*;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.*;
+import javax.swing.table.TableColumnModel;
 
-//this is the side panel UI that is ONLY for the admin
-//this UI shows up when the user clicks on the button called "Receptionist Records" at the side panel 
-public class ReceptionistRecordsUI extends JPanel {
+public class ReceptionistRecordsUI extends JPanel{
+    User activeClient;
+    UIConstants uiConstant = new UIConstants();
 
-    // THE FOLLOWING CONTENT IS SIMPLY TO TEST FUNCTIONALITY
-    JLabel lb1;
-    public ReceptionistRecordsUI() {
-
-        //placeHOLDER for zaki!!
-        setBackground(Color.RED);
-        lb1 = new JLabel("RECEPTIONIST RECORDS BUTTON WAS PRESSED");
-        add(lb1);
-        setVisible(true);
+    public ReceptionistRecordsUI(User client) {
+        this.activeClient = client;
+        
+        this.setLayout(new GridBagLayout());
+        GridBagConstraints adj = new GridBagConstraints();
+        this.setBackground(uiConstant.Azure);
+        
+        adj.gridwidth = GridBagConstraints.REMAINDER;
+        adj.anchor = GridBagConstraints.CENTER;
+        adj.insets = new Insets(20, 0, 15, 0);
+        adj.weightx = 1.0;
+        adj.weighty = 0.0;
+        adj.fill = GridBagConstraints.NONE;
+        adj.gridy = 0;
+        JLabel panelTitle = new JLabel("Search for Receptionists");
+        panelTitle.setFont(new Font("Sans-Serif", Font.BOLD, 24));
+        panelTitle.setForeground(Color.WHITE);
+        this.add(panelTitle, adj);
+        
+        adj.fill = GridBagConstraints.HORIZONTAL; 
+        adj.gridy = 1;
+        adj.gridwidth = 1;
+        adj.insets = new Insets(0, 40, 15, 15); 
+        TextFieldWithPlaceholder searchField = new TextFieldWithPlaceholder("Search by Receptionist Name", 24);
+        searchField.returnTextField().setVisible(activeClient.canSearchAppointments());
+        this.add(searchField.returnTextField(), adj);
+        
+        adj.gridy = 1;
+        adj.gridwidth = 1;
+        JButton searchButton = new JButton("Search");
+        searchButton.setVisible(activeClient.canSearchAppointments());
+        searchButton.setPreferredSize(new Dimension(30, 20));
+        this.add(searchButton, adj);
+        
+        int recordsFound = 30;
+        adj.gridy = 2;
+        adj.insets = new Insets(10, 0, 10, 0);
+        adj.fill = GridBagConstraints.NONE; 
+        JLabel tableTitle = new JLabel("Receptionist List: (" + recordsFound + " found)");
+        tableTitle.setFont(new Font("Sans-Serif", Font.BOLD, 14));
+        tableTitle.setForeground(Color.WHITE);
+        this.add(tableTitle, adj);
+        
+        String[] columns = {"ID", "Username", "Age", "Gender"};
+        Object[][] data = {
+            {1, "Imran", "18", "Male"},
+            {2, "Elsa", "19", "?"},
+            {3, "Muhammad Yusuf", "20", "Male"},
+        };
+        
+        JTable table = new JTable(data, columns);
+        
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
+        
+        TableColumnModel columnModel = table.getColumnModel();
+        for (int column = 0; column < table.getColumnCount(); column++) {
+            int maxWidth = 50;
+            
+            Object headerValue = columnModel.getColumn(column).getHeaderValue();
+            if (headerValue != null) {
+                maxWidth = Math.max(maxWidth, table.getTableHeader().getFontMetrics(table.getTableHeader().getFont()).stringWidth(headerValue.toString()) + 25);
+            }
+            
+            for (int row = 0; row < table.getRowCount(); row++) {
+                Object cellValue = table.getValueAt(row, column);
+                if (cellValue != null) {
+                    int cellWidth = table.getFontMetrics(table.getFont()).stringWidth(cellValue.toString()) + 25;
+                    maxWidth = Math.max(maxWidth, cellWidth);
+                }
+            }
+            
+            columnModel.getColumn(column).setMinWidth(maxWidth);
+            columnModel.getColumn(column).setPreferredWidth(maxWidth);
+        }
+        
+        JScrollPane scrollPane = new JScrollPane(table);
+        
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scrollPane.setPreferredSize(new Dimension(550, 300));
+        
+        adj.gridy = 3;
+        adj.weightx = 1.0;
+        adj.weighty = 1.0; 
+        adj.fill = GridBagConstraints.BOTH; 
+        adj.insets = new Insets(0, 40, 25, 40);
+        this.add(scrollPane, adj);
+        this.setFocusable(true);
     }
 }
