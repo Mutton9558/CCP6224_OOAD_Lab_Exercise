@@ -2,15 +2,16 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Appointment {
+    private int appointmentID;
     private int patient_ID;
     private int doctor_ID;
-    private int appointment_ID;
     private LocalDate appointmentDate;
     private LocalTime appointmentTime;
     private String location;
     private String status;
     
-    public Appointment(int patient, int doctor, LocalDate date, LocalTime time, String location, String status){
+    public Appointment(int appointmentID, int patient, int doctor, LocalDate date, LocalTime time, String location, String status){
+        this.appointmentID = appointmentID;
         this.patient_ID = patient;
         this.doctor_ID = doctor;
         this.appointmentDate = date;
@@ -20,19 +21,19 @@ public class Appointment {
     }
     
     public User getPatientData(){
-        User appointmentPatient = new Patient();
+        User appointmentPatient = new Patient("Shawn", "1");
 //        db stuff here, call user controller
         return appointmentPatient;
     }
     
     public User getDoctorData(){
-        User assignedDoctor = new Doctor();
+        User assignedDoctor = new Doctor("Imran", "1");
 //        db stuff here, call user controller
         return assignedDoctor;
     }
     
     public int getAppointmentID(){
-        return this.appointment_ID;
+        return this.appointmentID;
     }
 
     public LocalDate getAppointmentDate(){

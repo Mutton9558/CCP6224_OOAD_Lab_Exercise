@@ -5,20 +5,23 @@ import java.util.Date;
 import java.awt.event.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
 
-public class AppointmentCreationUI extends JDialog implements ActionListener{
-    private TextFieldWithPlaceholder patientTextField;
-    private TextFieldWithPlaceholder doctorTextField;
+public class EditAppointmentUI extends JDialog implements ActionListener{
+    private JTextField patientTextField;
+    private JTextField doctorTextField;
     private JSpinner appointmentDateField;
     private JSpinner appointmentTimeField;
-    private TextFieldWithPlaceholder locationTextField;
+    private JTextField locationTextField;
     private JButton submitButton;
     private UIConstants uiconst = new UIConstants();
     private Window parent;
+    private Appointment oldAppointment;
     
-    public AppointmentCreationUI(Window parent){
-        super(parent, "Create Appointment", Dialog.ModalityType.APPLICATION_MODAL);
+    public EditAppointmentUI(Window parent, Appointment target){
+        super(parent, "Edit Appointment", Dialog.ModalityType.APPLICATION_MODAL);
         this.parent = parent;
+        this.oldAppointment = target;
         JPanel content = new JPanel();
         content.setLayout(new GridBagLayout());
         content.setBackground(uiconst.Azure);
@@ -30,24 +33,27 @@ public class AppointmentCreationUI extends JDialog implements ActionListener{
         
 //        make it so when text field on focus remove text (listener)
         formBoxConstraints.gridy = 0;
-        JLabel formBoxLabel = new JLabel("Create new Appointment at Mao Mao Hospital!");
+        JLabel formBoxLabel = new JLabel("Edit Appointment");
         formBoxLabel.setFont(new Font("Sans-Serif", Font.BOLD, 20));
         content.add(formBoxLabel, formBoxConstraints);
         
         formBoxConstraints.gridx = 0;
         formBoxConstraints.gridy = 1;
         formBoxConstraints.gridwidth = 1;
-        patientTextField = new TextFieldWithPlaceholder("Enter Patient ID", 24);
-        content.add(patientTextField.returnTextField(), formBoxConstraints);
+        patientTextField = new JTextField(oldAppointment.getPatientData().getUserName(), 24);
+        patientTextField.setEnabled(false);
+        content.add(patientTextField, formBoxConstraints);        
         
         formBoxConstraints.gridx = 1;
         formBoxConstraints.gridy = 1;
-        doctorTextField = new TextFieldWithPlaceholder("Enter Doctor ID", 24);
-        content.add(doctorTextField.returnTextField(), formBoxConstraints);
+        doctorTextField = new JTextField(oldAppointment.getDoctorData().getUserName(), 24);
+        doctorTextField.setEnabled(false);
+        content.add(doctorTextField, formBoxConstraints);
         
         formBoxConstraints.gridx = 0;
         formBoxConstraints.gridy = 2;
-        SpinnerDateModel dateModel = new SpinnerDateModel(new Date(), null, null, Calendar.DAY_OF_MONTH);
+        Date appointmentDate = Date.from(oldAppointment.getAppointmentDate().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        SpinnerDateModel dateModel = new SpinnerDateModel(appointmentDate, null, null, Calendar.DAY_OF_MONTH);
         appointmentDateField = new JSpinner(dateModel);
         JSpinner.DateEditor dateEditor = new JSpinner.DateEditor(appointmentDateField, "yyyy-MM-dd");
         appointmentDateField.setEditor(dateEditor);
@@ -57,7 +63,11 @@ public class AppointmentCreationUI extends JDialog implements ActionListener{
         formBoxConstraints.gridx = 1;
         formBoxConstraints.gridwidth = 1;
         formBoxConstraints.gridy = 2;
-        SpinnerDateModel timeModel = new SpinnerDateModel(new Date(), null, null, Calendar.HOUR_OF_DAY);
+        java.time.Instant instant = oldAppointment.getAppointmentTime().atDate(LocalDate.now())
+                                             .atZone(ZoneId.systemDefault())
+                                             .toInstant();
+        Date date = Date.from(instant);
+        SpinnerDateModel timeModel = new SpinnerDateModel(date, null, null, Calendar.HOUR_OF_DAY);
         appointmentTimeField = new JSpinner(timeModel);
         JSpinner.DateEditor timeEditor = new JSpinner.DateEditor(appointmentTimeField, "hh:mm a");
         appointmentTimeField.setEditor(timeEditor);
@@ -66,11 +76,11 @@ public class AppointmentCreationUI extends JDialog implements ActionListener{
         formBoxConstraints.gridwidth = 2;
         formBoxConstraints.gridx = 0;
         formBoxConstraints.gridy = 3;
-        locationTextField = new TextFieldWithPlaceholder("Enter Appointment Location", 48);
-        content.add(locationTextField.returnTextField(), formBoxConstraints);
+        locationTextField = new JTextField(oldAppointment.getLocation(), 48);
+        content.add(locationTextField, formBoxConstraints);
         
         formBoxConstraints.gridy = 4;
-        submitButton = new JButton("Create Appointment");
+        submitButton = new JButton("Edit Appointment");
         submitButton.addActionListener(this);
         content.add(submitButton, formBoxConstraints);
 
@@ -83,56 +93,44 @@ public class AppointmentCreationUI extends JDialog implements ActionListener{
     
     @Override
     public void actionPerformed(ActionEvent e){
-        int patientID;
-        int doctorID;
         LocalDate appointmentDateValue;
         LocalTime appointmentTimeValue;
         String location;
         
         try{            
-            patientID = Integer.parseInt(patientTextField.returnTextField().getText());
-            doctorID = Integer.parseInt(doctorTextField.returnTextField().getText());
             java.util.Date dateValue = (java.util.Date) appointmentDateField.getValue();
             java.util.Date timeValue = (java.util.Date) appointmentTimeField.getValue();
             
             appointmentDateValue = dateValue.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
 
             appointmentTimeValue = timeValue.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalTime();
-            location = locationTextField.returnTextField().getText();
+            location = locationTextField.getText();
             
-            if(location.equals("") || location.equals(" ") || location.equals(locationTextField.returnPlaceholderText())){
+            if(location.equals("") || location.equals(" ")){
                 JOptionPane.showMessageDialog(this,
-                            "Location Cannot be Found", "Invalid Input",
+                            "Location cannot be empty", "Invalid Input",
                             JOptionPane.WARNING_MESSAGE);
                 return;
             }
             
-            patientTextField.returnTextField().setEnabled(false);
-            doctorTextField.returnTextField().setEnabled(false);
             appointmentDateField.setEnabled(false);
             appointmentTimeField.setEnabled(false);
-            locationTextField.returnTextField().setEnabled(false);
-        } catch (NumberFormatException ex){
-            JOptionPane.showMessageDialog(this,
-                            "Patient or Doctor ID must be a number", "Invalid Input",
-                            JOptionPane.WARNING_MESSAGE);
-            ex.printStackTrace();
-            return;
+            locationTextField.setEnabled(false);
         } catch (java.time.format.DateTimeParseException ex){
             JOptionPane.showMessageDialog(this,
-                            "Cannot save date and time", "Invalid Input",
+                            "Date and time cannot be saved", "Invalid Input",
                             JOptionPane.WARNING_MESSAGE);
             ex.printStackTrace();
             return;
         }
         
-        submitApproval(patientID, doctorID, appointmentDateValue, appointmentTimeValue, location);
+        submitApproval(appointmentDateValue, appointmentTimeValue, location);
     }
     
-    public void submitApproval(int patient, int doctor, LocalDate appointmentDate, LocalTime appointmentTime, String appointmentLocation){
+    public void submitApproval(LocalDate appointmentDate, LocalTime appointmentTime, String appointmentLocation){
         System.out.println("Submit");
         JOptionPane.showMessageDialog(this,
-                            "Successfully created appointment", "Invalid Input",
+                            "Successfully edited Appointment with ID " + oldAppointment.getAppointmentID(), "Invalid Input",
                             JOptionPane.INFORMATION_MESSAGE);
     }
 }

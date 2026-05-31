@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import javax.swing.*;
 
 public class DashboardUI extends JPanel {
@@ -130,11 +132,14 @@ public class DashboardUI extends JPanel {
     //            break;
     //    }
         // TO DELETE
-
-
+        
+//        test
+        AppointmentController appointmentController = new AppointmentController(this, client);
+        
+        ActiveAppointmentsUI activeAppointmentsUI = appointmentController.loadActiveAppointments();
+        
         // create instances of the JPanels for the contentPanel !!
-        //Patient 
-        ActiveAppointmentsUI activeAppointmentUI = new ActiveAppointmentsUI(client); //shared between patient+doctor+recptionist
+        //Patient  //shared between patient+doctor+recptionist
         PrescriptionsUI prescriptionsUI = new PrescriptionsUI();
         MedicalRecordsUI medicalRecordsUI = new MedicalRecordsUI();
 
@@ -147,7 +152,7 @@ public class DashboardUI extends JPanel {
         GenerateReportUI generateReportUI = new GenerateReportUI();
 
         //adding these instances into the content panel 
-        contentPanel.add(activeAppointmentUI, "activeAppointmentUI");
+        contentPanel.add(activeAppointmentsUI, "activeAppointmentsUI");
         contentPanel.add(prescriptionsUI, "prescriptionsUI");
         contentPanel.add(medicalRecordsUI, "medicalRecordsUI");
         contentPanel.add(patientRecordsUI, "patientRecordsUI");
@@ -157,7 +162,7 @@ public class DashboardUI extends JPanel {
 
         //adding listeners for the buttons in the side panel to go the the UI needed!
         activeAppointmentsButton.addActionListener(event -> {
-        cardLayout2.show(contentPanel, "activeAppointmentUI");
+            cardLayout2.show(contentPanel, "activeAppointmentsUI");
         });
         prescriptionsButton.addActionListener(event -> {
         cardLayout2.show(contentPanel, "prescriptionsUI");
