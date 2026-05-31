@@ -17,7 +17,6 @@ public interface UserPermission {
     public boolean canEditProfile();
     public boolean canAddAppointments();
     public boolean canGenerateReport();
-    
-    
+    public boolean canEditAppointments();
     public boolean canSearchAppointments();
 }

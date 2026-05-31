@@ -1,18 +1,33 @@
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.table.TableColumnModel;
+import javax.swing.table.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class ActiveAppointmentsUI extends JPanel {
+
     User activeClient;
     UIConstants uiConstant = new UIConstants();
 
-    public ActiveAppointmentsUI(User client) {
+    // Store appointments separately so the button editor can reference them by row
+    private List<Appointment> appointmentList = new ArrayList<>();
+    private DefaultTableModel tableModel;
+    private JTable table;
+
+    public ActiveAppointmentsUI(User client, Runnable loadCreation,
+            Consumer<Appointment> editAppointment,
+            Function<Integer, Appointment> searchAppointment) {
+
         this.activeClient = client;
         
         this.setLayout(new GridBagLayout());
         GridBagConstraints adj = new GridBagConstraints();
         this.setBackground(uiConstant.Azure);
-        
+
         adj.gridwidth = GridBagConstraints.REMAINDER;
         adj.anchor = GridBagConstraints.CENTER;
         adj.insets = new Insets(20, 0, 15, 0);
@@ -24,74 +39,216 @@ public class ActiveAppointmentsUI extends JPanel {
         panelTitle.setFont(new Font("Sans-Serif", Font.BOLD, 24));
         panelTitle.setForeground(Color.WHITE);
         this.add(panelTitle, adj);
-        
-        adj.fill = GridBagConstraints.HORIZONTAL; 
+
+        adj.fill = GridBagConstraints.HORIZONTAL;
         adj.gridy = 1;
         adj.gridwidth = 1;
-        adj.insets = new Insets(0, 40, 15, 15); 
-        TextFieldWithPlaceholder searchField = new TextFieldWithPlaceholder("Search for Appointments", 24);
-        searchField.returnTextField().setVisible(activeClient.canSearchAppointments());
+        adj.insets = new Insets(0, 40, 15, 15);
+        TextFieldWithPlaceholder searchField =
+                new TextFieldWithPlaceholder("Search for Appointments", 24);
+        boolean canSearch = client.canSearchAppointments();
+        searchField.returnTextField().setVisible(canSearch);
         this.add(searchField.returnTextField(), adj);
-        
-        adj.gridy = 1;
+
+        boolean canEdit = client.canEditAppointments();
+        int colCount = canEdit ? 7 : 6;
+        String[] columns = new String[colCount];
+        columns[0] = "ID";
+        columns[1] = "Patient";
+        columns[2] = "Doctor";
+        columns[3] = "Date and Time";
+        columns[4] = "Location";
+        columns[5] = "Status";
+        if (canEdit) columns[6] = "Edit";
+
+        tableModel = new DefaultTableModel(columns, 0) {
+            @Override
+            public boolean isCellEditable(int row, int col) {
+                // Only the Edit column is "editable" (so the button editor fires)
+                return canEdit && col == 6;
+            }
+
+            @Override
+            public Class<?> getColumnClass(int col) {
+                return col == 6 ? JButton.class : Object.class;
+            }
+        };
+
+        table = new JTable(tableModel);
+        table.setRowHeight(32);
+
+        // Register button renderer + editor on the Edit column
+        if (canEdit) {
+            table.getColumn("Edit").setCellRenderer(new EditButtonRenderer());
+            table.getColumn("Edit").setCellEditor(
+                    new EditButtonEditor(editAppointment, appointmentList));
+        }
+
+        adj.gridy = 2;
         adj.gridwidth = 1;
         JButton searchButton = new JButton("Search");
-        searchButton.setVisible(activeClient.canSearchAppointments());
+        searchButton.setVisible(canSearch);
         searchButton.setPreferredSize(new Dimension(30, 20));
+        searchButton.addActionListener(e -> {
+            try {
+                int targetID = Integer.parseInt(
+                        searchField.returnTextField().getText().trim());
+                Appointment target = searchAppointment.apply(targetID);
+                if (target == null) {
+                    JOptionPane.showMessageDialog(this,
+                            "Appointment not found.", "Search",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    return;
+                }
+                tableModel.setRowCount(0);
+                appointmentList.clear();
+                appointmentList.add(target);
+                addRow(target, canEdit);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this,
+                        "Please enter a valid numeric ID.", "Invalid Input",
+                        JOptionPane.WARNING_MESSAGE);
+            }
+        });
         this.add(searchButton, adj);
-        
-        int recordsFound = 30;
+
+        int recordsFound = 30; // replace with real count from data source
+        adj.gridwidth = 1;
         adj.gridy = 2;
         adj.insets = new Insets(10, 0, 10, 0);
-        adj.fill = GridBagConstraints.NONE; 
-        JLabel tableTitle = new JLabel("Appointment List (" + recordsFound + " found)");
+        adj.fill = GridBagConstraints.NONE;
+        JLabel tableTitle = new JLabel(
+                "Appointment List (" + recordsFound + " found)");
         tableTitle.setFont(new Font("Sans-Serif", Font.BOLD, 14));
         tableTitle.setForeground(Color.WHITE);
         this.add(tableTitle, adj);
-        
-        String[] columns = {"ID", "Patient", "Doctor", "Date", "Time", "Status"};
-        Object[][] data = {
-            {1, "Shawn Huang Qi Yang", "Imran", "1/6/2026", "09:30", "Scheduled"},    
-            {2, "Wan Wei Siang", "Imran", "27/5/2026", "16.30", "Concluded"},
-            {3, "Syed Zaki Husain Wafa bin Syed Riyad Reza", "Imran", "26/5/2026", "20:30", "Cancelled"},
-        };
-        
-        JTable table = new JTable(data, columns);
-        
-        table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
-        
-        TableColumnModel columnModel = table.getColumnModel();
-        for (int column = 0; column < table.getColumnCount(); column++) {
-            int maxWidth = 50;
-            
-            Object headerValue = columnModel.getColumn(column).getHeaderValue();
-            if (headerValue != null) {
-                maxWidth = Math.max(maxWidth, table.getTableHeader().getFontMetrics(table.getTableHeader().getFont()).stringWidth(headerValue.toString()) + 25);
-            }
-            
-            for (int row = 0; row < table.getRowCount(); row++) {
-                Object cellValue = table.getValueAt(row, column);
-                if (cellValue != null) {
-                    int cellWidth = table.getFontMetrics(table.getFont()).stringWidth(cellValue.toString()) + 25;
-                    maxWidth = Math.max(maxWidth, cellWidth);
-                }
-            }
-            
-            columnModel.getColumn(column).setMinWidth(maxWidth);
-            columnModel.getColumn(column).setPreferredWidth(maxWidth);
-        }
-        
-        JScrollPane scrollPane = new JScrollPane(table);
-        
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        scrollPane.setPreferredSize(new Dimension(550, 300));
-        
+
+        adj.gridwidth = 2;
+        adj.gridy = 2;
+        adj.insets = new Insets(0, 0, 10, 0);
+        adj.fill = GridBagConstraints.NONE;
+        JButton createAppointment = new JButton("Create Appointment");
+        createAppointment.setVisible(client.canAddAppointments());
+        createAppointment.addActionListener(e -> loadCreation.run());
+        this.add(createAppointment, adj);
+
+        adj.gridwidth = GridBagConstraints.REMAINDER;
         adj.gridy = 3;
         adj.weightx = 1.0;
-        adj.weighty = 1.0; 
-        adj.fill = GridBagConstraints.BOTH; 
+        adj.weighty = 1.0;
+        adj.fill = GridBagConstraints.BOTH;
         adj.insets = new Insets(0, 40, 25, 40);
+
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
+
+        // Auto-size columns based on content
+        autoSizeColumns(table);
+
+        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setHorizontalScrollBarPolicy(
+                JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scrollPane.setPreferredSize(new Dimension(550, 300));
         this.add(scrollPane, adj);
+
+        Appointment test = new Appointment(1, 1, 1, LocalDate.now(),LocalTime.now(), "Shawn's Office", "Scheduled");
+        appointmentList.add(test);
+        loadAppointments();
         this.setFocusable(true);
+    }
+
+    public void loadAppointments() {
+        tableModel.setRowCount(0);
+        boolean canEdit = activeClient.canEditAppointments();
+        for (Appointment a : appointmentList) {
+            addRow(a, canEdit);
+        }
+        autoSizeColumns(table);
+    }
+
+    private void addRow(Appointment a, boolean canEdit) {
+        Object[] row = new Object[canEdit ? 7 : 6];
+        row[0] = a.getAppointmentID();
+        row[1] = a.getPatientData().getUserName();
+        row[2] = a.getDoctorData().getUserName();
+        row[3] = a.getAppointmentDate().toString() + " " + a.getAppointmentTime().toString().substring(0,8);
+        row[4] = a.getLocation();
+        row[5] = a.getStatus();
+        if (canEdit) row[6] = "Edit"; // display text; real object lives in appointmentList
+        tableModel.addRow(row);
+    }
+
+    private void autoSizeColumns(JTable tbl) {
+        TableColumnModel cm = tbl.getColumnModel();
+        for (int col = 0; col < tbl.getColumnCount(); col++) {
+            int maxWidth = 50;
+            Object header = cm.getColumn(col).getHeaderValue();
+            if (header != null) {
+                maxWidth = Math.max(maxWidth,
+                        tbl.getTableHeader()
+                           .getFontMetrics(tbl.getTableHeader().getFont())
+                           .stringWidth(header.toString()) + 25);
+            }
+            for (int row = 0; row < tbl.getRowCount(); row++) {
+                Object val = tbl.getValueAt(row, col);
+                if (val != null) {
+                    maxWidth = Math.max(maxWidth,
+                            tbl.getFontMetrics(tbl.getFont())
+                               .stringWidth(val.toString()) + 25);
+                }
+            }
+            cm.getColumn(col).setMinWidth(maxWidth);
+            cm.getColumn(col).setPreferredWidth(maxWidth);
+        }
+    }
+
+    private static class EditButtonRenderer extends JButton
+            implements TableCellRenderer {
+
+        public EditButtonRenderer() {
+            setOpaque(true);
+            setText("Edit");
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table,
+                Object value, boolean isSelected, boolean hasFocus,
+                int row, int column) {
+            return this;
+        }
+    }
+
+    private static class EditButtonEditor extends DefaultCellEditor {
+
+        private final JButton button;
+        private final Consumer<Appointment> editAppointment;
+        private final List<Appointment> appointmentList;
+        private int currentRow;
+
+        public EditButtonEditor(Consumer<Appointment> editAppointment,
+                List<Appointment> appointmentList) {
+            super(new JCheckBox()); // DefaultCellEditor requires a component
+            this.editAppointment = editAppointment;
+            this.appointmentList = appointmentList;
+
+            button = new JButton("Edit");
+            button.addActionListener(e -> {
+                fireEditingStopped();
+                if (currentRow >= 0 && currentRow < appointmentList.size()) {
+                    editAppointment.accept(appointmentList.get(currentRow));
+                }
+            });
+        }
+
+        @Override
+        public Component getTableCellEditorComponent(JTable table,
+                Object value, boolean isSelected, int row, int column) {
+            currentRow = row;
+            return button;
+        }
+
+        @Override
+        public Object getCellEditorValue() {
+            return "Edit";
+        }
     }
 }

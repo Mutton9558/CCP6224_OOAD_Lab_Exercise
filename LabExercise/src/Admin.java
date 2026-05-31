@@ -82,6 +82,11 @@ public class Admin extends User{
     }
 
     @Override
+    public boolean canEditAppointments(){
+        return true;
+    }
+    
+    @Override
     public boolean canSearchRecords(){
         return true;
     }

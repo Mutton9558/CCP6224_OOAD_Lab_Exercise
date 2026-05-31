@@ -80,6 +80,11 @@ public class Receptionist extends User{
     public boolean canSearchAppointments(){
         return true;
     }
+    
+    @Override
+    public boolean canEditAppointments(){
+        return true;
+    }
 
     @Override
     public boolean canSearchRecords(){
