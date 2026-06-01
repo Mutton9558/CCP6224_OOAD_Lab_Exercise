@@ -3,7 +3,6 @@ import javax.swing.*;
 import javax.swing.table.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -18,9 +17,7 @@ public class ActiveAppointmentsUI extends JPanel {
     private DefaultTableModel tableModel;
     private JTable table;
 
-    public ActiveAppointmentsUI(User client, Runnable loadCreation,
-            Consumer<Appointment> editAppointment,
-            Function<Integer, Appointment> searchAppointment) {
+    public ActiveAppointmentsUI(User client, Function<Integer, Appointment> searchAppointment) {
 
         this.activeClient = client;
         
@@ -81,7 +78,7 @@ public class ActiveAppointmentsUI extends JPanel {
         if (canEdit) {
             table.getColumn("Edit").setCellRenderer(new EditButtonRenderer());
             table.getColumn("Edit").setCellEditor(
-                    new EditButtonEditor(editAppointment, appointmentList));
+                    new EditButtonEditor(appointmentList, this));
         }
 
         adj.gridy = 2;
@@ -129,7 +126,11 @@ public class ActiveAppointmentsUI extends JPanel {
         adj.fill = GridBagConstraints.NONE;
         JButton createAppointment = new JButton("Create Appointment");
         createAppointment.setVisible(client.canAddAppointments());
-        createAppointment.addActionListener(e -> loadCreation.run());
+        createAppointment.addActionListener(e -> {
+            Window window = SwingUtilities.getWindowAncestor(this);
+            AppointmentCreationUI dialog = new AppointmentCreationUI(window);
+            dialog.setVisible(true);
+        });
         this.add(createAppointment, adj);
 
         adj.gridwidth = GridBagConstraints.REMAINDER;
@@ -220,21 +221,20 @@ public class ActiveAppointmentsUI extends JPanel {
     private static class EditButtonEditor extends DefaultCellEditor {
 
         private final JButton button;
-        private final Consumer<Appointment> editAppointment;
         private final List<Appointment> appointmentList;
         private int currentRow;
 
-        public EditButtonEditor(Consumer<Appointment> editAppointment,
-                List<Appointment> appointmentList) {
+        public EditButtonEditor(List<Appointment> appointmentList, JPanel parent) {
             super(new JCheckBox()); // DefaultCellEditor requires a component
-            this.editAppointment = editAppointment;
             this.appointmentList = appointmentList;
 
             button = new JButton("Edit");
             button.addActionListener(e -> {
                 fireEditingStopped();
                 if (currentRow >= 0 && currentRow < appointmentList.size()) {
-                    editAppointment.accept(appointmentList.get(currentRow));
+                    Window window = SwingUtilities.getWindowAncestor(parent);
+                    EditAppointmentUI dialog = new EditAppointmentUI(window, appointmentList.get(currentRow));
+                    dialog.setVisible(true);
                 }
             });
         }

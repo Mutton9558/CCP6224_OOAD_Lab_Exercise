@@ -9,5 +9,4 @@ public class PrescriptionController {
     // public Prescription[] getPatientPrescriptions(int patient_ID){
 
     // }
-    
 }

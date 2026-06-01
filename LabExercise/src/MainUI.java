@@ -1,5 +1,6 @@
 import java.awt.*;
 import javax.swing.*;
+import java.util.ArrayList;
 
 public class MainUI extends JFrame{
 
@@ -21,7 +22,10 @@ public class MainUI extends JFrame{
 
         // create instance of the main UIs
         HomePageUI homepage = new HomePageUI();
-        DashboardUI dashboard = new DashboardUI(client);
+        
+        DashboardPanels panelList = new DashboardPanels(client);
+        ArrayList<DashboardPanel> panels = panelList.returnDashboardPanels();
+        DashboardUI dashboard = new DashboardUI(panels);
 
         mainPanel.add(homepage, "HOME");
         mainPanel.add(dashboard, "DASHBOARD");
@@ -40,6 +44,7 @@ public class MainUI extends JFrame{
         setVisible(true);
 
     }
+        
     public static void main(String[] args) {
         User tempUser = new Receptionist("Shawn", "1");
         MainUI test1 = new MainUI(tempUser);

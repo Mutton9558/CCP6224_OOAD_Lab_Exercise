@@ -2,6 +2,7 @@ import java.awt.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import javax.swing.*;
+import java.util.List;
 
 public class DashboardUI extends JPanel {
 
@@ -9,11 +10,9 @@ public class DashboardUI extends JPanel {
     CardLayout cardLayout2 = new CardLayout();
     JPanel westPanel, contentPanel, mainPanel, northPanel;
     JButton butt1, butt2, butt3, butt4, butt5;
-    private User client;
 
     // this is the main dashboard UI shared accross patient, receptionists, doctors and admin
-    public DashboardUI(User client) {
-        this.client = client;
+    public DashboardUI(List<DashboardPanel> dashboardPanels) {
         UIConstants UIConst = new UIConstants();
         setLayout(new BorderLayout());
 
@@ -45,143 +44,21 @@ public class DashboardUI extends JPanel {
         sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.Y_AXIS));
         sidePanel.setBackground(UIConst.DarkBlue);
         sidePanel.add(MMlogo_square1);
-        JButton activeAppointmentsButton = new JButton("Active Appointments");
-        activeAppointmentsButton.setVisible(client.canViewActiveAppointments());
-        JButton prescriptionsButton = new JButton("Prescriptions");
-        prescriptionsButton.setVisible(client.canViewPrescriptions());
-        JButton medicalRecordsButton = new JButton("Medical Records");
-        medicalRecordsButton.setVisible(client.canViewSelfRecords());
-        JButton patientRecordsButton = new JButton("Patient Records");
-        patientRecordsButton.setVisible(client.canViewPatientRecords());
-        JButton doctorRecordsButton = new JButton("Doctor Records");
-        doctorRecordsButton.setVisible(client.canViewDoctorRecords());
-        JButton receptionistRecordsButton = new JButton("Receptionist Records");
-        receptionistRecordsButton.setVisible(client.canViewReceptionistRecords());
-        JButton generateReportButton = new JButton("Generate Report");
-        generateReportButton.setVisible(client.canGenerateReport());
-        sidePanel.add(activeAppointmentsButton);
-        sidePanel.add(prescriptionsButton);
-        sidePanel.add(medicalRecordsButton);
-        sidePanel.add(patientRecordsButton);
-        sidePanel.add(doctorRecordsButton);
-        sidePanel.add(receptionistRecordsButton);
-        sidePanel.add(generateReportButton);
-        // 
-
-
-        // Doctor side panel 
-//        JLabel MMlogo_square2 = new JLabel(UIConst.MMlogo_square);
-//        JPanel doctor_SidePanel = new JPanel(new FlowLayout());
-//        doctor_SidePanel.setBackground(UIConst.DarkBlue);
-//        doctor_SidePanel.add(MMlogo_square2);
-//        JButton PatientRecordsButton = new JButton("Patient Records");
-//        doctor_SidePanel.add(ActiveAppointmentsButton); //doctor uses the same button as patient 
-//        doctor_SidePanel.add(PatientRecordsButton);
-        // 
         
-
-        // Receptionist side panel 
-//        JLabel MMlogo_square3 = new JLabel(UIConst.MMlogo_square);
-//        JPanel receptionist_SidePanel = new JPanel(new FlowLayout());
-//        receptionist_SidePanel.setBackground(UIConst.DarkBlue);
-//        receptionist_SidePanel.add(MMlogo_square3);
-//        receptionist_SidePanel.add(ActiveAppointmentsButton); //receptionist uses the same button as doctor+patient
-//        receptionist_SidePanel.add(PatientRecordsButton); //receptionist uses the same button as doctor 
-        // 
-
-
-        // Admin side panel 
-//        JLabel MMlogo_square4 = new JLabel(UIConst.MMlogo_square);
-//        JPanel admin_SidePanel = new JPanel(new FlowLayout());
-//        admin_SidePanel.setBackground(UIConst.DarkBlue);
-//        admin_SidePanel.add(MMlogo_square4);
-//        JButton DoctorRecordsButton = new JButton("Doctor Records");
-//        JButton ReceptionistRecordsButton = new JButton("Receptionist Records");
-//        JButton GenerateReportButton = new JButton("Generate Report");
-//        admin_SidePanel.add(DoctorRecordsButton);
-//        admin_SidePanel.add(ReceptionistRecordsButton);
-//        admin_SidePanel.add(GenerateReportButton);
-        // 
-
-
-        //add the side panels into the main side panel 
+//        Iterates over dashboard panels and creates the appropriate side button and content panel
+        for(DashboardPanel i : dashboardPanels){
+           JButton sidebarButton = new JButton(i.getName());
+           sidebarButton.setVisible(i.isVisible());
+           contentPanel.add(i.getPanel(), i.getName());
+           sidebarButton.addActionListener(event -> {
+                cardLayout2.show(contentPanel, i.getName());
+            });
+           sidePanel.add(sidebarButton);
+        }
+        
+//        
         westPanel.add(sidePanel, "sidePanel");
         cardLayout1.show(westPanel, "sidePanel");
-
-        // PLACEHOLDER FOR TESTING PURPOSES ONLY
-        // shawn please make the user role pass here to get to their right panel
-        // for now, patient is going to be the testsubj
-        // if other people want to test their UI, kindly change patient into whatever role u want 
-
-        // TO DELETE
-    //    String role = "patient";
-
-    //    switch (role) {
-
-    //        case "doctor":
-    //            cardLayout1.show(westPanel, "doctorPanel");
-    //            break;
-    //        case "patient":
-    //            cardLayout1.show(westPanel, "patientrPanel");
-    //            break;
-    //        case "receptionist":
-    //            cardLayout1.show(westPanel, "receptionistPanel");
-    //            break;
-    //        case "admin":
-    //            cardLayout1.show(westPanel, "adminPanel");
-    //            break;
-    //    }
-        // TO DELETE
-        
-//        test
-        AppointmentController appointmentController = new AppointmentController(this, client);
-        
-        ActiveAppointmentsUI activeAppointmentsUI = appointmentController.loadActiveAppointments();
-        
-        // create instances of the JPanels for the contentPanel !!
-        //Patient  //shared between patient+doctor+recptionist
-        PrescriptionsUI prescriptionsUI = new PrescriptionsUI();
-        MedicalRecordsUI medicalRecordsUI = new MedicalRecordsUI();
-
-        //Doctor + Receptionist
-        PatientRecordsUI patientRecordsUI = new PatientRecordsUI();
-
-        //Admin only
-        DoctorRecordsUI doctorRecordsUI = new DoctorRecordsUI(client);
-        ReceptionistRecordsUI receptionistRecordsUI = new ReceptionistRecordsUI(client);
-        GenerateReportUI generateReportUI = new GenerateReportUI();
-
-        //adding these instances into the content panel 
-        contentPanel.add(activeAppointmentsUI, "activeAppointmentsUI");
-        contentPanel.add(prescriptionsUI, "prescriptionsUI");
-        contentPanel.add(medicalRecordsUI, "medicalRecordsUI");
-        contentPanel.add(patientRecordsUI, "patientRecordsUI");
-        contentPanel.add(doctorRecordsUI, "doctorRecordsUI");
-        contentPanel.add(receptionistRecordsUI, "receptionistRecordsUI");
-        contentPanel.add(generateReportUI, "generateReportUI");
-
-        //adding listeners for the buttons in the side panel to go the the UI needed!
-        activeAppointmentsButton.addActionListener(event -> {
-            cardLayout2.show(contentPanel, "activeAppointmentsUI");
-        });
-        prescriptionsButton.addActionListener(event -> {
-        cardLayout2.show(contentPanel, "prescriptionsUI");
-        });
-        medicalRecordsButton.addActionListener(event -> {
-        cardLayout2.show(contentPanel, "medicalRecordsUI");
-        });
-        patientRecordsButton.addActionListener(event -> {
-        cardLayout2.show(contentPanel, "patientRecordsUI");
-        });
-        doctorRecordsButton.addActionListener(event -> {
-        cardLayout2.show(contentPanel, "doctorRecordsUI");
-        });
-        receptionistRecordsButton.addActionListener(event -> {
-        cardLayout2.show(contentPanel, "receptionistRecordsUI");
-        });
-        generateReportButton.addActionListener(event -> {
-        cardLayout2.show(contentPanel, "generateReportUI");
-        });
 
         add(northPanel, BorderLayout.NORTH);
         add(mainPanel, BorderLayout.CENTER);
