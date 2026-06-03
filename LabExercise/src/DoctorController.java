@@ -3,11 +3,16 @@ import java.util.Map;
 
 public class DoctorController{
 
-    protected final Map<Integer, Doctor> doctorList = new HashMap<>(); //Username might be better ngl
+    private Doctor doctorList[];
+
+    public Doctor getDoctor(int doctorID){
+        Doctor temp = new Doctor("","");
+        return temp;
+    }
 
     public void registerDoctor(String username, String password, String gender, int age, String office, String specialisation){
         Doctor createdDoctor = new Doctor(username,password,gender,age,office,specialisation);
-        doctorList.put(createdDoctor.getUserID(), createdDoctor);
+        doctorList.add(createdDoctor.getUserID(), createdDoctor);
     }
 
     public void addPatient(Patient patient, int doctor_ID) {
