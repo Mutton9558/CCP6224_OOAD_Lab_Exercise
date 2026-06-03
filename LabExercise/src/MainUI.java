@@ -46,7 +46,7 @@ public class MainUI extends JFrame{
     }
         
     public static void main(String[] args) {
-        User tempUser = new Receptionist("Shawn", "1");
+        User tempUser = new Admin("Shawn", "1");
         MainUI test1 = new MainUI(tempUser);
     }
 }
