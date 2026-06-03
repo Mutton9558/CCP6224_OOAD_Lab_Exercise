@@ -105,10 +105,12 @@ public class DashboardPanels{
     
     public class DoctorRecordsPanel implements DashboardPanel{
 
+        private DoctorController controller;
         private DoctorRecordsUI panelUI;
         
         public DoctorRecordsPanel(){
-            this.panelUI = new DoctorRecordsUI(client);
+            this.controller = new DoctorController();
+            this.panelUI = new DoctorRecordsUI(client, controller::getDoctor);
         }
         
         @Override

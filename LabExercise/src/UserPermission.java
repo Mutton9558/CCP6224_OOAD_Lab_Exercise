@@ -12,8 +12,8 @@ public interface UserPermission {
     public boolean canAddDiagnosis();
     
 //    doctor records
+    public boolean canSearchRecords();
     public boolean canViewMedicalRecords();
-    
     public boolean canEditProfile();
     public boolean canAddAppointments();
     public boolean canGenerateReport();
