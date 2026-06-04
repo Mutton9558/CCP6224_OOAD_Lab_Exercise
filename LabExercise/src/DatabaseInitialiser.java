@@ -15,28 +15,18 @@ public class DatabaseInitialiser {
             System.err.println("Error: 'schema.sql' file not found at project root!");
             return;
         }
-
         try (Connection conn = DatabaseConfig.getConnection();
              Statement stmt = conn.createStatement();
-            Scanner scanner = new Scanner(schemaFile)){
-            
-            String createDatabase = "CREATE DATABASE IF NOT EXISTS freelance_hub;";
-            stmt.executeUpdate(createDatabase);
-            System.out.println("Database 'hospital_system' verified/created.");
-            String useDatabase = "USE hospital_system;";
-            stmt.executeUpdate(useDatabase);
-            
+             Scanner scanner = new Scanner(schemaFile)) {
+
             scanner.useDelimiter(";");
             int commandCount = 0;
-
             while (scanner.hasNext()) {
                 String rawCommand = scanner.next();
                 String cleanCommand = rawCommand.trim();
-
                 if (cleanCommand.isEmpty() || cleanCommand.startsWith("--")) {
                     continue;
                 }
-
                 try {
                     stmt.executeUpdate(cleanCommand);
                     commandCount++;
@@ -46,17 +36,17 @@ public class DatabaseInitialiser {
                     return;
                 }
             }
+            System.out.println("Success! Processed and executed " + commandCount + " SQL instructions.");
 
-            System.out.println("Success! Successfully processed and executed " + commandCount + " SQL instructions.");
-            
-            } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             System.err.println("Failed to locate schema file.");
             e.printStackTrace();
         } catch (SQLException e) {
-            System.err.println("Database connection failure encountered during schema execution, initialization failed");
+            System.err.println("Database connection failure during schema execution.");
             e.printStackTrace();
         }
     }
+
     public static void main(String[] args) {
         initialiseDatabase();
     }

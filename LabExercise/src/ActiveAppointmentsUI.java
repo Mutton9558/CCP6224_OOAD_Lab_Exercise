@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class ActiveAppointmentsUI extends JPanel {
 
@@ -17,9 +18,10 @@ public class ActiveAppointmentsUI extends JPanel {
     private DefaultTableModel tableModel;
     private JTable table;
 
-    public ActiveAppointmentsUI(User client, Function<Integer, Appointment> searchAppointment) {
+    public ActiveAppointmentsUI(User client, ArrayList<Appointment> list, Function<Integer, Appointment> searchAppointment) {
 
         this.activeClient = client;
+        this.appointmentList = list;
         
         this.setLayout(new GridBagLayout());
         GridBagConstraints adj = new GridBagConstraints();
@@ -151,8 +153,8 @@ public class ActiveAppointmentsUI extends JPanel {
         scrollPane.setPreferredSize(new Dimension(550, 300));
         this.add(scrollPane, adj);
 
-        Appointment test = new Appointment(1, 1, 1, LocalDate.now(),LocalTime.now(), "Shawn's Office", "Scheduled");
-        appointmentList.add(test);
+//        Appointment test = new Appointment(1, 1, 1, LocalDate.now(),LocalTime.now(), "Shawn's Office", "Scheduled");
+//        appointmentList.add(test);
         loadAppointments();
         this.setFocusable(true);
     }
@@ -171,7 +173,8 @@ public class ActiveAppointmentsUI extends JPanel {
         row[0] = a.getAppointmentID();
         row[1] = a.getPatientData().getUserName();
         row[2] = a.getDoctorData().getUserName();
-        row[3] = a.getAppointmentDate().toString() + " " + a.getAppointmentTime().toString().substring(0,8);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        row[3] = a.getAppointmentDate().toString() + " " + a.getAppointmentTime().format(formatter);
         row[4] = a.getLocation();
         row[5] = a.getStatus();
         if (canEdit) row[6] = "Edit"; // display text; real object lives in appointmentList

@@ -1,14 +1,17 @@
 public class Receptionist extends User{
     private int receptionist_ID, user_Age;
     private String user_Name, password, user_Gender;
+    
+    public Receptionist(){}
+    
     public Receptionist(String username, String password){
         super(username, password);
         this.receptionist_ID = this.setUserID("RECEPTIONIST");
     }
     
     @Override
-    public int returnRole(){
-        return this.receptionist_ID;
+    public String returnRole(){
+        return "Receptionist";
     }
     
     @Override

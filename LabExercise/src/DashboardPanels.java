@@ -12,7 +12,8 @@ public class DashboardPanels{
         
         public ActiveAppointmentPanel(){
             this.controller = new AppointmentController();
-            this.panelUI = new ActiveAppointmentsUI(client, controller::getAppointment);
+            ArrayList<Appointment> list = controller.getAllAppointments();
+            this.panelUI = new ActiveAppointmentsUI(client, list, controller::getAppointment);
         }
         
         @Override
