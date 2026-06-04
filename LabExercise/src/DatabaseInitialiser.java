@@ -17,10 +17,10 @@ public class DatabaseInitialiser {
         }
 
         try (Connection conn = DatabaseConfig.getConnection();
-             Statement stmt = conn.createStatement();
+            Statement stmt = conn.createStatement();
             Scanner scanner = new Scanner(schemaFile)){
             
-            String createDatabase = "CREATE DATABASE IF NOT EXISTS freelance_hub;";
+            String createDatabase = "CREATE DATABASE IF NOT EXISTS hospital_system;";
             stmt.executeUpdate(createDatabase);
             System.out.println("Database 'hospital_system' verified/created.");
             String useDatabase = "USE hospital_system;";

@@ -1,9 +1,10 @@
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
+import java.awt.*;
 
 public class DoctorController{
 
-    private Doctor doctorList[];
+    private List<Doctor> doctorList = new ArrayList<Doctor>();
 
     public Doctor getDoctor(int doctorID){
         Doctor temp = new Doctor("","");
@@ -12,11 +13,12 @@ public class DoctorController{
 
     public void registerDoctor(String username, String password, String gender, int age, String office, String specialisation){
         Doctor createdDoctor = new Doctor(username,password,gender,age,office,specialisation);
-        doctorList.add(createdDoctor.getUserID(), createdDoctor);
+        doctorList.add(createdDoctor);
     }
 
+    //I'll rework the list thing ltr
     public void addPatient(Patient patient, int doctor_ID) {
-        if(doctorList.containsKey(doctor_ID)){
+        if(doctorList.contains(doctor_ID)){
             Doctor patientDoctor = doctorList.get(doctor_ID);
             Map<Integer, Patient> patientList = patientDoctor.getPatientList();
             patientList.put(patient.getUserID(), patient);
