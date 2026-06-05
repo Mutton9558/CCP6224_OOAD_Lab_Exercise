@@ -111,6 +111,12 @@ public abstract class User implements UserPermission{
     }
     
     public abstract String returnRole();
+    public String getOffice(){
+        return null;
+    }
+    public String getSpecialisation(){
+        return null;
+    }
     
     public abstract boolean canViewPrescriptions();
 //    patient records

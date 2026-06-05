@@ -46,7 +46,10 @@ public class MainUI extends JFrame{
     }
         
     public static void main(String[] args) {
-        User tempUser = new Admin("Shawn", "1");
+//        Just to test pls remove later
+        UserController controller = new UserController();
+        controller.loginUser(1003, "test03");
+        User tempUser = controller.getCurrentUser();
         MainUI test1 = new MainUI(tempUser);
     }
 }

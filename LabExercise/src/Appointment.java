@@ -21,13 +21,13 @@ public class Appointment {
     }
     
     public User getPatientData(){
-        User appointmentPatient = new Patient("Shawn", "1");
+        User appointmentPatient = new Patient();
 //        db stuff here, call user controller
         return appointmentPatient;
     }
     
     public User getDoctorData(){
-        User assignedDoctor = new Doctor("Imran", "1");
+        User assignedDoctor = new Doctor();
 //        db stuff here, call user controller
         return assignedDoctor;
     }

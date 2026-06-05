@@ -1,45 +1,41 @@
 import java.util.*;
 
 public class Doctor extends User{
-    private int doctor_ID, user_Age;
-    private String user_Name, password, office, specialisation, user_Gender;
-    private Map<Integer, Patient> PatientList = new HashMap<>(); //Key is patient_ID, Value is Patient
-    private Map<Integer, Appointment> AppointmentList = new HashMap(); //Key is appointment_ID, Value is Appointment
+    private String office, specialisation;
 
-    public Doctor(String username, String password, String gender, int age, String office, String specialisation){
-        super(username, password, gender, age);
-        this.doctor_ID = this.setUserID("DOCTOR");
+    public Doctor(int id, String username, String password, String gender, int age, String office, String specialisation){
+        super(id, username, password, gender, age);
         this.office = office;
         this.specialisation = specialisation;
     }
     
-    public Doctor(String username, String password){
-        super(username, password);
-        this.doctor_ID = this.setUserID("Doctor");
-    }
+//    public Doctor(String username, String password){
+//        super(username, password);
+//        this.doctor_ID = this.setUserID("Doctor");
+//    }
 
     public Doctor(){}
 
     @Override
-    public int getUserID(){
-        return this.doctor_ID;
+    public String returnRole(){
+        return "Doctor";
     }
-
-    public String getOffice(){
+    
+    public final String getOffice(){
         return this.office;
     }
 
-    public String getSpecialisation(){
+    public final String getSpecialisation(){
         return this.specialisation;
     }
 
-    public Map<Integer, Patient> getPatientList(){
-        return this.PatientList;
-    }
-
-    public Map<Integer, Appointment> getAppointmentList(){
-        return this.AppointmentList;
-    }
+//    public Map<Integer, Patient> getPatientList(){
+//        return this.PatientList;
+//    }
+//
+//    public Map<Integer, Appointment> getAppointmentList(){
+//        return this.AppointmentList;
+//    }
 
     //Setters
     public void setOffice(String office){
@@ -50,18 +46,18 @@ public class Doctor extends User{
         this.specialisation = specialisation;
     }
 
-    public void setPatientList(Map<Integer, Patient> patientList){
-        this.PatientList = patientList;
-    }
-
-    public void setAppointmentList(Map<Integer, Appointment> appointmentList){
-        this.AppointmentList = appointmentList;
-    }
-    
-    @Override
-    public int returnRole(){
-        return this.doctor_ID;
-    }
+//    public void setPatientList(Map<Integer, Patient> patientList){
+//        this.PatientList = patientList;
+//    }
+//
+//    public void setAppointmentList(Map<Integer, Appointment> appointmentList){
+//        this.AppointmentList = appointmentList;
+//    }
+//    
+//    @Override
+//    public int returnRole(){
+//        return this.doctor_ID;
+//    }
     
     @Override
     public boolean canViewPrescriptions(){
