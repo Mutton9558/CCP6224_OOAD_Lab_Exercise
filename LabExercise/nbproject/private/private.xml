@@ -18,7 +18,6 @@
             <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/AppointmentCreationUI.java</file>
             <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/UserController.java</file>
             <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/User.java</file>
-            <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/PatientController.java</file>
             <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/Patient.java</file>
             <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/PrescriptionController.java</file>
             <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/Prescription.java</file>
@@ -36,9 +35,11 @@
             <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/EditAppointmentUI.java</file>
             <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/EditAppointmentButton.java</file>
             <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/Admin.java</file>
-            <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/SystemController.java</file>
             <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/DashboardPanels.java</file>
             <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/DashboardPanel.java</file>
+            <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/DatabaseInitialiser.java</file>
+            <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/DatabaseConfig.java</file>
+            <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/GenerateReportUI.java</file>
         </group>
     </open-files>
 </project-private>

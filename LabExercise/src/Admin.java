@@ -1,15 +1,14 @@
 public class Admin extends User{
-    private int admin_ID, user_Age;
-    private String user_Name, password, user_Gender;
-    public Admin(String username, String password){
-        super(username, password);
+    public Admin(){}
+    
+    public Admin(int id, String name, String password, String gender, int age){
+        super(id, name, password, gender, age);
     }
 
     @Override
-    public int returnRole(){
-        return admin_ID;
+    public String returnRole(){
+        return "Admin";
     }
-
 
     @Override
     public boolean canViewPrescriptions(){
