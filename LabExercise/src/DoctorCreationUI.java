@@ -75,24 +75,18 @@ public class DoctorCreationUI extends JDialog implements ActionListener{
     
     @Override
     public void actionPerformed(ActionEvent e){
-        int patientID;
-        int doctorID;
-        LocalDate DoctorDateValue;
-        LocalTime DoctorTimeValue;
-        String location;
+        String name, gender, office, specialisation;
+        int age;
         
         try{            
-            patientID = String.parse(doctorNameTextField.returnTextField().getText());
-            doctorID = Integer.parseInt(doctorAgeTextField.returnTextField().getText());
-            java.util.Date dateValue = (java.util.Date) DoctorDateField.getValue();
-            java.util.Date timeValue = (java.util.Date) DoctorTimeField.getValue();
-            
-            DoctorDateValue = dateValue.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+            name = doctorNameTextField.returnTextField().getText();
+            age = Integer.parseInt(doctorAgeTextField.returnTextField().getText());
+            gender = doctorGenderTextField.returnTextField().getText();
+            specialisation = specialisationTextField.returnTextField().getText();
 
-            DoctorTimeValue = timeValue.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalTime();
-            location = locationTextField.returnTextField().getText();
+            office = officeTextField.returnTextField().getText();
             
-            if(location.equals("") || location.equals(" ") || location.equals(locationTextField.returnPlaceholderText())){
+            if(office.equals("") || office.equals(" ") || office.equals(officeTextField.returnPlaceholderText())){
                 JOptionPane.showMessageDialog(this,
                             "Location Cannot be Found", "Invalid Input",
                             JOptionPane.WARNING_MESSAGE);
@@ -100,28 +94,22 @@ public class DoctorCreationUI extends JDialog implements ActionListener{
             }
             
             doctorNameTextField.returnTextField().setEnabled(false);
-            doctorTextField.returnTextField().setEnabled(false);
-            DoctorDateField.setEnabled(false);
-            DoctorTimeField.setEnabled(false);
-            locationTextField.returnTextField().setEnabled(false);
+            doctorAgeTextField.returnTextField().setEnabled(false);
+            doctorGenderTextField.returnTextField().setEnabled(false);
+            officeTextField.returnTextField().setEnabled(false);
+            specialisationTextField.returnTextField().setEnabled(false);
         } catch (NumberFormatException ex){
             JOptionPane.showMessageDialog(this,
-                            "Patient or Doctor ID must be a number", "Invalid Input",
-                            JOptionPane.WARNING_MESSAGE);
-            ex.printStackTrace();
-            return;
-        } catch (java.time.format.DateTimeParseException ex){
-            JOptionPane.showMessageDialog(this,
-                            "Cannot save date and time", "Invalid Input",
+                            "Age must be a number", "Invalid Input",
                             JOptionPane.WARNING_MESSAGE);
             ex.printStackTrace();
             return;
         }
         
-        submitApproval(patientID, doctorID, DoctorDateValue, DoctorTimeValue, location);
+        submitApproval(name, age, gender, office, specialisation);
     }
     
-    public void submitApproval(int patient, int doctor, LocalDate DoctorDate, LocalTime DoctorTime, String DoctorLocation){
+    public void submitApproval(String name, int age, String gender, String office, String specialisation){
         System.out.println("Submit");
         JOptionPane.showMessageDialog(this,
                             "Successfully created Doctor", "Invalid Input",
