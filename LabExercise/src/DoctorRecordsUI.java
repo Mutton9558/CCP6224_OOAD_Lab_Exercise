@@ -3,18 +3,18 @@ import javax.swing.*;
 import javax.swing.table.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 public class DoctorRecordsUI extends JPanel{
-     User activeClient;
+    User activeClient;
     UIConstants uiConstant = new UIConstants();
 
     // Store Doctors separately so the button editor can reference them by row
-    private List<Doctor> doctorList = new ArrayList<>();
+    private List<User> doctorList = new ArrayList<>();
     private DefaultTableModel tableModel;
     private JTable table;
 
-    public DoctorRecordsUI(User client, Function<Integer, Doctor> searchDoctor) {
+    public DoctorRecordsUI(User client, BiFunction<Integer, String, User> searchDoctor) {
 
         this.activeClient = client;
         
@@ -72,7 +72,7 @@ public class DoctorRecordsUI extends JPanel{
             try {
                 int targetID = Integer.parseInt(
                         searchField.returnTextField().getText().trim());
-                Doctor target = searchDoctor.apply(targetID);
+                User target = searchDoctor.apply(targetID, "Doctor");
                 if (target == null) {
                     JOptionPane.showMessageDialog(this,
                             "Doctor not found.", "Search",
@@ -137,7 +137,7 @@ public class DoctorRecordsUI extends JPanel{
         adj.insets = new Insets(0, 40, 25, 40);
         this.add(scrollPane, adj);
 
-        Doctor test = new Doctor("Shawn Huang", "11111", "Male",20 , "Shawn's Office", "Neurology");
+        User test = new Doctor(1, "Shawn Huang", "11111", "Male", 20, "Shawn's Office", "Neurology");
         doctorList.add(test);
         loadDoctors();
         this.setFocusable(true);
@@ -145,13 +145,13 @@ public class DoctorRecordsUI extends JPanel{
 
     public void loadDoctors() {
         tableModel.setRowCount(0);
-        for (Doctor a : doctorList) {
+        for (User a : doctorList) {
             addRow(a);
         }
         autoSizeColumns(table);
     }
 
-    private void addRow(Doctor a) {
+    private void addRow(User a) {
         Object[] row = new Object[6];
         row[0] = a.getUserID();
         row[1] = a.getUserName();

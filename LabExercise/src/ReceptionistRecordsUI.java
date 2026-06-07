@@ -1,21 +1,27 @@
 import java.awt.*;
-import java.awt.event.*;
-import java.util.HashMap;
-import java.util.Map;
 import javax.swing.*;
-import javax.swing.table.TableColumnModel;
+import javax.swing.table.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.BiFunction;
 
 public class ReceptionistRecordsUI extends JPanel{
     User activeClient;
     UIConstants uiConstant = new UIConstants();
 
-    public ReceptionistRecordsUI(User client) {
+    // Store Receptionists separately so the button editor can reference them by row
+    private List<User> ReceptionistList = new ArrayList<>();
+    private DefaultTableModel tableModel;
+    private JTable table;
+
+    public ReceptionistRecordsUI(User client, BiFunction<Integer, String, Receptionist> searchReceptionist) {
+
         this.activeClient = client;
         
         this.setLayout(new GridBagLayout());
         GridBagConstraints adj = new GridBagConstraints();
         this.setBackground(uiConstant.Azure);
-        
+
         adj.gridwidth = GridBagConstraints.REMAINDER;
         adj.anchor = GridBagConstraints.CENTER;
         adj.insets = new Insets(20, 0, 15, 0);
@@ -23,78 +29,157 @@ public class ReceptionistRecordsUI extends JPanel{
         adj.weighty = 0.0;
         adj.fill = GridBagConstraints.NONE;
         adj.gridy = 0;
-        JLabel panelTitle = new JLabel("Search for Receptionists");
+        JLabel panelTitle = new JLabel("Search for Active Receptionists");
         panelTitle.setFont(new Font("Sans-Serif", Font.BOLD, 24));
         panelTitle.setForeground(Color.WHITE);
         this.add(panelTitle, adj);
-        
-        adj.fill = GridBagConstraints.HORIZONTAL; 
+
+        adj.fill = GridBagConstraints.HORIZONTAL;
         adj.gridy = 1;
         adj.gridwidth = 1;
-        adj.insets = new Insets(0, 40, 15, 15); 
-        TextFieldWithPlaceholder searchField = new TextFieldWithPlaceholder("Search by Receptionist Name", 24);
-        searchField.returnTextField().setVisible(activeClient.canSearchAppointments());
+        adj.insets = new Insets(0, 40, 15, 15);
+        TextFieldWithPlaceholder searchField =
+                new TextFieldWithPlaceholder("Search for Receptionists", 24);
+        boolean canSearch = client.canSearchRecords();
+        searchField.returnTextField().setVisible(canSearch);
         this.add(searchField.returnTextField(), adj);
-        
-        adj.gridy = 1;
+
+        String[] columns = new String[4];
+        columns[0] = "ID";
+        columns[1] = "Name";
+        columns[2] = "Age";
+        columns[3] = "Gender";
+
+        tableModel = new DefaultTableModel(columns, 0) {
+
+            @Override
+            public Class<?> getColumnClass(int col) {
+                return col == 6 ? JButton.class : Object.class;
+            }
+        };
+
+        table = new JTable(tableModel);
+        table.setRowHeight(32);
+
+        adj.gridy = 2;
         adj.gridwidth = 1;
         JButton searchButton = new JButton("Search");
-        searchButton.setVisible(activeClient.canSearchAppointments());
+        searchButton.setVisible(canSearch);
         searchButton.setPreferredSize(new Dimension(30, 20));
+        searchButton.addActionListener(e -> {
+            try {
+                int targetID = Integer.parseInt(
+                        searchField.returnTextField().getText().trim());
+                User target = searchReceptionist.apply(targetID, "Receptionist");
+                if (target == null) {
+                    JOptionPane.showMessageDialog(this,
+                            "Receptionist not found.", "Search",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    return;
+                }
+                tableModel.setRowCount(0);
+                ReceptionistList.clear();
+                ReceptionistList.add(target);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this,
+                        "Please enter a valid numeric ID.", "Invalid Input",
+                        JOptionPane.WARNING_MESSAGE);
+            }
+        });
         this.add(searchButton, adj);
-        
-        int recordsFound = 30;
+
+        int recordsFound = 30; // replace with real count from data source
+        adj.gridwidth = 1;
         adj.gridy = 2;
         adj.insets = new Insets(10, 0, 10, 0);
-        adj.fill = GridBagConstraints.NONE; 
-        JLabel tableTitle = new JLabel("Receptionist List: (" + recordsFound + " found)");
+        adj.fill = GridBagConstraints.NONE;
+        JLabel tableTitle = new JLabel(
+                "Receptionist List (" + recordsFound + " found)");
         tableTitle.setFont(new Font("Sans-Serif", Font.BOLD, 14));
         tableTitle.setForeground(Color.WHITE);
         this.add(tableTitle, adj);
-        
-        String[] columns = {"ID", "Username", "Age", "Gender"};
-        Object[][] data = {
-            {1, "Imran", "18", "Male"},
-            {2, "Elsa", "19", "?"},
-            {3, "Muhammad Yusuf", "20", "Male"},
-        };
-        
-        JTable table = new JTable(data, columns);
-        
+
+        adj.gridwidth = 2;
+        adj.gridy = 2;
+        adj.insets = new Insets(0, 0, 10, 0);
+        adj.fill = GridBagConstraints.NONE;
+        JButton createReceptionist = new JButton("Create Receptionist");
+        createReceptionist.addActionListener(e -> {
+            Window window = SwingUtilities.getWindowAncestor(this);
+            ReceptionistCreationUI dialog = new ReceptionistCreationUI(window);
+            dialog.setVisible(true);
+        });
+        this.add(createReceptionist, adj);
+
+        adj.gridwidth = GridBagConstraints.REMAINDER;
+        adj.gridy = 3;
+        adj.weightx = 1.0;
+        adj.weighty = 1.0;
+        adj.fill = GridBagConstraints.BOTH;
+        adj.insets = new Insets(0, 40, 25, 40);
+
         table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
-        
-        TableColumnModel columnModel = table.getColumnModel();
-        for (int column = 0; column < table.getColumnCount(); column++) {
-            int maxWidth = 50;
-            
-            Object headerValue = columnModel.getColumn(column).getHeaderValue();
-            if (headerValue != null) {
-                maxWidth = Math.max(maxWidth, table.getTableHeader().getFontMetrics(table.getTableHeader().getFont()).stringWidth(headerValue.toString()) + 25);
-            }
-            
-            for (int row = 0; row < table.getRowCount(); row++) {
-                Object cellValue = table.getValueAt(row, column);
-                if (cellValue != null) {
-                    int cellWidth = table.getFontMetrics(table.getFont()).stringWidth(cellValue.toString()) + 25;
-                    maxWidth = Math.max(maxWidth, cellWidth);
-                }
-            }
-            
-            columnModel.getColumn(column).setMinWidth(maxWidth);
-            columnModel.getColumn(column).setPreferredWidth(maxWidth);
-        }
-        
+
+        // Auto-size columns based on content
+        autoSizeColumns(table);
+
         JScrollPane scrollPane = new JScrollPane(table);
-        
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scrollPane.setHorizontalScrollBarPolicy(
+                JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         scrollPane.setPreferredSize(new Dimension(550, 300));
         
         adj.gridy = 3;
-        adj.weightx = 1.0;
+        adj.weightx = 3.0;
         adj.weighty = 1.0; 
         adj.fill = GridBagConstraints.BOTH; 
         adj.insets = new Insets(0, 40, 25, 40);
         this.add(scrollPane, adj);
+
+        User test = new Receptionist(1, "Shawn Huang", "11111", "Male", 20);
+        ReceptionistList.add(test);
+        loadReceptionists();
         this.setFocusable(true);
     }
-}
+
+    public void loadReceptionists() {
+        tableModel.setRowCount(0);
+        for (User a : ReceptionistList) {
+            addRow(a);
+        }
+        autoSizeColumns(table);
+    }
+
+    private void addRow(User a) {
+        Object[] row = new Object[4];
+        row[0] = a.getUserID();
+        row[1] = a.getUserName();
+        row[2] = a.getUserAge();
+        row[3] = a.getUserGender();
+        tableModel.addRow(row);
+    }
+
+    private void autoSizeColumns(JTable tbl) {
+        TableColumnModel cm = tbl.getColumnModel();
+        for (int col = 0; col < tbl.getColumnCount(); col++) {
+            int maxWidth = 50;
+            Object header = cm.getColumn(col).getHeaderValue();
+            if (header != null) {
+                maxWidth = Math.max(maxWidth,
+                        tbl.getTableHeader()
+                           .getFontMetrics(tbl.getTableHeader().getFont())
+                           .stringWidth(header.toString()) + 25);
+            }
+            for (int row = 0; row < tbl.getRowCount(); row++) {
+                Object val = tbl.getValueAt(row, col);
+                if (val != null) {
+                    maxWidth = Math.max(maxWidth,
+                            tbl.getFontMetrics(tbl.getFont())
+                               .stringWidth(val.toString()) + 25);
+                }
+            }
+            cm.getColumn(col).setMinWidth(maxWidth);
+            cm.getColumn(col).setPreferredWidth(maxWidth);
+        }
+    }
+
+    }
