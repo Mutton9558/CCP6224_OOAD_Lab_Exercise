@@ -1,10 +1,34 @@
 import java.time.LocalDate;
+import java.util.Random;
 
 public class Prescription{
 
     private String prescription_Name, prescription_Dose, prescription_Condition, prescription_Frequency;
     private LocalDate prescription_Date;
     private int prescription_ID;
+
+   public Prescription(){
+        this.prescription_ID = 0;
+        this.prescription_Name = "Copium";
+   }
+
+   public Prescription(String name, String dose, String condition, String frequency){
+        Random r = new Random();
+        this.prescription_ID = r.nextInt(100);
+        this.prescription_Name = name;
+        this.prescription_Dose = dose;
+        this.prescription_Condition = condition;
+        this.prescription_Frequency = frequency;
+   }
+
+   public Prescription(String name, String dose, String condition, String frequency, LocalDate date){
+        Random r = new Random();
+        this.prescription_ID = r.nextInt(100);
+        this.prescription_Name = name;
+        this.prescription_Dose = dose;
+        this.prescription_Condition = condition;
+        this.prescription_Frequency = frequency;
+   }
 
     //setters
     public void setPrescriptionName(String prescName){
