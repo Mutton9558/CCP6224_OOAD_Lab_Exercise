@@ -5,6 +5,7 @@ public class Patient extends User {
 
     public Patient(){}
     
+    //Patient will need an extra Prescriptions Array to store their prescriptions
     public Patient(int id, String username, String password, String gender, int age){
         super(id, username, password, gender, age);
     }

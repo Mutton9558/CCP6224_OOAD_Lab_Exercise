@@ -1,10 +1,6 @@
 import java.awt.*;
 import javax.swing.*;
-import java.util.Calendar;
-import java.util.Date;
 import java.awt.event.*;
-import java.time.LocalDate;
-import java.time.LocalTime;
 
 public class DoctorCreationUI extends JDialog implements ActionListener{
     private TextFieldWithPlaceholder nameTextField;
@@ -29,7 +25,7 @@ public class DoctorCreationUI extends JDialog implements ActionListener{
         formBoxConstraints.weightx = 1.0;
         formBoxConstraints.gridwidth = 2;
         
-//        make it so when text field on focus remove text (listener)
+//      make it so when text field on focus remove text (listener)
         formBoxConstraints.gridy = 0;
         JLabel formBoxLabel = new JLabel("Register a new Doctor at Mao Mao Hospital!");
         formBoxLabel.setFont(new Font("Sans-Serif", Font.BOLD, 20));
@@ -123,8 +119,8 @@ public class DoctorCreationUI extends JDialog implements ActionListener{
     }
     
     public void registerDoctor(String name, String password, int age, String gender, String specialisation){
-        DoctorController dController = new DoctorController();
-        dController.registerDoctor(name, password, gender, age, gender, specialisation);
+        UserController uController = new UserController();
+        uController.registerUser(name, password, gender, age, gender);
         System.out.println("Submit");
         JOptionPane.showMessageDialog(this,
                             "Successfully created doctor", "Invalid Input",
