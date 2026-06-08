@@ -34,10 +34,12 @@ public class DashboardPanels{
     
     public class PrescriptionPanel implements DashboardPanel{
 
+        private PrescriptionController controller;
         private PrescriptionsUI panelUI;
         
         public PrescriptionPanel(){
-            this.panelUI = new PrescriptionsUI();
+            this.controller = new PrescriptionController();
+            this.panelUI = new PrescriptionsUI(client, controller::getPrescription);
         }
         
         @Override
