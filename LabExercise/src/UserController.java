@@ -7,6 +7,7 @@ import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class UserController{
 
@@ -42,8 +43,9 @@ public class UserController{
                 recordedUser.setUserPassword(result.getString("user_password"));
                 recordedUser.setUserGender(result.getString("user_gender"));
                 recordedUser.setUserAge(result.getInt("user_age"));
+                recordedUser.setOffice(result.getString("office"));
+                recordedUser.setSpecialization(result.getString("specialization"));
                 userList.put(result.getInt("user_id"), recordedUser);
-                System.out.println(result.getInt("user_id"));
             }
             
         } catch (SQLException e) {
@@ -85,6 +87,44 @@ public class UserController{
        }
     }
     
+//    overloaded for Doctors
+    public void registerUser(String name, String password, String gender, int age, String role, String office, String specialization){ 
+        String createUserRequest = "INSERT INTO Users (user_name, user_password, user_age, user_gender, user_role, office, specialization) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        
+        try (Connection conn = DatabaseConfig.getConnection();
+            PreparedStatement statement = conn.prepareStatement(createUserRequest, Statement.RETURN_GENERATED_KEYS)) {
+
+            statement.setString(1, name);
+            statement.setString(2, password);
+            statement.setInt(3, age);
+            statement.setString(4, gender);
+            statement.setString(5, role);
+            statement.setString(6, office);
+            statement.setString(7, specialization);
+            statement.executeUpdate();
+            
+            ResultSet result = statement.getGeneratedKeys();
+           if (result.next()) {
+               int newUserId = result.getInt(1);
+               User newUser = createUserByRole(role);
+               newUser.setUserID(newUserId);
+               newUser.setUserName(name);
+               newUser.setUserPassword(password);
+               newUser.setUserAge(age);
+               newUser.setUserGender(gender);
+               newUser.setOffice(office);
+               newUser.setSpecialization(specialization);
+               
+               userList.put(newUserId, newUser);
+           } else {
+               System.out.println("Fail to add user into the database");
+           }
+
+       } catch (SQLException e) {
+           e.printStackTrace();
+       }
+    }
+    
 
     public void loginUser(int userID, String password){
         if(userList.containsKey(userID)) {
@@ -109,6 +149,16 @@ public class UserController{
     
     public User getCurrentUser(){
         return this.currentUser;
+    }
+    
+    public ArrayList<User> getDoctors(){
+        ArrayList<User> temp = new ArrayList<>();
+        userList.forEach((key, val) -> {
+            if(val.returnRole().equals("Doctor")){
+                temp.add(val);
+            }
+        });
+        return temp;
     }
     
     public User searchUser(int id, String role){

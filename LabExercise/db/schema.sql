@@ -6,7 +6,9 @@
         user_password VARCHAR NOT NULL,
         user_age INTEGER NOT NULL,
         user_gender VARCHAR NOT NULL,
-        user_role VARCHAR NOT NULL
+        user_role VARCHAR NOT NULL,
+        office VARCHAR,
+        specialization VARCHAR
     );
 
     CREATE TABLE IF NOT EXISTS Appointments(
@@ -33,9 +35,9 @@
         FOREIGN KEY(prescription_target) REFERENCES Users(user_id)
     );
 
-    INSERT INTO Users VALUES (1001, 'WAN WEI SIANG', 'test01', 21, 'Male', 'Patient');
-    INSERT INTO Users VALUES (1002, 'ELSA', 'test02', 20, 'Female', 'Doctor');
-    INSERT INTO Users VALUES (1003, 'SHAWN HUANG QI YANG', 'test03', 20, 'Male', 'Receptionist');
-    INSERT INTO Users VALUES (1004, 'SYED ZAKI HUSAIN WAFA BIN SYED RIYAD REZA', 'test04', 25, 'Male', 'Admin');
+    INSERT INTO Users VALUES (1001, 'WAN WEI SIANG', 'test01', 21, 'Male', 'Patient', NULL, NULL);
+    INSERT INTO Users VALUES (1002, 'ELSA', 'test02', 20, 'Female', 'Doctor', 'CQBR1001', 'Neurologist');
+    INSERT INTO Users VALUES (1003, 'SHAWN HUANG QI YANG', 'test03', 20, 'Male', 'Receptionist', NULL, NULL);
+    INSERT INTO Users VALUES (1004, 'SYED ZAKI HUSAIN WAFA BIN SYED RIYAD REZA', 'test04', 25, 'Male', 'Admin', NULL, NULL);
 
     INSERT OR IGNORE INTO Appointments VALUES (2001, 1001, 1002, '2026-06-04', '12:58:00', '14:58:00', "Elsa's Office", 'Scheduled');   
