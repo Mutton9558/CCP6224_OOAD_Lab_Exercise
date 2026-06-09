@@ -23,10 +23,12 @@ public class Doctor extends User{
         return "Doctor";
     }
     
+    @Override
     public final String getOffice(){
         return this.office;
     }
 
+    @Override
     public final String getSpecialisation(){
         return this.specialisation;
     }
@@ -40,11 +42,13 @@ public class Doctor extends User{
 //    }
 
     //Setters
+    @Override
     public void setOffice(String office){
         this.office = office;
     }
 
-    public void setSpecialisation(String specialisation){
+    @Override
+    public void setSpecialization(String specialisation){
         this.specialisation = specialisation;
     }
 
