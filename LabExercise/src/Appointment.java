@@ -3,33 +3,29 @@ import java.time.LocalTime;
 
 public class Appointment {
     private int appointmentID;
-    private int patient_ID;
-    private int doctor_ID;
+    private String patient;
+    private String doctor;
     private LocalDate appointmentDate;
     private LocalTime appointmentTime;
     private String location;
     private String status;
     
-    public Appointment(int appointmentID, int patient, int doctor, LocalDate date, LocalTime time, String location, String status){
+    public Appointment(int appointmentID, String patient, String doctor, LocalDate date, LocalTime time, String location, String status){
         this.appointmentID = appointmentID;
-        this.patient_ID = patient;
-        this.doctor_ID = doctor;
+        this.patient = patient;
+        this.doctor = doctor;
         this.appointmentDate = date;
         this.appointmentTime = time;
         this.location = location;
         this.status = status;
     }
     
-    public User getPatientData(){
-        User appointmentPatient = new Patient();
-//        db stuff here, call user controller
-        return appointmentPatient;
+    public String getPatientName(){
+        return this.patient;
     }
     
-    public User getDoctorData(){
-        User assignedDoctor = new Doctor();
-//        db stuff here, call user controller
-        return assignedDoctor;
+    public String getDoctorName(){
+        return this.doctor;
     }
     
     public int getAppointmentID(){

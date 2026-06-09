@@ -4,7 +4,7 @@ import javax.swing.table.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 public class DoctorRecordsUI extends JPanel{
     User activeClient;
@@ -15,7 +15,7 @@ public class DoctorRecordsUI extends JPanel{
     private DefaultTableModel tableModel;
     private JTable table;
 
-    public DoctorRecordsUI(User client, BiFunction<Integer, String, User> searchDoctor, Supplier<ArrayList> getDoctors) {
+    public DoctorRecordsUI(User client, BiFunction<Integer, String, User> searchDoctor, Function<String, ArrayList> getDoctors) {
 
         this.activeClient = client;
         
@@ -138,7 +138,7 @@ public class DoctorRecordsUI extends JPanel{
         adj.insets = new Insets(0, 40, 25, 40);
         this.add(scrollPane, adj);
 
-        ArrayList<User> initialData = getDoctors.get();
+        ArrayList<User> initialData = getDoctors.apply("Doctor");
         doctorList = initialData;
         loadDoctors();
         this.setFocusable(true);

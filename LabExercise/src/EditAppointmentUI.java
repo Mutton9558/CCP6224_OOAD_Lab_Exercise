@@ -41,13 +41,13 @@ public class EditAppointmentUI extends JDialog implements ActionListener{
         formBoxConstraints.gridx = 0;
         formBoxConstraints.gridy = 1;
         formBoxConstraints.gridwidth = 1;
-        this.patientTextField = new JTextField(this.oldAppointment.getPatientData().getUserName(), 24);
+        this.patientTextField = new JTextField(this.oldAppointment.getPatientName(), 24);
         this.patientTextField.setEnabled(false);
         content.add(this.patientTextField, formBoxConstraints);        
         
         formBoxConstraints.gridx = 1;
         formBoxConstraints.gridy = 1;
-        this.doctorTextField = new JTextField(this.oldAppointment.getDoctorData().getUserName(), 24);
+        this.doctorTextField = new JTextField(this.oldAppointment.getPatientName(), 24);
         this.doctorTextField.setEnabled(false);
         content.add(this.doctorTextField, formBoxConstraints);
         
