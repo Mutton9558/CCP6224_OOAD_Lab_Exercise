@@ -171,8 +171,8 @@ public class ActiveAppointmentsUI extends JPanel {
     private void addRow(Appointment a, boolean canEdit) {
         Object[] row = new Object[canEdit ? 7 : 6];
         row[0] = a.getAppointmentID();
-        row[1] = a.getPatientData().getUserName();
-        row[2] = a.getDoctorData().getUserName();
+        row[1] = a.getPatientName();
+        row[2] = a.getDoctorName();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         row[3] = a.getAppointmentDate().toString() + " " + a.getAppointmentTime().format(formatter);
         row[4] = a.getLocation();

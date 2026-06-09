@@ -2,12 +2,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.LocalTime;
+//import java.time.LocalDate;
+//import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.function.Supplier;
 
 public class UserController{
 
@@ -15,19 +16,17 @@ public class UserController{
     private Map<Integer, User> userList = new HashMap<>(); //Map (More advanced version of Dictionary) to store the Users (Key is the user ID, value is the User)
                                                           // And username is key for convenience, could use ID but need to implement system for serial 
     
+    private static final Map<String, Supplier<User>> ROLE_FACTORIES = Map.of(
+        "Patient",      Patient::new,
+        "Doctor",       Doctor::new,
+        "Receptionist", Receptionist::new,
+        "Admin",        Admin::new
+    );
+
     private User createUserByRole(String role) {
-        switch (role) {
-            case "Patient":      
-                return new Patient();
-            case "Doctor":       
-                return new Doctor();
-            case "Receptionist": 
-                return new Receptionist();
-            case "Admin":        
-                return new Admin();
-            default: 
-                throw new IllegalArgumentException("Unknown role: " + role);
-        }
+        Supplier<User> factory = ROLE_FACTORIES.get(role);
+        if (factory == null) throw new IllegalArgumentException("Unknown role: " + role);
+        return factory.get();
     }
     
     public UserController(){
@@ -151,10 +150,11 @@ public class UserController{
         return this.currentUser;
     }
     
-    public ArrayList<User> getDoctors(){
+    
+    public ArrayList<User> getUsersByRole(String role){
         ArrayList<User> temp = new ArrayList<>();
         userList.forEach((key, val) -> {
-            if(val.returnRole().equals("Doctor")){
+            if(val.returnRole().equals(role)){
                 temp.add(val);
             }
         });
