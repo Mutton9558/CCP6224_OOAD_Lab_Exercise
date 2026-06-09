@@ -14,7 +14,7 @@ public class ReceptionistRecordsUI extends JPanel{
     private DefaultTableModel tableModel;
     private JTable table;
 
-    public ReceptionistRecordsUI(User client, BiFunction<Integer, String, Receptionist> searchReceptionist) {
+    public ReceptionistRecordsUI(User client, BiFunction<Integer, String, User> searchReceptionist) {
 
         this.activeClient = client;
         
