@@ -135,9 +135,11 @@ public class DashboardPanels{
     public class ReceptionistRecordsPanel implements DashboardPanel{
 
         private ReceptionistRecordsUI panelUI;
+        private UserController controller;
         
         public ReceptionistRecordsPanel(){
-            this.panelUI = new ReceptionistRecordsUI(client);
+            this.controller = new UserController();
+            this.panelUI = new ReceptionistRecordsUI(client, controller::searchUser);
         }
         
         @Override
