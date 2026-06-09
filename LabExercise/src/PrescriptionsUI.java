@@ -44,7 +44,7 @@ public class PrescriptionsUI extends JPanel{
         searchField.returnTextField().setVisible(canSearch);
         this.add(searchField.returnTextField(), adj);
 
-        String[] columns = new String[5];
+        String[] columns = new String[6];
         columns[0] = "ID";
         columns[1] = "Name";
         columns[2] = "Dose";
