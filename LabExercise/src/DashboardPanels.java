@@ -113,7 +113,7 @@ public class DashboardPanels{
         
         public DoctorRecordsPanel(){
             this.controller = new UserController();
-            this.panelUI = new DoctorRecordsUI(client, controller::searchUser);
+            this.panelUI = new DoctorRecordsUI(client, controller::searchUser, controller::getDoctors);
         }
         
         @Override
