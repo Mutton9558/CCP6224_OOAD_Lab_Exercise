@@ -13,8 +13,8 @@ import java.util.function.Supplier;
 public class UserController{
 
     private User currentUser = null;
-    private Map<Integer, User> userList = new HashMap<>(); //Map (More advanced version of Dictionary) to store the Users (Key is the user ID, value is the User)
-                                                          // And username is key for convenience, could use ID but need to implement system for serial 
+    private Map<Integer, User> userList = new HashMap<>();
+    private static UserController instance;
     
     private static final Map<String, Supplier<User>> ROLE_FACTORIES = Map.of(
         "Patient",      Patient::new,
@@ -29,7 +29,7 @@ public class UserController{
         return factory.get();
     }
     
-    public UserController(){
+    private UserController(){
         String getAllUserQuery = "SELECT * FROM Users";
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement statement = conn.prepareStatement(getAllUserQuery)) {
@@ -51,6 +51,14 @@ public class UserController{
             e.printStackTrace();
         }
     }
+    
+    public static UserController getInstance() {
+        if (instance == null) {
+            instance = new UserController();
+        }
+        return instance;
+    }
+    
 
     //User own registration
     public void registerUser(String name, String password, String gender, int age, String role){ 

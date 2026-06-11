@@ -4,7 +4,8 @@ import java.util.ArrayList;
 
 public class MainUI extends JFrame{
 
-    public MainUI(User client){
+    
+    public MainUI(SystemController system){
         super("MeowMeow Hospital Main Page!");
         CardLayout cardLayout = new CardLayout();
         UIConstants UIconst = new UIConstants();
@@ -23,7 +24,7 @@ public class MainUI extends JFrame{
         // create instance of the main UIs
         HomePageUI homepage = new HomePageUI();
         
-        DashboardPanels panelList = new DashboardPanels(client);
+        DashboardPanels panelList = new DashboardPanels(system);
         ArrayList<DashboardPanel> panels = panelList.returnDashboardPanels();
         DashboardUI dashboard = new DashboardUI(panels);
 
@@ -47,9 +48,12 @@ public class MainUI extends JFrame{
         
     public static void main(String[] args) {
 //        Just to test pls remove later
-        UserController controller = new UserController();
-        controller.loginUser(1004, "test04");
-        User tempUser = controller.getCurrentUser();
-        MainUI test1 = new MainUI(tempUser);
+//        UserController controller = new UserController();
+//        controller.loginUser(1004, "test04");
+//        User tempUser = controller.getCurrentUser();
+//        MainUI test1 = new MainUI(tempUser);
+          SystemController temp = new SystemController();
+          temp.getUserControllerInstance().loginUser(1004, "test04");
+          MainUI test = new MainUI(temp);
     }
 }

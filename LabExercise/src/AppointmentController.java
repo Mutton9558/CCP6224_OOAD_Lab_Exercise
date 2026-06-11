@@ -9,10 +9,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class AppointmentController {
-    private ArrayList<Appointment> appointmentList;  
+    private ArrayList<Appointment> appointmentList = new ArrayList<>();  
+    private static AppointmentController instance;
     
-    public AppointmentController(){
-        appointmentList.clear();
+    private AppointmentController(){
         String query = "SELECT * FROM Appointments";
          try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement statement = conn.prepareStatement(query)) {
@@ -21,7 +21,7 @@ public class AppointmentController {
             while (rs.next()) {
                 LocalDate recordedDate = LocalDate.parse(rs.getString("appointment_date"));
                 LocalTime recordedStartTime = LocalTime.parse(rs.getString("appointment_start_time"));
-                UserController tempUC = new UserController();
+                UserController tempUC = UserController.getInstance();
                 Appointment recordedAppointment = new Appointment(rs.getInt("appointment_id"), tempUC.searchUser(rs.getInt("patient_id"), "Patient").getUserName(), tempUC.searchUser(rs.getInt("doctor_id"), "Doctor").getUserName(), recordedDate, recordedStartTime, rs.getString("appointment_location"), rs.getString("appointment_status"));
                 appointmentList.add(recordedAppointment);
             }
@@ -32,6 +32,14 @@ public class AppointmentController {
          
     }
     
+    public static AppointmentController getInstance(){
+        if(instance == null){
+            instance = new AppointmentController();
+        }
+        
+        return instance;
+    }
+        
     public void createAppointment(int patientID, int doctorID, LocalDate date, LocalTime time, String location){
         
     }
