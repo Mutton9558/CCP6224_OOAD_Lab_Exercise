@@ -3,22 +3,16 @@ import javax.swing.*;
 import javax.swing.table.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiFunction;
-import java.util.function.Function;
 
 public class DoctorRecordsUI extends JPanel{
-    User activeClient;
-    UIConstants uiConstant = new UIConstants();
+    private final UIConstants uiConstant = new UIConstants();
 
     // Store Doctors separately so the button editor can reference them by row
     private List<User> doctorList = new ArrayList<>();
     private DefaultTableModel tableModel;
     private JTable table;
 
-    public DoctorRecordsUI(User client, BiFunction<Integer, String, User> searchDoctor, Function<String, ArrayList> getDoctors) {
-
-        this.activeClient = client;
-        
+    public DoctorRecordsUI(User client, UserController controller) {
         this.setLayout(new GridBagLayout());
         GridBagConstraints adj = new GridBagConstraints();
         this.setBackground(uiConstant.Azure);
@@ -73,7 +67,7 @@ public class DoctorRecordsUI extends JPanel{
             try {
                 int targetID = Integer.parseInt(
                         searchField.returnTextField().getText().trim());
-                User target = searchDoctor.apply(targetID, "Doctor");
+                User target = controller.searchUser(targetID, "Doctor");
                 if (target == null) {
                     JOptionPane.showMessageDialog(this,
                             "Doctor not found.", "Search",
@@ -109,7 +103,7 @@ public class DoctorRecordsUI extends JPanel{
         JButton createDoctor = new JButton("Create Doctor");
         createDoctor.addActionListener(e -> {
             Window window = SwingUtilities.getWindowAncestor(this);
-            DoctorCreationUI dialog = new DoctorCreationUI(window);
+            DoctorCreationUI dialog = new DoctorCreationUI(window, controller);
             dialog.setVisible(true);
         });
         this.add(createDoctor, adj);
@@ -138,7 +132,7 @@ public class DoctorRecordsUI extends JPanel{
         adj.insets = new Insets(0, 40, 25, 40);
         this.add(scrollPane, adj);
 
-        ArrayList<User> initialData = getDoctors.apply("Doctor");
+        ArrayList<User> initialData = controller.getUsersByRole("Doctor");
         doctorList = initialData;
         loadDoctors();
         this.setFocusable(true);

@@ -16,9 +16,11 @@ public class DoctorCreationUI extends JDialog implements ActionListener{
     private JButton submitButton;
     private UIConstants uiconst = new UIConstants();
     private Window parent;
+    private final UserController controller;
     
-    public DoctorCreationUI(Window parent){
+    public DoctorCreationUI(Window parent, UserController controller){
         super(parent, "Create Doctor", Dialog.ModalityType.APPLICATION_MODAL);
+        this.controller = controller;
         this.parent = parent;
         JPanel content = new JPanel();
         content.setLayout(new GridBagLayout());
@@ -119,12 +121,11 @@ public class DoctorCreationUI extends JDialog implements ActionListener{
             ex.printStackTrace();
             return;
         }
-        registerDoctor(doctorName, doctorPassword, doctorAge, doctorGender, doctorSpecialisation);
+        registerDoctor(doctorName, doctorPassword, doctorAge, doctorGender, doctorOffice, doctorSpecialisation);
     }
     
-    public void registerDoctor(String name, String password, int age, String gender, String specialisation){
-        DoctorController dController = new DoctorController();
-        dController.registerDoctor(name, password, gender, age, gender, specialisation);
+    public void registerDoctor(String name, String password, int age, String gender, String office, String specialisation){
+        controller.registerUser(name, password, gender, age, "Doctor", office, specialisation);
         System.out.println("Submit");
         JOptionPane.showMessageDialog(this,
                             "Successfully created doctor", "Invalid Input",

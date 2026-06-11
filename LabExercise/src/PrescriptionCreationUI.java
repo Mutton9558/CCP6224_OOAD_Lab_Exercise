@@ -14,9 +14,11 @@ public class PrescriptionCreationUI extends JDialog implements ActionListener{
     private JButton submitButton;
     private UIConstants uiconst = new UIConstants();
     private Window parent;
+    private final PrescriptionController controller;
     
-    public PrescriptionCreationUI(Window parent){
+    public PrescriptionCreationUI(Window parent, PrescriptionController controller){
         super(parent, "Create Prescription", Dialog.ModalityType.APPLICATION_MODAL);
+        this.controller = controller;
         this.parent = parent;
         JPanel content = new JPanel();
         content.setLayout(new GridBagLayout());
@@ -111,8 +113,7 @@ public class PrescriptionCreationUI extends JDialog implements ActionListener{
     }
     
     public void registerPrescription(String name, String dose, String condition, String frequency, LocalDate date){
-        PrescriptionController pController = new PrescriptionController();
-        pController.createPrescription(name, dose, condition, frequency, date);
+        controller.createPrescription(name, dose, condition, frequency, date);
         System.out.println("Submit");
         JOptionPane.showMessageDialog(this,
                             "Successfully created doctor", "Invalid Input",
