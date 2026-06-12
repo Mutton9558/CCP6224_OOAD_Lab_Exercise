@@ -79,6 +79,7 @@ public class ReceptionistRecordsUI extends JPanel{
                 tableModel.setRowCount(0);
                 ReceptionistList.clear();
                 ReceptionistList.add(target);
+                loadReceptionists();
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this,
                         "Please enter a valid numeric ID.", "Invalid Input",

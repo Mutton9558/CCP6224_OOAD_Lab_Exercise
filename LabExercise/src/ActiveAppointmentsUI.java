@@ -99,7 +99,7 @@ public class ActiveAppointmentsUI extends JPanel {
                 tableModel.setRowCount(0);
                 appointmentList.clear();
                 appointmentList.add(target);
-                addRow(target, canEdit);
+                loadAppointments();
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this,
                         "Please enter a valid numeric ID.", "Invalid Input",
