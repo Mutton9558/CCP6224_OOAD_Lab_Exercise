@@ -22,7 +22,8 @@ public class AppointmentController {
                 LocalDate recordedDate = LocalDate.parse(rs.getString("appointment_date"));
                 LocalTime recordedStartTime = LocalTime.parse(rs.getString("appointment_start_time"));
                 UserController tempUC = UserController.getInstance();
-                Appointment recordedAppointment = new Appointment(rs.getInt("appointment_id"), tempUC.searchUser(rs.getInt("patient_id"), "Patient").getUserName(), tempUC.searchUser(rs.getInt("doctor_id"), "Doctor").getUserName(), recordedDate, recordedStartTime, rs.getString("appointment_location"), rs.getString("appointment_status"));
+//                Appointment recordedAppointment = new Appointment(rs.getInt("appointment_id"), tempUC.searchUser(rs.getInt("patient_id"), "Patient").getUserName(), tempUC.searchUser(rs.getInt("doctor_id"), "Doctor").getUserName(), recordedDate, recordedStartTime, rs.getString("appointment_location"), rs.getString("appointment_status"));
+                Appointment recordedAppointment = new Appointment(rs.getInt("appointment_id"), rs.getInt("patient_id"),  rs.getInt("doctor_id"), recordedDate, recordedStartTime, rs.getString("appointment_location"), rs.getString("appointment_status"));
                 appointmentList.add(recordedAppointment);
             }
             
@@ -59,7 +60,7 @@ public class AppointmentController {
     }
     
     public Appointment getAppointment(int id){
-        Appointment temp = new Appointment(id, "Sjae", "yus", LocalDate.now(), LocalTime.now(), "s", "temp");
+        Appointment temp = new Appointment(id, 1001, 1002, LocalDate.now(), LocalTime.now(), "s", "temp");
         return temp;
     }
     

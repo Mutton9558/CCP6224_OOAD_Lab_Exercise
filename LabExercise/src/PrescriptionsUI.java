@@ -138,7 +138,7 @@ public class PrescriptionsUI extends JPanel{
         adj.insets = new Insets(0, 40, 25, 40);
         this.add(scrollPane, adj);
 
-        Prescription test = new Prescription("Enkephalin", "1 swig", "Lobotomy","once per day");
+        Prescription test = new Prescription("Enkephalin", "1 swig", "Lobotomy","once per day", 1);
         prescriptionList.add(test);
         loadPrescription();
         this.setFocusable(true);

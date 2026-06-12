@@ -5,6 +5,7 @@ public class Patient extends User {
 
     public Patient(){}
     
+    //Patient will need an extra Prescriptions Array to store their prescriptions
     public Patient(int id, String username, String password, String gender, int age){
         super(id, username, password, gender, age);
     }
@@ -47,6 +48,7 @@ public class Patient extends User {
         return true;
     };
     
+    @Override
     public boolean canViewActiveAppointments(){
         return true;
     }
@@ -116,5 +118,31 @@ public class Patient extends User {
     public boolean canSearchRecords(){
         return false;
     }
+    
+    @Override
+    public boolean canEditUserProfileInfo(){
+        return false;
+    };
+    
+    @Override
+    public boolean canEditUserProfile(){
+        return false;
+    };
+    
+    
+    @Override
+    public boolean canEditDiagnosis(){
+        return false;
+    };
+    
+    @Override
+    public boolean canEditPrescription(){
+        return false;
+    };
+    
+    @Override
+    public boolean hasMedicalRecords(){
+        return true;
+    };
 }
 

@@ -179,4 +179,11 @@ public class UserController{
         } 
         return null;
     }
+    
+    public User searchUserID(int id){
+        return userList.get(id);
+    }
+    
+    
+  
 }
