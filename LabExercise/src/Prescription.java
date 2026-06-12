@@ -5,28 +5,30 @@ public class Prescription{
 
     private String prescription_Name, prescription_Dose, prescription_Condition, prescription_Frequency;
     private LocalDate prescription_Date;
-    private int prescription_ID;
+    private int prescription_ID, prescription_Patient;
 
    public Prescription(){
         this.prescription_ID = 0;
         this.prescription_Name = "Copium";
    }
 
-   public Prescription(String name, String dose, String condition, String frequency){
+   public Prescription(String name, String dose, String condition, String frequency, int patient_ID){
         Random r = new Random();
         this.prescription_ID = r.nextInt(100);
         this.prescription_Name = name;
         this.prescription_Dose = dose;
         this.prescription_Condition = condition;
         this.prescription_Frequency = frequency;
+        this.prescription_Patient = patient_ID;
    }
 
-   public Prescription(String name, String dose, String condition, String frequency, LocalDate date){
+   public Prescription(String name, String dose, String condition, String frequency, int patient_ID, LocalDate date){
         Random r = new Random();
         this.prescription_ID = r.nextInt(100);
         this.prescription_Name = name;
         this.prescription_Dose = dose;
         this.prescription_Condition = condition;
+        this.prescription_Patient = patient_ID;
         this.prescription_Frequency = frequency;
    }
 
@@ -55,6 +57,11 @@ public class Prescription{
         this.prescription_ID = prescID;
     }
 
+    public void setPrescriptionPatient(int prescPatient){
+        this.prescription_Patient = prescPatient;
+    }
+
+
     //getters
     public String getPrescriptionName(){
         return prescription_Name;
@@ -78,5 +85,9 @@ public class Prescription{
 
     public int getPrescriptionID(){
         return prescription_ID;
+    }
+
+    public int getPrescriptionPatient(){
+        return prescription_Patient;
     }
 }

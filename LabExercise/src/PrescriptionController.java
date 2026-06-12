@@ -22,8 +22,8 @@ public class PrescriptionController {
         return temp;
     }
 
-    public void createPrescription(String prescription_Name, String dose, String condition, String frequency, LocalDate date){
-        Prescription presc = new Prescription(prescription_Name, dose, condition, frequency, date);
+    public void createPrescription(String prescription_Name, String dose, String condition, String frequency, int patient_ID, LocalDate date){
+        Prescription presc = new Prescription(prescription_Name, dose, condition, frequency, patient_ID, date);
         prescList.add(presc);
     }
     

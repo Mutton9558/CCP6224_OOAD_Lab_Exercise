@@ -10,10 +10,12 @@ public class ReceptionistCreationUI extends JDialog implements ActionListener{
     private JButton submitButton;
     private UIConstants uiconst = new UIConstants();
     private Window parent;
+    private final UserController controller;
     
-    public ReceptionistCreationUI(Window parent){
+    public ReceptionistCreationUI(Window parent, UserController controller){
         super(parent, "Create Receptionist", Dialog.ModalityType.APPLICATION_MODAL);
         this.parent = parent;
+        this.controller = controller;
         JPanel content = new JPanel();
         content.setLayout(new GridBagLayout());
         content.setBackground(uiconst.Azure);
@@ -92,8 +94,7 @@ public class ReceptionistCreationUI extends JDialog implements ActionListener{
     }
     
     public void registerReceptionist(String name, String password, String gender, int age, String role){
-        UserController uController = new UserController();
-        uController.registerUser(name, password, gender, age, role);
+        controller.registerUser(name, password, gender, age, role);
         System.out.println("Submit");
         JOptionPane.showMessageDialog(this,
                             "Successfully created Receptionist", "Invalid Input",
