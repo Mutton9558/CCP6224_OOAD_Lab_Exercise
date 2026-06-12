@@ -18,9 +18,11 @@ public class EditAppointmentUI extends JDialog implements ActionListener{
     private UIConstants uiconst = new UIConstants();
     private Window parent;
     private Appointment oldAppointment;
+    private UserController userController;
     
-    public EditAppointmentUI(Window parent, Appointment target){
+    public EditAppointmentUI(Window parent, Appointment target, UserController userController){
         super(parent, "Edit Appointment", Dialog.ModalityType.APPLICATION_MODAL);
+        this.userController = userController;
         this.parent = parent;
         this.oldAppointment = target;
         JPanel content = new JPanel();
