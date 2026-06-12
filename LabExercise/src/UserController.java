@@ -2,35 +2,34 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.LocalTime;
+//import java.time.LocalDate;
+//import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.function.Supplier;
 
 public class UserController{
 
     private User currentUser = null;
-    private Map<Integer, User> userList = new HashMap<>(); //Map (More advanced version of Dictionary) to store the Users (Key is the user ID, value is the User)
-                                                          // And username is key for convenience, could use ID but need to implement system for serial 
+    private Map<Integer, User> userList = new HashMap<>();
+    private static UserController instance;
     
+    private static final Map<String, Supplier<User>> ROLE_FACTORIES = Map.of(
+        "Patient",      Patient::new,
+        "Doctor",       Doctor::new,
+        "Receptionist", Receptionist::new,
+        "Admin",        Admin::new
+    );
+
     private User createUserByRole(String role) {
-        switch (role) {
-            case "Patient":      
-                return new Patient();
-            case "Doctor":       
-                return new Doctor();
-            case "Receptionist": 
-                return new Receptionist();
-            case "Admin":        
-                return new Admin();
-            default: 
-                throw new IllegalArgumentException("Unknown role: " + role);
-        }
+        Supplier<User> factory = ROLE_FACTORIES.get(role);
+        if (factory == null) throw new IllegalArgumentException("Unknown role: " + role);
+        return factory.get();
     }
     
-    public UserController(){
+    private UserController(){
         String getAllUserQuery = "SELECT * FROM Users";
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement statement = conn.prepareStatement(getAllUserQuery)) {
@@ -52,6 +51,14 @@ public class UserController{
             e.printStackTrace();
         }
     }
+    
+    public static UserController getInstance() {
+        if (instance == null) {
+            instance = new UserController();
+        }
+        return instance;
+    }
+    
 
     //User own registration
     public void registerUser(String name, String password, String gender, int age, String role){ 
@@ -151,10 +158,11 @@ public class UserController{
         return this.currentUser;
     }
     
-    public ArrayList<User> getDoctors(){
+    
+    public ArrayList<User> getUsersByRole(String role){
         ArrayList<User> temp = new ArrayList<>();
         userList.forEach((key, val) -> {
-            if(val.returnRole().equals("Doctor")){
+            if(val.returnRole().equals(role)){
                 temp.add(val);
             }
         });

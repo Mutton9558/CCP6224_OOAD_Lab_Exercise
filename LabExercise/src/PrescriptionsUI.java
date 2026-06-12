@@ -14,7 +14,7 @@ public class PrescriptionsUI extends JPanel{
     private DefaultTableModel tableModel;
     private JTable table;
 
-    public PrescriptionsUI(User client, Function<Integer, Prescription> searchPrescriptions) {
+    public PrescriptionsUI(User client, PrescriptionController controller) {
 
         this.activeClient = client;
         
@@ -72,7 +72,7 @@ public class PrescriptionsUI extends JPanel{
             try {
                 int targetID = Integer.parseInt(
                         searchField.returnTextField().getText().trim());
-                Prescription target = searchPrescriptions.apply(targetID);
+                Prescription target = controller.getPrescription(targetID);
                 if (target == null) {
                     JOptionPane.showMessageDialog(this,
                             "Prescription not found.", "Search",
@@ -105,13 +105,13 @@ public class PrescriptionsUI extends JPanel{
         adj.gridy = 2;
         adj.insets = new Insets(0, 0, 10, 0);
         adj.fill = GridBagConstraints.NONE;
-        JButton createDoctor = new JButton("Create Prescription");
-        createDoctor.addActionListener(e -> {
+        JButton createPrescription = new JButton("Create Prescription");
+        createPrescription.addActionListener(e -> {
             Window window = SwingUtilities.getWindowAncestor(this);
-            PrescriptionCreationUI dialog = new PrescriptionCreationUI(window);
+            PrescriptionCreationUI dialog = new PrescriptionCreationUI(window, controller);
             dialog.setVisible(true);
         });
-        this.add(createDoctor, adj);
+        this.add(createPrescription, adj);
 
         adj.gridwidth = GridBagConstraints.REMAINDER;
         adj.gridy = 3;
@@ -137,7 +137,7 @@ public class PrescriptionsUI extends JPanel{
         adj.insets = new Insets(0, 40, 25, 40);
         this.add(scrollPane, adj);
 
-        Prescription test = new Prescription("Enkephalin", "1 swig", "Lobotomy","once per day");
+        Prescription test = new Prescription("Enkephalin", "1 swig", "Lobotomy","once per day", 1);
         prescriptionList.add(test);
         loadPrescription();
         this.setFocusable(true);

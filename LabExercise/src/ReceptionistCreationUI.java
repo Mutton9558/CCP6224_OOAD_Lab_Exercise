@@ -2,22 +2,20 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 
-public class DoctorCreationUI extends JDialog implements ActionListener{
+public class ReceptionistCreationUI extends JDialog implements ActionListener{
     private TextFieldWithPlaceholder nameTextField;
     private TextFieldWithPlaceholder passwordTextField;
     private TextFieldWithPlaceholder ageTextField;
     private TextFieldWithPlaceholder genderTextField;
-    private TextFieldWithPlaceholder officeTextField;
-    private TextFieldWithPlaceholder specialisationTextField;
     private JButton submitButton;
     private UIConstants uiconst = new UIConstants();
     private Window parent;
     private final UserController controller;
     
-    public DoctorCreationUI(Window parent, UserController controller){
-        super(parent, "Create Doctor", Dialog.ModalityType.APPLICATION_MODAL);
-        this.controller = controller;
+    public ReceptionistCreationUI(Window parent, UserController controller){
+        super(parent, "Create Receptionist", Dialog.ModalityType.APPLICATION_MODAL);
         this.parent = parent;
+        this.controller = controller;
         JPanel content = new JPanel();
         content.setLayout(new GridBagLayout());
         content.setBackground(uiconst.Azure);
@@ -29,7 +27,7 @@ public class DoctorCreationUI extends JDialog implements ActionListener{
         
 //      make it so when text field on focus remove text (listener)
         formBoxConstraints.gridy = 0;
-        JLabel formBoxLabel = new JLabel("Register a new Doctor at Mao Mao Hospital!");
+        JLabel formBoxLabel = new JLabel("Register a new Receptionist at Mao Mao Hospital!");
         formBoxLabel.setFont(new Font("Sans-Serif", Font.BOLD, 20));
         content.add(formBoxLabel, formBoxConstraints);
         
@@ -37,7 +35,7 @@ public class DoctorCreationUI extends JDialog implements ActionListener{
         formBoxConstraints.gridx = 0;
         formBoxConstraints.gridy = 1;
         formBoxConstraints.gridwidth = 1;
-        nameTextField = new TextFieldWithPlaceholder("Enter Doctor Name", 24);
+        nameTextField = new TextFieldWithPlaceholder("Enter Receptionist Name", 24);
         content.add(nameTextField.returnTextField(), formBoxConstraints);
         
         //Password Text Box
@@ -49,32 +47,18 @@ public class DoctorCreationUI extends JDialog implements ActionListener{
         // Age Text Box
         formBoxConstraints.gridx = 0;
         formBoxConstraints.gridy = 2;
-        ageTextField = new TextFieldWithPlaceholder("Enter Doctor's Age", 24);
+        ageTextField = new TextFieldWithPlaceholder("Enter Receptionist's Age", 24);
         content.add(ageTextField.returnTextField(), formBoxConstraints);
         
         //Gender Text Box
          formBoxConstraints.gridx = 1;
         formBoxConstraints.gridwidth = 1;
         formBoxConstraints.gridy = 2;
-        genderTextField = new TextFieldWithPlaceholder("Enter Doctor's Gender", 24);
+        genderTextField = new TextFieldWithPlaceholder("Enter Receptionist's Gender", 24);
         content.add(genderTextField.returnTextField(), formBoxConstraints);
         
-        //Location Text Box
-        formBoxConstraints.gridx = 0;
-        formBoxConstraints.gridy = 3;
-        formBoxConstraints.gridwidth = 1;
-        officeTextField = new TextFieldWithPlaceholder("Enter Doctor's Office Location", 24);
-        content.add(officeTextField.returnTextField(), formBoxConstraints);
-
-        
-        formBoxConstraints.gridx = 1;
-        formBoxConstraints.gridy = 3;
-        formBoxConstraints.gridwidth = 1;
-        specialisationTextField = new TextFieldWithPlaceholder("Enter Doctor's Specialisation", 24);
-        content.add(specialisationTextField.returnTextField(), formBoxConstraints);
-        
         formBoxConstraints.gridy = 4;
-        submitButton = new JButton("Create Doctor");
+        submitButton = new JButton("Create Receptionist");
         submitButton.addActionListener(this);
         content.add(submitButton, formBoxConstraints);
 
@@ -87,44 +71,33 @@ public class DoctorCreationUI extends JDialog implements ActionListener{
     
     @Override
     public void actionPerformed(ActionEvent e){
-        String doctorName, doctorPassword, doctorGender, doctorOffice, doctorSpecialisation;
-        int doctorAge; 
+        String ReceptionistName, ReceptionistPassword, ReceptionistGender;
+        int ReceptionistAge; 
         
         try{            
-            doctorName = nameTextField.returnTextField().getText();
-            doctorPassword = passwordTextField.returnTextField().getText();
-            doctorAge = Integer.parseInt(passwordTextField.returnTextField().getText());
-            doctorGender = genderTextField.returnTextField().getText();
-            doctorSpecialisation = specialisationTextField.returnTextField().getText();
-            doctorOffice = officeTextField.returnTextField().getText();
-            
-            if(doctorOffice.equals("") || doctorOffice.equals(" ") || doctorOffice.equals(officeTextField.returnPlaceholderText())){
-                JOptionPane.showMessageDialog(this,
-                            "Location Cannot be Found", "Invalid Input",
-                            JOptionPane.WARNING_MESSAGE);
-                return;
-            }
+            ReceptionistName = nameTextField.returnTextField().getText();
+            ReceptionistPassword = passwordTextField.returnTextField().getText();
+            ReceptionistAge = Integer.parseInt(passwordTextField.returnTextField().getText());
+            ReceptionistGender = genderTextField.returnTextField().getText();
             
             nameTextField.returnTextField().setEnabled(false);
             passwordTextField.returnTextField().setEnabled(false);
             ageTextField.returnTextField().setEnabled(false);
-            specialisationTextField.returnTextField().setEnabled(false);
-            officeTextField.returnTextField().setEnabled(false);
         } catch (NumberFormatException ex){
             JOptionPane.showMessageDialog(this,
-                            "Doctor's Age must be a number", "Invalid Input",
+                            "Receptionist's Age must be a number", "Invalid Input",
                             JOptionPane.WARNING_MESSAGE);
             ex.printStackTrace();
             return;
         }
-        registerDoctor(doctorName, doctorPassword, doctorAge, doctorGender, doctorOffice, doctorSpecialisation);
+        registerReceptionist(ReceptionistName, ReceptionistPassword, ReceptionistGender, ReceptionistAge, "Receptionist");
     }
     
-    public void registerDoctor(String name, String password, int age, String gender, String office, String specialisation){
-        controller.registerUser(name, password, gender, age, "Doctor", office, specialisation);
+    public void registerReceptionist(String name, String password, String gender, int age, String role){
+        controller.registerUser(name, password, gender, age, role);
         System.out.println("Submit");
         JOptionPane.showMessageDialog(this,
-                            "Successfully created doctor", "Invalid Input",
+                            "Successfully created Receptionist", "Invalid Input",
                             JOptionPane.INFORMATION_MESSAGE);
         
     }

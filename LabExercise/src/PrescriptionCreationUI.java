@@ -10,13 +10,16 @@ public class PrescriptionCreationUI extends JDialog implements ActionListener{
     private TextFieldWithPlaceholder doseTextField;
     private TextFieldWithPlaceholder conditionTextField;
     private TextFieldWithPlaceholder frequencyTextField;
+    private TextFieldWithPlaceholder patientTextField;
     private JSpinner prescDateField;
     private JButton submitButton;
     private UIConstants uiconst = new UIConstants();
     private Window parent;
+    private final PrescriptionController controller;
     
-    public PrescriptionCreationUI(Window parent){
+    public PrescriptionCreationUI(Window parent, PrescriptionController controller){
         super(parent, "Create Prescription", Dialog.ModalityType.APPLICATION_MODAL);
+        this.controller = controller;
         this.parent = parent;
         JPanel content = new JPanel();
         content.setLayout(new GridBagLayout());
@@ -67,6 +70,12 @@ public class PrescriptionCreationUI extends JDialog implements ActionListener{
         JSpinner.DateEditor dateEditor = new JSpinner.DateEditor(prescDateField, "yyyy-MM-dd");
         prescDateField.setEditor(dateEditor);
         content.add(prescDateField, formBoxConstraints);
+        
+        formBoxConstraints.gridx = 0;
+        formBoxConstraints.gridy = 3;
+        formBoxConstraints.gridwidth = 1;
+        patientTextField = new TextFieldWithPlaceholder("Enter Patient ID", 24);
+        content.add(patientTextField.returnTextField(), formBoxConstraints);
 
         formBoxConstraints.gridy = 4;
         submitButton = new JButton("Create Prescription");
@@ -83,6 +92,7 @@ public class PrescriptionCreationUI extends JDialog implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e){
         String prescName, prescDose, prescCondition, prescFrequency;
+        int patientID;
         LocalDate prescDate;
         
         try{            
@@ -90,6 +100,7 @@ public class PrescriptionCreationUI extends JDialog implements ActionListener{
             prescDose = doseTextField.returnTextField().getText();
             prescCondition = conditionTextField.returnTextField().getText();
             prescFrequency = frequencyTextField.returnTextField().getText();
+            patientID = Integer.parseInt(patientTextField.returnTextField().getText());
             java.util.Date dateValue = (java.util.Date) prescDateField.getValue();
 
             prescDate = dateValue.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
@@ -98,21 +109,28 @@ public class PrescriptionCreationUI extends JDialog implements ActionListener{
             doseTextField.returnTextField().setEnabled(false);
             conditionTextField.returnTextField().setEnabled(false);
             frequencyTextField.returnTextField().setEnabled(false);
+            patientTextField.returnTextField().setEnabled(false);
             prescDateField.setEnabled(false);
 
-        } catch (java.time.format.DateTimeParseException ex){
+        }catch (NumberFormatException ex){
+            JOptionPane.showMessageDialog(this,
+                            "Patient or Doctor ID must be a number", "Invalid Input",
+                            JOptionPane.WARNING_MESSAGE);
+            ex.printStackTrace();
+            return;
+        
+        }catch (java.time.format.DateTimeParseException ex){
             JOptionPane.showMessageDialog(this,
                             "Cannot save date and time", "Invalid Input",
                             JOptionPane.WARNING_MESSAGE);
             ex.printStackTrace();
             return;
         }
-        registerPrescription(prescName, prescDose, prescCondition, prescFrequency, prescDate);
+        registerPrescription(prescName, prescDose, prescCondition, prescFrequency, patientID, prescDate);
     }
     
-    public void registerPrescription(String name, String dose, String condition, String frequency, LocalDate date){
-        PrescriptionController pController = new PrescriptionController();
-        pController.createPrescription(name, dose, condition, frequency, date);
+    public void registerPrescription(String name, String dose, String condition, String frequency, int patient_ID, LocalDate date){
+        controller.createPrescription(name, dose, condition, frequency, patient_ID, date);
         System.out.println("Submit");
         JOptionPane.showMessageDialog(this,
                             "Successfully created doctor", "Invalid Input",
