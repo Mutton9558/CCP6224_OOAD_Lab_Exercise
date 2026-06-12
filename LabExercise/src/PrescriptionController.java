@@ -22,7 +22,7 @@ public class PrescriptionController {
         return temp;
     }
 
-    public List<Prescription> getPrescription(int prescID, int patientID){
+    public List<Prescription> getPatientPrescription(int patientID){
         List<Prescription> patientPrescriptions = new ArrayList<Prescription>();
         for(Prescription presc : prescList){
             if(presc.getPrescriptionPatient() == patientID){
