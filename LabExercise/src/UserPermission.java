@@ -19,4 +19,11 @@ public interface UserPermission {
     public boolean canGenerateReport();
     public boolean canEditAppointments();
     public boolean canSearchAppointments();
+    
+//     Profile Viewing 
+    public boolean canEditUserProfileInfo();
+    public boolean canEditUserProfile();
+    public boolean canEditDiagnosis();
+    public boolean canEditPrescription();
+    public boolean hasMedicalRecords();
 }

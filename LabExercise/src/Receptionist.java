@@ -89,4 +89,29 @@ public class Receptionist extends User{
     public boolean canSearchRecords(){
         return true;
     }
+    
+    @Override
+    public boolean canEditUserProfileInfo(){
+        return true;
+    };
+    
+    @Override
+    public boolean canEditUserProfile(){
+        return true;
+    };
+    
+    @Override
+    public boolean canEditDiagnosis(){
+        return false;
+    };
+    
+    @Override
+    public boolean canEditPrescription(){
+        return false;
+    };
+    
+    @Override
+    public boolean hasMedicalRecords(){
+        return false;
+    };
 }

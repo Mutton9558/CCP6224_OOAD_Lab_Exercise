@@ -20,11 +20,17 @@ public class UIConstants {
     public static ImageIcon bgImage = new ImageIcon(UIConstants.class.getResource("/images/mainbg.jpg"));
     public static Image sizedBgImage = bgImage.getImage().getScaledInstance(1366, 768, Image.SCALE_SMOOTH);
     public static ImageIcon mainBg = new ImageIcon(sizedBgImage);
+    
+    //profilepicture 
+    public static ImageIcon pfp = new ImageIcon(UIConstants.class.getResource("/images/profilepic.png"));
+    public static Image sizedpfp = pfp.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+    public static ImageIcon pfpIcon = new ImageIcon(sizedpfp);
 
     // COLOR VARIABLES
     public static Color DarkBlue = new Color(0x3b91fe);
     public static Color LightBlue = new Color(0xe2f8fd);
     public static Color Azure = new Color(0x71bcff);
+    public static Color VeryDarkBlue = new Color(0x002a7c);
     // COLOR VARIABLES
 
     // DIMENSIONS

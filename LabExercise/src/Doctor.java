@@ -2,9 +2,11 @@ import java.util.*;
 
 public class Doctor extends User{
     private String office, specialisation;
+    private int doctorID;
 
     public Doctor(int id, String username, String password, String gender, int age, String office, String specialisation){
         super(id, username, password, gender, age);
+        this.doctorID = id;
         this.office = office;
         this.specialisation = specialisation;
     }
@@ -142,4 +144,30 @@ public class Doctor extends User{
     public boolean canSearchRecords(){
         return true;
     }
+    
+    @Override
+    public boolean canEditUserProfileInfo(){
+        return false;
+    };
+    
+    @Override
+    public boolean canEditUserProfile(){
+        return true;
+    };
+    
+    @Override
+    public boolean canEditDiagnosis(){
+        return true;
+    };
+    
+    @Override
+    public boolean canEditPrescription(){
+        return true;
+    };
+    
+    @Override
+    public boolean hasMedicalRecords(){
+        return false;
+    };
+
 }

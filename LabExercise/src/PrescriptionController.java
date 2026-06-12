@@ -22,11 +22,22 @@ public class PrescriptionController {
         return temp;
     }
 
-    public void createPrescription(String prescription_Name, String dose, String condition, String frequency, LocalDate date){
-        Prescription presc = new Prescription(prescription_Name, dose, condition, frequency, date);
+    public List<Prescription> getPatientPrescription(int patientID){
+        List<Prescription> patientPrescriptions = new ArrayList<Prescription>();
+        for(Prescription presc : prescList){
+            if(presc.getPrescriptionPatient() == patientID){
+                patientPrescriptions.add(presc);
+            }
+        }
+        return patientPrescriptions;
+    }
+
+    public void createPrescription(String prescription_Name, String dose, String condition, String frequency, int patient_ID, LocalDate date){
+        Prescription presc = new Prescription(prescription_Name, dose, condition, frequency, patient_ID, date);
         prescList.add(presc);
     }
     
+
     
 
     // public Prescription[] getPatientPrescriptions(int patient_ID){
