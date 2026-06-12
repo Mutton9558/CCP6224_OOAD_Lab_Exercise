@@ -32,6 +32,14 @@ public class Appointment {
         return assignedDoctor;
     }
     
+    public int getPatientID(){
+        return this.patient_ID;
+    }
+    
+    public int getDoctorID(){
+        return this.doctor_ID;
+    }
+    
     public int getAppointmentID(){
         return this.appointmentID;
     }

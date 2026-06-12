@@ -1,4 +1,5 @@
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.*;
 
 public abstract class User implements UserPermission{
   
@@ -24,7 +25,8 @@ public abstract class User implements UserPermission{
     private int user_ID;
     private int user_Age;
 //    private UserRole user_Role;
-    private String user_Name, password, user_Gender;
+    private String user_Name, user_Nationality, password, user_Gender, address, email, user_PhoneNumber;
+    private Date user_DateOfBirth;
 
 //    public User() {
 //        this.user_Name = "";
@@ -54,6 +56,27 @@ public abstract class User implements UserPermission{
 
     public String getUserName() {
         return this.user_Name;
+    }
+    
+    
+    public String getUserNationality() {
+        return this.user_Name;
+    }
+    
+    public String getUserAddress() {
+        return this.address;
+    }
+    
+    public Date getUserDateOfBirth() {
+        return this.user_DateOfBirth;
+    }
+    
+    public String getUserPhoneNumber() {
+        return this.user_PhoneNumber;
+    }
+    
+    public String getUserEmail(){
+        return this.email;
     }
 
     public int getUserAge() {
@@ -96,6 +119,26 @@ public abstract class User implements UserPermission{
     
     public void setUserName(String userName) {
         this.user_Name = userName;
+    }
+    
+      public void setUserNationality(String nationality) {
+        this.user_Nationality = nationality;
+    }
+      
+    public void setUserAddress(String address) {
+        this.address = address;
+    }
+    
+    public void setUserDateOfBirth(Date DOB) {
+        this.user_DateOfBirth = DOB;
+    }
+    
+    public void setUserPhoneNumber(String phoneNumber) {
+        this.user_PhoneNumber = phoneNumber;
+    }
+    
+    public void setUserEmail(String email){
+        this.email = email;
     }
 
     public void setUserAge(int userAge) {

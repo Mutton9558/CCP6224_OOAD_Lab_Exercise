@@ -142,4 +142,30 @@ public class Doctor extends User{
     public boolean canSearchRecords(){
         return true;
     }
+    
+    @Override
+    public boolean canEditUserProfileInfo(){
+        return false;
+    };
+    
+    @Override
+    public boolean canEditUserProfile(){
+        return true;
+    };
+    
+    @Override
+    public boolean canEditDiagnosis(){
+        return true;
+    };
+    
+    @Override
+    public boolean canEditPrescription(){
+        return true;
+    };
+    
+    @Override
+    public boolean hasMedicalRecords(){
+        return false;
+    };
+
 }
