@@ -3,8 +3,6 @@ import javax.swing.*;
 import javax.swing.table.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiFunction;
-import java.util.function.Function;
 
 public class ReceptionistRecordsUI extends JPanel{
     User activeClient;
@@ -15,7 +13,7 @@ public class ReceptionistRecordsUI extends JPanel{
     private DefaultTableModel tableModel;
     private JTable table;
 
-    public ReceptionistRecordsUI(User client, BiFunction<Integer, String, User> searchReceptionist, Function<String, ArrayList> getReceptionists) {
+    public ReceptionistRecordsUI(User client, UserController controller) {
 
         this.activeClient = client;
         
@@ -71,7 +69,7 @@ public class ReceptionistRecordsUI extends JPanel{
             try {
                 int targetID = Integer.parseInt(
                         searchField.returnTextField().getText().trim());
-                User target = searchReceptionist.apply(targetID, "Receptionist");
+                User target = controller.searchUser(targetID, "Receptionist");
                 if (target == null) {
                     JOptionPane.showMessageDialog(this,
                             "Receptionist not found.", "Search",
@@ -107,8 +105,8 @@ public class ReceptionistRecordsUI extends JPanel{
         JButton createReceptionist = new JButton("Create Receptionist");
         createReceptionist.addActionListener(e -> {
             Window window = SwingUtilities.getWindowAncestor(this);
-            ReceptionistCreationUI dialog = new ReceptionistCreationUI(window);
-            dialog.setVisible(true);
+//            ReceptionistCreationUI dialog = new ReceptionistCreationUI(window);
+//            dialog.setVisible(true);
         });
         this.add(createReceptionist, adj);
 
@@ -136,7 +134,7 @@ public class ReceptionistRecordsUI extends JPanel{
         adj.insets = new Insets(0, 40, 25, 40);
         this.add(scrollPane, adj);
 
-        this.ReceptionistList = getReceptionists.apply("Receptionist");
+        this.ReceptionistList = controller.getUsersByRole("Receptionist");
         loadReceptionists();
         this.setFocusable(true);
     }
