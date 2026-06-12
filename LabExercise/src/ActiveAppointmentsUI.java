@@ -15,14 +15,7 @@ public class ActiveAppointmentsUI extends JPanel {
     private DefaultTableModel tableModel;
     private JTable table;
     private UserController userController;
-    //helper method
-        private String getUserName(int id, String role){
-        return userController.searchUser(id,role).getUserName();
-    }
-
-    public ActiveAppointmentsUI(User client, AppointmentController appointmentController, UserController userController) {
-        
-        this.userController = userController;
+    public ActiveAppointmentsUI(User client, AppointmentController appointmentController) {
         this.activeClient = client;
         this.appointmentList = appointmentController.getAllAppointments();
         
@@ -175,9 +168,9 @@ public class ActiveAppointmentsUI extends JPanel {
         Object[] row = new Object[canEdit ? 7 : 6];
         row[0] = a.getAppointmentID();
       //row[1] = a.getPatientName();
-        row[1] = this.getUserName(a.getPatientID(), "patient");
+        row[1] = a.getPatientName() + "#" + a.getPatientID();
       //row[2] = a.getDoctorName();
-        row[2] = this.getUserName(a.getDoctorID(), "doctor");
+        row[2] = a.getDoctorName() + "#" + a.getDoctorID();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         row[3] = a.getAppointmentDate().toString() + " " + a.getAppointmentTime().format(formatter);
         row[4] = a.getLocation();

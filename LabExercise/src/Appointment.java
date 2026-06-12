@@ -7,30 +7,32 @@ public class Appointment {
 //    private String doctor;
     private int patient_ID;
     private int doctor_ID;
+    private String patientName;
+    private String doctorName;
     private LocalDate appointmentDate;
     private LocalTime appointmentTime;
     private String location;
     private String status;
     
-    public Appointment(int appointmentID, int patientID, int doctorID, LocalDate date, LocalTime time, String location, String status){
+    public Appointment(int appointmentID, int patientID, int doctorID, String patientName, String doctorName, LocalDate date, LocalTime time, String location, String status){
         this.appointmentID = appointmentID;
-//        this.patient = patient;
-//        this.doctor = doctor;
-        this.patient_ID = patient_ID;
-        this.doctor_ID = doctor_ID;
+        this.patient_ID = patientID;
+        this.doctor_ID = doctorID;
+        this.patientName = patientName;
+        this.doctorName = doctorName;
         this.appointmentDate = date;
         this.appointmentTime = time;
         this.location = location;
         this.status = status;
     }
     
-//    public String getPatientName(){
-//        return this.patient;
-//    }
-//    
-//    public String getDoctorName(){
-//        return this.doctor;
-//    }
+    public String getPatientName(){
+        return this.patientName;
+    }
+    
+    public String getDoctorName(){
+        return this.doctorName;
+    }
     
     public int getPatientID(){
         return this.patient_ID;
@@ -60,10 +62,10 @@ public class Appointment {
         return this.status;
     }
     
-    public void editAppointment(LocalDate newDate, LocalTime newTime, String newStatus){
-        this.appointmentDate = newDate;
-        this.appointmentTime = newTime;
-        this.status = newStatus;
-//        db update pls use AppointmentController
-    }
+//    public void editAppointment(LocalDate newDate, LocalTime newTime, String newStatus){
+//        this.appointmentDate = newDate;
+//        this.appointmentTime = newTime;
+//        this.status = newStatus;
+////        db update pls use AppointmentController
+//    }
 }

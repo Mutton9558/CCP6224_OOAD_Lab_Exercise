@@ -13,7 +13,7 @@ public class DashboardPanels{
         
         public ActiveAppointmentPanel(){
             this.appointmentController = system.getAppointmentControllerInstance();
-            this.panelUI = new ActiveAppointmentsUI(client, appointmentController, system.getUserControllerInstance());
+            this.panelUI = new ActiveAppointmentsUI(client, appointmentController);
         }
         
         @Override
