@@ -74,9 +74,11 @@ public class DoctorRecordsUI extends JPanel{
                             JOptionPane.INFORMATION_MESSAGE);
                     return;
                 }
+                
                 tableModel.setRowCount(0);
                 doctorList.clear();
                 doctorList.add(target);
+                loadDoctors();
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this,
                         "Please enter a valid numeric ID.", "Invalid Input",

@@ -180,7 +180,7 @@ public class UserController{
         return null;
     }
     
-    public User searchUserID(int id){
+    public User searchUser(int id){
         return userList.get(id);
     }
     
