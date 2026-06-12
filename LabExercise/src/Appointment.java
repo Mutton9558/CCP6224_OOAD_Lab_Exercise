@@ -3,30 +3,34 @@ import java.time.LocalTime;
 
 public class Appointment {
     private int appointmentID;
-    private String patient;
-    private String doctor;
+//    private String patient;
+//    private String doctor;
+    private int patient_ID;
+    private int doctor_ID;
     private LocalDate appointmentDate;
     private LocalTime appointmentTime;
     private String location;
     private String status;
     
-    public Appointment(int appointmentID, String patient, String doctor, LocalDate date, LocalTime time, String location, String status){
+    public Appointment(int appointmentID, int patientID, int doctorID, LocalDate date, LocalTime time, String location, String status){
         this.appointmentID = appointmentID;
-        this.patient = patient;
-        this.doctor = doctor;
+//        this.patient = patient;
+//        this.doctor = doctor;
+        this.patient_ID = patient_ID;
+        this.doctor_ID = doctor_ID;
         this.appointmentDate = date;
         this.appointmentTime = time;
         this.location = location;
         this.status = status;
     }
     
-    public String getPatientName(){
-        return this.patient;
-    }
-    
-    public String getDoctorName(){
-        return this.doctor;
-    }
+//    public String getPatientName(){
+//        return this.patient;
+//    }
+//    
+//    public String getDoctorName(){
+//        return this.doctor;
+//    }
     
     public int getPatientID(){
         return this.patient_ID;
