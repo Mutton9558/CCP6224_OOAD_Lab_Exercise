@@ -41,18 +41,30 @@ public class EditAppointmentUI extends JDialog implements ActionListener{
         formBoxConstraints.gridx = 0;
         formBoxConstraints.gridy = 1;
         formBoxConstraints.gridwidth = 1;
-        this.patientTextField = new JTextField(this.oldAppointment.getPatientData().getUserName(), 24);
+        JLabel patientIDLabel = new JLabel("Patient ID: ");
+        content.add(patientIDLabel, formBoxConstraints);
+        
+        formBoxConstraints.gridx = 0;
+        formBoxConstraints.gridy = 2;
+        formBoxConstraints.gridwidth = 1;
+        this.patientTextField = new JTextField(Integer.toString(this.oldAppointment.getPatientID()), 24);
         this.patientTextField.setEnabled(false);
         content.add(this.patientTextField, formBoxConstraints);        
         
         formBoxConstraints.gridx = 1;
         formBoxConstraints.gridy = 1;
-        this.doctorTextField = new JTextField(this.oldAppointment.getDoctorData().getUserName(), 24);
+        formBoxConstraints.gridwidth = 1;
+        JLabel doctorIDLabel = new JLabel("Doctor ID: ");
+        content.add(doctorIDLabel, formBoxConstraints);
+        
+        formBoxConstraints.gridx = 1;
+        formBoxConstraints.gridy = 2;
+        this.doctorTextField = new JTextField(Integer.toString(this.oldAppointment.getDoctorID()), 24);
         this.doctorTextField.setEnabled(false);
         content.add(this.doctorTextField, formBoxConstraints);
         
         formBoxConstraints.gridx = 0;
-        formBoxConstraints.gridy = 2;
+        formBoxConstraints.gridy = 3;
         Date appointmentDate = Date.from(this.oldAppointment.getAppointmentDate().atStartOfDay(ZoneId.systemDefault()).toInstant());
         SpinnerDateModel dateModel = new SpinnerDateModel(appointmentDate, null, null, Calendar.DAY_OF_MONTH);
         this.appointmentDateField = new JSpinner(dateModel);
@@ -63,7 +75,7 @@ public class EditAppointmentUI extends JDialog implements ActionListener{
         
         formBoxConstraints.gridx = 1;
         formBoxConstraints.gridwidth = 1;
-        formBoxConstraints.gridy = 2;
+        formBoxConstraints.gridy = 3;
         java.time.Instant instant = this.oldAppointment.getAppointmentTime().atDate(LocalDate.now())
                                              .atZone(ZoneId.systemDefault())
                                              .toInstant();
@@ -76,18 +88,18 @@ public class EditAppointmentUI extends JDialog implements ActionListener{
         
         formBoxConstraints.gridwidth = GridBagConstraints.REMAINDER;
         formBoxConstraints.gridx = 0;
-        formBoxConstraints.gridy = 3;
+        formBoxConstraints.gridy = 4;
         this.locationTextField = new JTextField(this.oldAppointment.getLocation(), 48);
         content.add(this.locationTextField, formBoxConstraints);
         
         formBoxConstraints.gridwidth = GridBagConstraints.REMAINDER;
-        formBoxConstraints.gridy = 4;
+        formBoxConstraints.gridy = 5;
         String[] choices = {"Scheduled", "Completed", "Cancelled"};
         this.statusDropDown = new JComboBox<>(choices);
         this.statusDropDown.setSelectedItem(oldAppointment.getStatus());
         content.add(this.statusDropDown, formBoxConstraints);
         
-        formBoxConstraints.gridy = 5;
+        formBoxConstraints.gridy = 6;
         this.submitButton = new JButton("Edit Appointment");
         this.submitButton.addActionListener(this);
         content.add(this.submitButton, formBoxConstraints);

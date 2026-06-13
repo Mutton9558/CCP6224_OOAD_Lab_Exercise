@@ -2,18 +2,18 @@ import javax.swing.JPanel;
 import java.util.ArrayList;
 
 public class DashboardPanels{
+    private final SystemController system;
     private final User client;
     private ArrayList<DashboardPanel> panels = new ArrayList<>();
 
     public class ActiveAppointmentPanel implements DashboardPanel{
         
-        private AppointmentController controller;
-        private ActiveAppointmentsUI panelUI;
+        private final AppointmentController appointmentController;
+        private final ActiveAppointmentsUI panelUI;
         
         public ActiveAppointmentPanel(){
-            this.controller = new AppointmentController();
-            ArrayList<Appointment> list = controller.getAllAppointments();
-            this.panelUI = new ActiveAppointmentsUI(client, list, controller::getAppointment);
+            this.appointmentController = system.getAppointmentControllerInstance();
+            this.panelUI = new ActiveAppointmentsUI(client, appointmentController);
         }
         
         @Override
@@ -34,10 +34,12 @@ public class DashboardPanels{
     
     public class PrescriptionPanel implements DashboardPanel{
 
-        private PrescriptionsUI panelUI;
+        private final PrescriptionController prescriptionController;
+        private final PrescriptionsUI panelUI;
         
         public PrescriptionPanel(){
-            this.panelUI = new PrescriptionsUI();
+            this.prescriptionController = system.getPrescriptionControllerInstance();
+            this.panelUI = new PrescriptionsUI(client, prescriptionController);
         }
         
         @Override
@@ -106,12 +108,12 @@ public class DashboardPanels{
     
     public class DoctorRecordsPanel implements DashboardPanel{
 
-        private DoctorController controller;
+        private UserController controller;
         private DoctorRecordsUI panelUI;
         
         public DoctorRecordsPanel(){
-            this.controller = new DoctorController();
-            this.panelUI = new DoctorRecordsUI(client, controller::getDoctor);
+            this.controller = system.getUserControllerInstance();
+            this.panelUI = new DoctorRecordsUI(client, controller);
         }
         
         @Override
@@ -133,9 +135,11 @@ public class DashboardPanels{
     public class ReceptionistRecordsPanel implements DashboardPanel{
 
         private ReceptionistRecordsUI panelUI;
+        private UserController controller;
         
         public ReceptionistRecordsPanel(){
-            this.panelUI = new ReceptionistRecordsUI(client);
+            this.controller = system.getUserControllerInstance();
+            this.panelUI = new ReceptionistRecordsUI(client, controller);
         }
         
         @Override
@@ -178,8 +182,9 @@ public class DashboardPanels{
         }
     }
         
-    public DashboardPanels(User client){
-        this.client = client;
+    public DashboardPanels(SystemController system){
+        this.system = system;
+        this.client = system.getUserControllerInstance().getCurrentUser();
         
         this.panels.add(new ActiveAppointmentPanel());
         this.panels.add(new PrescriptionPanel());

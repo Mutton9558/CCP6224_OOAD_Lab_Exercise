@@ -3,9 +3,6 @@ import javax.swing.*;
 import javax.swing.table.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class ActiveAppointmentsUI extends JPanel {
@@ -17,11 +14,10 @@ public class ActiveAppointmentsUI extends JPanel {
     private List<Appointment> appointmentList = new ArrayList<>();
     private DefaultTableModel tableModel;
     private JTable table;
-
-    public ActiveAppointmentsUI(User client, ArrayList<Appointment> list, Function<Integer, Appointment> searchAppointment) {
-
+    private UserController userController;
+    public ActiveAppointmentsUI(User client, AppointmentController appointmentController) {
         this.activeClient = client;
-        this.appointmentList = list;
+        this.appointmentList = appointmentController.getAllAppointments();
         
         this.setLayout(new GridBagLayout());
         GridBagConstraints adj = new GridBagConstraints();
@@ -92,7 +88,7 @@ public class ActiveAppointmentsUI extends JPanel {
             try {
                 int targetID = Integer.parseInt(
                         searchField.returnTextField().getText().trim());
-                Appointment target = searchAppointment.apply(targetID);
+                Appointment target = appointmentController.getAppointment(targetID);
                 if (target == null) {
                     JOptionPane.showMessageDialog(this,
                             "Appointment not found.", "Search",
@@ -102,7 +98,7 @@ public class ActiveAppointmentsUI extends JPanel {
                 tableModel.setRowCount(0);
                 appointmentList.clear();
                 appointmentList.add(target);
-                addRow(target, canEdit);
+                loadAppointments();
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this,
                         "Please enter a valid numeric ID.", "Invalid Input",
@@ -171,8 +167,10 @@ public class ActiveAppointmentsUI extends JPanel {
     private void addRow(Appointment a, boolean canEdit) {
         Object[] row = new Object[canEdit ? 7 : 6];
         row[0] = a.getAppointmentID();
-        row[1] = a.getPatientData().getUserName();
-        row[2] = a.getDoctorData().getUserName();
+      //row[1] = a.getPatientName();
+        row[1] = a.getPatientName() + "#" + a.getPatientID();
+      //row[2] = a.getDoctorName();
+        row[2] = a.getDoctorName() + "#" + a.getDoctorID();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         row[3] = a.getAppointmentDate().toString() + " " + a.getAppointmentTime().format(formatter);
         row[4] = a.getLocation();
@@ -224,12 +222,10 @@ public class ActiveAppointmentsUI extends JPanel {
     private static class EditButtonEditor extends DefaultCellEditor {
 
         private final JButton button;
-        private final List<Appointment> appointmentList;
         private int currentRow;
 
         public EditButtonEditor(List<Appointment> appointmentList, JPanel parent) {
             super(new JCheckBox()); // DefaultCellEditor requires a component
-            this.appointmentList = appointmentList;
 
             button = new JButton("Edit");
             button.addActionListener(e -> {

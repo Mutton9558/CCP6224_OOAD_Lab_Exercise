@@ -1,10 +1,44 @@
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PrescriptionController {
 
-    public void createPrescription(String prescription_Name, String dose, String condition, LocalDate date, String frequency){
-
+    private List<Prescription> prescList = new ArrayList<Prescription>();
+    private static PrescriptionController instance;
+    
+    private PrescriptionController(){}
+    
+    public static PrescriptionController getInstance(){
+        if(instance == null){
+            instance = new PrescriptionController();
+        }
+        
+        return instance;
     }
+
+    public Prescription getPrescription(int prescID){
+        Prescription temp = new Prescription();
+        return temp;
+    }
+
+    public List<Prescription> getPatientPrescription(int patientID){
+        List<Prescription> patientPrescriptions = new ArrayList<Prescription>();
+        for(Prescription presc : prescList){
+            if(presc.getPrescriptionPatient() == patientID){
+                patientPrescriptions.add(presc);
+            }
+        }
+        return patientPrescriptions;
+    }
+
+    public void createPrescription(String prescription_Name, String dose, String condition, String frequency, int patient_ID, LocalDate date){
+        Prescription presc = new Prescription(prescription_Name, dose, condition, frequency, patient_ID, date);
+        prescList.add(presc);
+    }
+    
+
+    
 
     // public Prescription[] getPatientPrescriptions(int patient_ID){
 

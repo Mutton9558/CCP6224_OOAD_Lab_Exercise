@@ -3,33 +3,43 @@ import java.time.LocalTime;
 
 public class Appointment {
     private int appointmentID;
+//    private String patient;
+//    private String doctor;
     private int patient_ID;
     private int doctor_ID;
+    private String patientName;
+    private String doctorName;
     private LocalDate appointmentDate;
     private LocalTime appointmentTime;
     private String location;
     private String status;
     
-    public Appointment(int appointmentID, int patient, int doctor, LocalDate date, LocalTime time, String location, String status){
+    public Appointment(int appointmentID, int patientID, int doctorID, String patientName, String doctorName, LocalDate date, LocalTime time, String location, String status){
         this.appointmentID = appointmentID;
-        this.patient_ID = patient;
-        this.doctor_ID = doctor;
+        this.patient_ID = patientID;
+        this.doctor_ID = doctorID;
+        this.patientName = patientName;
+        this.doctorName = doctorName;
         this.appointmentDate = date;
         this.appointmentTime = time;
         this.location = location;
         this.status = status;
     }
     
-    public User getPatientData(){
-        User appointmentPatient = new Patient("Shawn", "1");
-//        db stuff here, call user controller
-        return appointmentPatient;
+    public String getPatientName(){
+        return this.patientName;
     }
     
-    public User getDoctorData(){
-        User assignedDoctor = new Doctor("Imran", "1");
-//        db stuff here, call user controller
-        return assignedDoctor;
+    public String getDoctorName(){
+        return this.doctorName;
+    }
+    
+    public int getPatientID(){
+        return this.patient_ID;
+    }
+    
+    public int getDoctorID(){
+        return this.doctor_ID;
     }
     
     public int getAppointmentID(){
@@ -52,10 +62,10 @@ public class Appointment {
         return this.status;
     }
     
-    public void editAppointment(LocalDate newDate, LocalTime newTime, String newStatus){
-        this.appointmentDate = newDate;
-        this.appointmentTime = newTime;
-        this.status = newStatus;
-//        db update pls use AppointmentController
-    }
+//    public void editAppointment(LocalDate newDate, LocalTime newTime, String newStatus){
+//        this.appointmentDate = newDate;
+//        this.appointmentTime = newTime;
+//        this.status = newStatus;
+////        db update pls use AppointmentController
+//    }
 }

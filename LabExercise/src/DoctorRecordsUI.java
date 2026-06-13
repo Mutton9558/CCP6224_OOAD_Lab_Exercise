@@ -3,21 +3,16 @@ import javax.swing.*;
 import javax.swing.table.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 public class DoctorRecordsUI extends JPanel{
-     User activeClient;
-    UIConstants uiConstant = new UIConstants();
+    private final UIConstants uiConstant = new UIConstants();
 
     // Store Doctors separately so the button editor can reference them by row
-    private List<Doctor> doctorList = new ArrayList<>();
+    private List<User> doctorList = new ArrayList<>();
     private DefaultTableModel tableModel;
     private JTable table;
 
-    public DoctorRecordsUI(User client, Function<Integer, Doctor> searchDoctor) {
-
-        this.activeClient = client;
-        
+    public DoctorRecordsUI(User client, UserController controller) {
         this.setLayout(new GridBagLayout());
         GridBagConstraints adj = new GridBagConstraints();
         this.setBackground(uiConstant.Azure);
@@ -72,16 +67,18 @@ public class DoctorRecordsUI extends JPanel{
             try {
                 int targetID = Integer.parseInt(
                         searchField.returnTextField().getText().trim());
-                Doctor target = searchDoctor.apply(targetID);
+                User target = controller.searchUser(targetID, "Doctor");
                 if (target == null) {
                     JOptionPane.showMessageDialog(this,
                             "Doctor not found.", "Search",
                             JOptionPane.INFORMATION_MESSAGE);
                     return;
                 }
+                
                 tableModel.setRowCount(0);
                 doctorList.clear();
                 doctorList.add(target);
+                loadDoctors();
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this,
                         "Please enter a valid numeric ID.", "Invalid Input",
@@ -108,7 +105,7 @@ public class DoctorRecordsUI extends JPanel{
         JButton createDoctor = new JButton("Create Doctor");
         createDoctor.addActionListener(e -> {
             Window window = SwingUtilities.getWindowAncestor(this);
-            DoctorCreationUI dialog = new DoctorCreationUI(window);
+            DoctorCreationUI dialog = new DoctorCreationUI(window, controller);
             dialog.setVisible(true);
         });
         this.add(createDoctor, adj);
@@ -137,21 +134,21 @@ public class DoctorRecordsUI extends JPanel{
         adj.insets = new Insets(0, 40, 25, 40);
         this.add(scrollPane, adj);
 
-        Doctor test = new Doctor("Shawn Huang", "11111", "Male",20 , "Shawn's Office", "Neurology");
-        doctorList.add(test);
+        ArrayList<User> initialData = controller.getUsersByRole("Doctor");
+        doctorList = initialData;
         loadDoctors();
         this.setFocusable(true);
     }
 
     public void loadDoctors() {
         tableModel.setRowCount(0);
-        for (Doctor a : doctorList) {
+        for (User a : doctorList) {
             addRow(a);
         }
         autoSizeColumns(table);
     }
 
-    private void addRow(Doctor a) {
+    private void addRow(User a) {
         Object[] row = new Object[6];
         row[0] = a.getUserID();
         row[1] = a.getUserName();

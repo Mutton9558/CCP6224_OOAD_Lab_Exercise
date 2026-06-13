@@ -1,67 +1,69 @@
 import java.util.*;
 
 public class Doctor extends User{
-    private int doctor_ID, user_Age;
-    private String user_Name, password, office, specialisation, user_Gender;
-    private Map<Integer, Patient> PatientList = new HashMap<>(); //Key is patient_ID, Value is Patient
-    private Map<Integer, Appointment> AppointmentList = new HashMap(); //Key is appointment_ID, Value is Appointment
+    private String office, specialisation;
+    private int doctorID;
 
-    public Doctor(String username, String password, String gender, int age, String office, String specialisation){
-        super(username, password, gender, age);
-        this.doctor_ID = this.setUserID("DOCTOR");
+    public Doctor(int id, String username, String password, String gender, int age, String office, String specialisation){
+        super(id, username, password, gender, age);
+        this.doctorID = id;
         this.office = office;
         this.specialisation = specialisation;
     }
     
-    public Doctor(String username, String password){
-        super(username, password);
-        this.doctor_ID = this.setUserID("Doctor");
-    }
+//    public Doctor(String username, String password){
+//        super(username, password);
+//        this.doctor_ID = this.setUserID("Doctor");
+//    }
 
     public Doctor(){}
 
     @Override
-    public int getUserID(){
-        return this.doctor_ID;
+    public String returnRole(){
+        return "Doctor";
     }
-
-    public String getOffice(){
+    
+    @Override
+    public final String getOffice(){
         return this.office;
     }
 
-    public String getSpecialisation(){
+    @Override
+    public final String getSpecialisation(){
         return this.specialisation;
     }
 
-    public Map<Integer, Patient> getPatientList(){
-        return this.PatientList;
-    }
-
-    public Map<Integer, Appointment> getAppointmentList(){
-        return this.AppointmentList;
-    }
+//    public Map<Integer, Patient> getPatientList(){
+//        return this.PatientList;
+//    }
+//
+//    public Map<Integer, Appointment> getAppointmentList(){
+//        return this.AppointmentList;
+//    }
 
     //Setters
+    @Override
     public void setOffice(String office){
         this.office = office;
     }
 
-    public void setSpecialisation(String specialisation){
+    @Override
+    public void setSpecialization(String specialisation){
         this.specialisation = specialisation;
     }
 
-    public void setPatientList(Map<Integer, Patient> patientList){
-        this.PatientList = patientList;
-    }
-
-    public void setAppointmentList(Map<Integer, Appointment> appointmentList){
-        this.AppointmentList = appointmentList;
-    }
-    
-    @Override
-    public int returnRole(){
-        return this.doctor_ID;
-    }
+//    public void setPatientList(Map<Integer, Patient> patientList){
+//        this.PatientList = patientList;
+//    }
+//
+//    public void setAppointmentList(Map<Integer, Appointment> appointmentList){
+//        this.AppointmentList = appointmentList;
+//    }
+//    
+//    @Override
+//    public int returnRole(){
+//        return this.doctor_ID;
+//    }
     
     @Override
     public boolean canViewPrescriptions(){
@@ -142,4 +144,30 @@ public class Doctor extends User{
     public boolean canSearchRecords(){
         return true;
     }
+    
+    @Override
+    public boolean canEditUserProfileInfo(){
+        return false;
+    };
+    
+    @Override
+    public boolean canEditUserProfile(){
+        return true;
+    };
+    
+    @Override
+    public boolean canEditDiagnosis(){
+        return true;
+    };
+    
+    @Override
+    public boolean canEditPrescription(){
+        return true;
+    };
+    
+    @Override
+    public boolean hasMedicalRecords(){
+        return false;
+    };
+
 }

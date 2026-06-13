@@ -1,12 +1,8 @@
 public class Receptionist extends User{
-    private int receptionist_ID, user_Age;
-    private String user_Name, password, user_Gender;
-    
     public Receptionist(){}
     
-    public Receptionist(String username, String password){
-        super(username, password);
-        this.receptionist_ID = this.setUserID("RECEPTIONIST");
+    public Receptionist(int id, String username, String password, String gender, int age){
+        super(id, username, password, gender, age);
     }
     
     @Override
@@ -93,4 +89,29 @@ public class Receptionist extends User{
     public boolean canSearchRecords(){
         return true;
     }
+    
+    @Override
+    public boolean canEditUserProfileInfo(){
+        return true;
+    };
+    
+    @Override
+    public boolean canEditUserProfile(){
+        return true;
+    };
+    
+    @Override
+    public boolean canEditDiagnosis(){
+        return false;
+    };
+    
+    @Override
+    public boolean canEditPrescription(){
+        return false;
+    };
+    
+    @Override
+    public boolean hasMedicalRecords(){
+        return false;
+    };
 }

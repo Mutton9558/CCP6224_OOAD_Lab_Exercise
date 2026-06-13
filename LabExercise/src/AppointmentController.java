@@ -7,12 +7,52 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Map;
+import java.util.HashMap;
 
 public class AppointmentController {
-    private Appointment appointmentList[];  
+    private Map<Integer, Appointment> appointmentMap = new HashMap();  
+    private static AppointmentController instance;
     
-    public AppointmentController(){}
+    private AppointmentController(){
+        String query = "SELECT * FROM Appointments";
+         try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement statement = conn.prepareStatement(query)) {
+            
+             ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                LocalDate recordedDate = LocalDate.parse(rs.getString("appointment_date"));
+                LocalTime recordedStartTime = LocalTime.parse(rs.getString("appointment_start_time"));
+                int appointmentID = rs.getInt("appointment_id");
+                UserController tempUC = UserController.getInstance();
+//                Appointment recordedAppointment = new Appointment(rs.getInt("appointment_id"), tempUC.searchUser(rs.getInt("patient_id"), "Patient").getUserName(), tempUC.searchUser(rs.getInt("doctor_id"), "Doctor").getUserName(), recordedDate, recordedStartTime, rs.getString("appointment_location"), rs.getString("appointment_status"));
+                Appointment recordedAppointment = new Appointment(
+                        appointmentID, 
+                        rs.getInt("patient_id"),  
+                        rs.getInt("doctor_id"), 
+                        tempUC.searchUser(rs.getInt("patient_id")).getUserName(),
+                        tempUC.searchUser(rs.getInt("doctor_id")).getUserName(),
+                        recordedDate, recordedStartTime, 
+                        rs.getString("appointment_location"), 
+                        rs.getString("appointment_status")
+                );
+                appointmentMap.put(appointmentID, recordedAppointment);
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+         
+    }
     
+    public static AppointmentController getInstance(){
+        if(instance == null){
+            instance = new AppointmentController();
+        }
+        
+        return instance;
+    }
+        
     public void createAppointment(int patientID, int doctorID, LocalDate date, LocalTime time, String location){
         
     }
@@ -32,27 +72,15 @@ public class AppointmentController {
     }
     
     public Appointment getAppointment(int id){
-        Appointment temp = new Appointment(id, 1, 1, LocalDate.now(), LocalTime.now(), "s", "temp");
-        return temp;
+        return this.appointmentMap.get(id);
     }
     
     public ArrayList<Appointment> getAllAppointments(){
         ArrayList<Appointment> temp = new ArrayList<>();
-        String query = "SELECT * FROM Appointments";
-         try (Connection conn = DatabaseConfig.getConnection();
-             PreparedStatement statement = conn.prepareStatement(query)) {
-            
-             ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                LocalDate recordedDate = LocalDate.parse(rs.getString("appointment_date"));
-                LocalTime recordedStartTime = LocalTime.parse(rs.getString("appointment_start_time"));
-                Appointment recordedAppointment = new Appointment(rs.getInt("appointment_id"), rs.getInt("patient_id"), rs.getInt("doctor_id"), recordedDate, recordedStartTime, rs.getString("appointment_location"), rs.getString("appointment_status"));
-                temp.add(recordedAppointment);
-            }
-            
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        this.appointmentMap.forEach((key, val) -> {
+            temp.add(val);
+        });
+        
         return temp;
     }
 }
