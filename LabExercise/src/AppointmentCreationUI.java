@@ -15,8 +15,9 @@ public class AppointmentCreationUI extends JDialog implements ActionListener{
     private JButton submitButton;
     private UIConstants uiconst = new UIConstants();
     private Window parent;
+    private AppointmentController appointmentController;
     
-    public AppointmentCreationUI(Window parent){
+    public AppointmentCreationUI(Window parent, AppointmentController appointmentController){
         super(parent, "Create Appointment", Dialog.ModalityType.APPLICATION_MODAL);
         this.parent = parent;
         JPanel content = new JPanel();
@@ -107,20 +108,20 @@ public class AppointmentCreationUI extends JDialog implements ActionListener{
                 return;
             }
             
-            patientTextField.returnTextField().setEnabled(false);
-            doctorTextField.returnTextField().setEnabled(false);
-            appointmentDateField.setEnabled(false);
-            appointmentTimeField.setEnabled(false);
-            locationTextField.returnTextField().setEnabled(false);
+            this.patientTextField.returnTextField().setEnabled(false);
+            this.doctorTextField.returnTextField().setEnabled(false);
+            this.appointmentDateField.setEnabled(false);
+            this.appointmentTimeField.setEnabled(false);
+            this.locationTextField.returnTextField().setEnabled(false);
         } catch (NumberFormatException ex){
             JOptionPane.showMessageDialog(this,
-                            "Patient or Doctor ID must be a number", "Invalid Input",
+                            "Patient or Doctor ID must be a number.", "Invalid Input",
                             JOptionPane.WARNING_MESSAGE);
             ex.printStackTrace();
             return;
         } catch (java.time.format.DateTimeParseException ex){
             JOptionPane.showMessageDialog(this,
-                            "Cannot save date and time", "Invalid Input",
+                            "Cannot save date and time.", "Invalid Input",
                             JOptionPane.WARNING_MESSAGE);
             ex.printStackTrace();
             return;
@@ -130,9 +131,21 @@ public class AppointmentCreationUI extends JDialog implements ActionListener{
     }
     
     public void submitApproval(int patient, int doctor, LocalDate appointmentDate, LocalTime appointmentTime, String appointmentLocation){
-        System.out.println("Submit");
-        JOptionPane.showMessageDialog(this,
-                            "Successfully created appointment", "Invalid Input",
+        boolean success = appointmentController.createAppointment(patient, doctor, appointmentDate, appointmentTime, appointmentLocation);
+        if(success){
+            JOptionPane.showMessageDialog(this,
+                            "Successfully created appointment!", "Success",
                             JOptionPane.INFORMATION_MESSAGE);
+            dispose();
+        } else {
+            JOptionPane.showMessageDialog(this,
+                            "Could not create appointment. Check if your details are correct!", "Error Occured",
+                            JOptionPane.WARNING_MESSAGE);
+            this.patientTextField.returnTextField().setEnabled(true);
+            this.doctorTextField.returnTextField().setEnabled(true);
+            this.appointmentDateField.setEnabled(true);
+            this.appointmentTimeField.setEnabled(true);
+            this.locationTextField.returnTextField().setEnabled(true);
+        }
     }
 }

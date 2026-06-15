@@ -36,7 +36,7 @@ public class LoginUI extends JDialog implements ActionListener {
         adj.gridy = 1;
         adj.anchor = GridBagConstraints.WEST;
         adj.insets = new Insets(10, 50, 2, 50);
-        user_label = new JLabel("Username:");
+        user_label = new JLabel("User ID:");
         user_label.setForeground(Color.WHITE);
         user_label.setFont(new Font("Sans-Serif", Font.PLAIN, 14));
         panel.add(user_label, adj);
@@ -127,6 +127,9 @@ public class LoginUI extends JDialog implements ActionListener {
         boolean success = controller.validateLogin(userID, password);
 
         if (success) {
+            JOptionPane.showMessageDialog(this,
+                            "Successfully logged in!", "Success",
+                            JOptionPane.INFORMATION_MESSAGE);
             dispose();
             callback.onLoginSuccess(controller.getSystem());
         } else {

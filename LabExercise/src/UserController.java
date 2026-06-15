@@ -133,21 +133,12 @@ public class UserController{
     }
     
 
-    public void loginUser(int userID, String password){
+    public void checkCredentials(int userID, String password){
         if(userList.containsKey(userID)) {
             User attemptLoginUser = userList.get(userID);
             if(attemptLoginUser.getUserPassword().equals(password)){
                 System.out.println("Successful Login!");
                 this.currentUser = attemptLoginUser;
-                //Send to Login Interface to change to DashboardUI
-            }
-            else{
-                //Loop getting password until get correct password
-                while(!attemptLoginUser.getUserPassword().equals(password)){
-                    System.out.println("Username or password is incorrect! Please try again");
-                    // Send to Login Interface to grab the keyed in username & password
-                    loginUser(userID, password);
-                }
             }
         } else {
             System.out.println("No such user");
@@ -183,7 +174,4 @@ public class UserController{
     public User searchUser(int id){
         return userList.get(id);
     }
-    
-    
-  
 }

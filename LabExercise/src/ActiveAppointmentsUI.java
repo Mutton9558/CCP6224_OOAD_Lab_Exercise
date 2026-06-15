@@ -14,10 +14,10 @@ public class ActiveAppointmentsUI extends JPanel {
     private List<Appointment> appointmentList = new ArrayList<>();
     private DefaultTableModel tableModel;
     private JTable table;
-    private UserController userController;
+    private static AppointmentController appointmentController;
     public ActiveAppointmentsUI(User client, AppointmentController appointmentController) {
         this.activeClient = client;
-        this.appointmentList = appointmentController.getAllAppointments();
+        this.appointmentList = appointmentController.getActiveAppointment();
         
         this.setLayout(new GridBagLayout());
         GridBagConstraints adj = new GridBagConstraints();
@@ -126,8 +126,13 @@ public class ActiveAppointmentsUI extends JPanel {
         createAppointment.setVisible(client.canAddAppointments());
         createAppointment.addActionListener(e -> {
             Window window = SwingUtilities.getWindowAncestor(this);
-            AppointmentCreationUI dialog = new AppointmentCreationUI(window);
+            AppointmentCreationUI dialog = new AppointmentCreationUI(window, appointmentController);
+            dialog.setModal(true);
             dialog.setVisible(true);
+            
+            this.appointmentList.clear();
+            this.appointmentList = appointmentController.getActiveAppointment();
+            loadAppointments();
         });
         this.add(createAppointment, adj);
 
@@ -232,7 +237,7 @@ public class ActiveAppointmentsUI extends JPanel {
                 fireEditingStopped();
                 if (currentRow >= 0 && currentRow < appointmentList.size()) {
                     Window window = SwingUtilities.getWindowAncestor(parent);
-                    EditAppointmentUI dialog = new EditAppointmentUI(window, appointmentList.get(currentRow));
+                    EditAppointmentUI dialog = new EditAppointmentUI(window, appointmentList.get(currentRow), appointmentController);
                     dialog.setVisible(true);
                 }
             });
