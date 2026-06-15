@@ -1,6 +1,6 @@
 import java.awt.*;
-import javax.swing.*;
 import java.util.ArrayList;
+import javax.swing.*;
 
 public class MainUI extends JFrame{
 
@@ -33,6 +33,18 @@ public class MainUI extends JFrame{
 
         //show home page first 
         cardLayout.show(mainPanel, "HOME");
+
+        homepage.butt4.setVisible(true);
+        homepage.butt5.setVisible(false);
+
+        homepage.butt4.addActionListener(event -> {
+            LoginUI loginDialog = new LoginUI(this, loggedInSystem -> {
+                cardLayout.show(mainPanel, "DASHBOARD");
+                homepage.butt4.setVisible(false);
+                homepage.butt5.setVisible(true);
+            });
+            loginDialog.setVisible(true);
+        });
 
         //add Action listeners to the buttons that exist in those pages 
         homepage.butt5.addActionListener(event -> { cardLayout.show(mainPanel, "DASHBOARD");});
