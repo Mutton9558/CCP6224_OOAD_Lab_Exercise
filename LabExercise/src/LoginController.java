@@ -20,7 +20,7 @@ public class LoginController {
 
     // returns true if login succeeded, false if not
     public boolean validateLogin(int userID, String password) {
-        system.getUserControllerInstance().loginUser(userID, password);
+        system.getUserControllerInstance().checkCredentials(userID, password);
         return system.getUserControllerInstance().getCurrentUser() != null;
     }
 

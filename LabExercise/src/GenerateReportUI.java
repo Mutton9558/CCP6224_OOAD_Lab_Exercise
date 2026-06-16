@@ -11,11 +11,7 @@ public class GenerateReportUI extends JPanel {
 
     // THE FOLLOWING CONTENT IS SIMPLY TO TEST FUNCTIONALITY
     JLabel lb1;
-    public GenerateReportUI() {
-
-        UserController userController = UserController.getInstance();
-        AppointmentController appointmentController = AppointmentController.getInstance();
-
+    public GenerateReportUI(UserController userController, AppointmentController appointmentController) {
         this.setLayout(new GridBagLayout());
         GridBagConstraints adj = new GridBagConstraints();
         this.setBackground(uiConstant.Azure);

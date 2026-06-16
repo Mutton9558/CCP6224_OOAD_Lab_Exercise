@@ -14,10 +14,11 @@ public class ActiveAppointmentsUI extends JPanel {
     private List<Appointment> appointmentList = new ArrayList<>();
     private DefaultTableModel tableModel;
     private JTable table;
-    private UserController userController;
+    private static AppointmentController appointmentController;
     public ActiveAppointmentsUI(User client, AppointmentController appointmentController) {
         this.activeClient = client;
-        this.appointmentList = appointmentController.getAllAppointments();
+        this.appointmentController = appointmentController;
+        this.appointmentList = appointmentController.getActiveAppointmentsByRole(client.getUserID(), client.returnRole());
         
         this.setLayout(new GridBagLayout());
         GridBagConstraints adj = new GridBagConstraints();
@@ -76,7 +77,12 @@ public class ActiveAppointmentsUI extends JPanel {
         if (canEdit) {
             table.getColumn("Edit").setCellRenderer(new EditButtonRenderer());
             table.getColumn("Edit").setCellEditor(
-                    new EditButtonEditor(appointmentList, this));
+                    new EditButtonEditor(appointmentList, this, ()-> {
+                        this.appointmentList.clear();
+                        this.appointmentList = this.appointmentController.getActiveAppointmentsByRole(client.getUserID(), client.returnRole());
+                        loadAppointments();
+                    })
+            );
         }
 
         adj.gridy = 2;
@@ -126,8 +132,13 @@ public class ActiveAppointmentsUI extends JPanel {
         createAppointment.setVisible(client.canAddAppointments());
         createAppointment.addActionListener(e -> {
             Window window = SwingUtilities.getWindowAncestor(this);
-            AppointmentCreationUI dialog = new AppointmentCreationUI(window);
+            AppointmentCreationUI dialog = new AppointmentCreationUI(window, appointmentController);
+            dialog.setModal(true);
             dialog.setVisible(true);
+            
+            this.appointmentList.clear();
+            this.appointmentList = this.appointmentController.getActiveAppointmentsByRole(client.getUserID(), client.returnRole());
+            loadAppointments();
         });
         this.add(createAppointment, adj);
 
@@ -224,7 +235,7 @@ public class ActiveAppointmentsUI extends JPanel {
         private final JButton button;
         private int currentRow;
 
-        public EditButtonEditor(List<Appointment> appointmentList, JPanel parent) {
+        public EditButtonEditor(List<Appointment> appointmentList, JPanel parent, Runnable onRefresh) {
             super(new JCheckBox()); // DefaultCellEditor requires a component
 
             button = new JButton("Edit");
@@ -232,8 +243,11 @@ public class ActiveAppointmentsUI extends JPanel {
                 fireEditingStopped();
                 if (currentRow >= 0 && currentRow < appointmentList.size()) {
                     Window window = SwingUtilities.getWindowAncestor(parent);
-                    EditAppointmentUI dialog = new EditAppointmentUI(window, appointmentList.get(currentRow));
+                    EditAppointmentUI dialog = new EditAppointmentUI(window, appointmentList.get(currentRow), appointmentController);
+                    dialog.setModal(true);
                     dialog.setVisible(true);
+                    
+                    onRefresh.run();
                 }
             });
         }

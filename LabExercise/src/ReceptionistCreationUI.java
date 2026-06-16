@@ -95,9 +95,8 @@ public class ReceptionistCreationUI extends JDialog implements ActionListener{
     
     public void registerReceptionist(String name, String password, String gender, int age, String role){
         controller.registerUser(name, password, gender, age, role);
-        System.out.println("Submit");
         JOptionPane.showMessageDialog(this,
-                            "Successfully created Receptionist", "Invalid Input",
+                            "Successfully created Receptionist", "Success",
                             JOptionPane.INFORMATION_MESSAGE);
         
     }

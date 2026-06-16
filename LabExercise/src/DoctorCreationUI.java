@@ -122,9 +122,8 @@ public class DoctorCreationUI extends JDialog implements ActionListener{
     
     public void registerDoctor(String name, String password, int age, String gender, String office, String specialisation){
         controller.registerUser(name, password, gender, age, "Doctor", office, specialisation);
-        System.out.println("Submit");
         JOptionPane.showMessageDialog(this,
-                            "Successfully created doctor", "Invalid Input",
+                            "Successfully created doctor", "Success",
                             JOptionPane.INFORMATION_MESSAGE);
         
     }

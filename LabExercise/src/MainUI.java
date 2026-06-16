@@ -24,12 +24,10 @@ public class MainUI extends JFrame{
         // create instance of the main UIs
         HomePageUI homepage = new HomePageUI();
         
-        DashboardPanels panelList = new DashboardPanels(system);
-        ArrayList<DashboardPanel> panels = panelList.returnDashboardPanels();
-        DashboardUI dashboard = new DashboardUI(panels);
+        
 
         mainPanel.add(homepage, "HOME");
-        mainPanel.add(dashboard, "DASHBOARD");
+        
 
         //show home page first 
         cardLayout.show(mainPanel, "HOME");
@@ -39,10 +37,18 @@ public class MainUI extends JFrame{
 
         homepage.butt4.addActionListener(event -> {
             LoginUI loginDialog = new LoginUI(this, loggedInSystem -> {
-                cardLayout.show(mainPanel, "DASHBOARD");
+                
+                DashboardPanels panelList = new DashboardPanels(system);
+                ArrayList<DashboardPanel> panels = panelList.returnDashboardPanels();
+                DashboardUI dashboard = new DashboardUI(panels);
+                
+                mainPanel.add(dashboard, "DASHBOARD");
+                
+
                 homepage.butt4.setVisible(false);
                 homepage.butt5.setVisible(true);
             });
+            loginDialog.setModal(true);
             loginDialog.setVisible(true);
         });
 
@@ -65,7 +71,6 @@ public class MainUI extends JFrame{
 //        User tempUser = controller.getCurrentUser();
 //        MainUI test1 = new MainUI(tempUser);
           SystemController temp = new SystemController();
-          temp.getUserControllerInstance().loginUser(1004, "test04");
           MainUI test = new MainUI(temp);
     }
 }
