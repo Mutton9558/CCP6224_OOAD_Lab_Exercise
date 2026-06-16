@@ -35,8 +35,9 @@ public class Admin extends User{
         return true;
     };
 
+    @Override
     public boolean canViewActiveAppointments(){
-        return true;
+        return false;
     }
     
     @Override

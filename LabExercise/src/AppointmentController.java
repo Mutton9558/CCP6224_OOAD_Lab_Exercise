@@ -2,6 +2,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -149,7 +150,7 @@ public class AppointmentController {
         return this.appointmentMap.get(id);
     }
     
-    public ArrayList<Appointment> getActiveAppointment(){
+    public ArrayList<Appointment> getActiveAppointments(){
         LocalDateTime curDateTime = LocalDateTime.now();
         ArrayList<Appointment> activeAppointments = new ArrayList<>();
         
@@ -161,6 +162,28 @@ public class AppointmentController {
         });
         
         return activeAppointments;
+    }
+    
+    public ArrayList<Appointment> getActiveAppointmentsByID(int userID){
+        LocalDateTime curDateTime = LocalDateTime.now();
+        ArrayList<Appointment> activeAppointments = new ArrayList<>();
+        
+        this.appointmentMap.forEach((key, val) -> {
+            LocalDateTime appointmentDateTime = LocalDateTime.of(val.getAppointmentDate(), val.getAppointmentTime());
+            if(!appointmentDateTime.isBefore(curDateTime) && (val.getPatientID() == userID || val.getDoctorID() == userID) ){
+                activeAppointments.add(val);
+            }
+        });
+        
+        return activeAppointments;
+    }
+    
+    public ArrayList<Appointment> getActiveAppointmentsByRole(int userID, String role){
+        if(role.equals("Receptionist")){
+            return getActiveAppointments();
+        } else {
+            return getActiveAppointmentsByID(userID);
+        }
     }
     
     public ArrayList<Appointment> getAllAppointments(){

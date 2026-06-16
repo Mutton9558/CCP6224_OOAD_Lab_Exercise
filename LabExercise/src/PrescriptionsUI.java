@@ -110,7 +110,12 @@ public class PrescriptionsUI extends JPanel{
         createPrescription.addActionListener(e -> {
             Window window = SwingUtilities.getWindowAncestor(this);
             PrescriptionCreationUI dialog = new PrescriptionCreationUI(window, controller);
+            dialog.setModal(true);
             dialog.setVisible(true);
+            
+            this.prescriptionList.clear();
+            this.prescriptionList = controller.getPatientPrescription(client.getUserID());
+            loadPrescription();
         });
         this.add(createPrescription, adj);
 
@@ -138,8 +143,7 @@ public class PrescriptionsUI extends JPanel{
         adj.insets = new Insets(0, 40, 25, 40);
         this.add(scrollPane, adj);
 
-        Prescription test = new Prescription("Enkephalin", "1 swig", "Lobotomy","once per day", 1);
-        prescriptionList.add(test);
+        this.prescriptionList = controller.getPatientPrescription(client.getUserID());
         loadPrescription();
         this.setFocusable(true);
     }
