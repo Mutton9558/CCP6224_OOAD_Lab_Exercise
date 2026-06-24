@@ -9,7 +9,7 @@ public class DashboardUI extends JPanel {
     CardLayout cardLayout1 = new CardLayout();
     CardLayout cardLayout2 = new CardLayout();
     JPanel westPanel, contentPanel, mainPanel, northPanel;
-    JButton butt1, butt2, butt3, butt4, butt5;
+    //JButton butt1, butt2, butt3, butt4, butt5;
 
     // this is the main dashboard UI shared accross patient, receptionists, doctors and admin
     public DashboardUI(List<DashboardPanel> dashboardPanels) {
