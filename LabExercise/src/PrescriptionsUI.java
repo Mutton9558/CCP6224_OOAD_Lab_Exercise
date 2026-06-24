@@ -44,13 +44,14 @@ public class PrescriptionsUI extends JPanel{
         searchField.returnTextField().setVisible(canSearch);
         this.add(searchField.returnTextField(), adj);
 
-        String[] columns = new String[6];
+        String[] columns = new String[7];
         columns[0] = "ID";
         columns[1] = "Name";
         columns[2] = "Dose";
         columns[3] = "Frequency";
         columns[4] = "Condition";
         columns[5] = "Date Prescribed";
+        columns[6] = "Date End";
 
         tableModel = new DefaultTableModel(columns, 0) {
 
@@ -114,7 +115,7 @@ public class PrescriptionsUI extends JPanel{
             dialog.setVisible(true);
             
             this.prescriptionList.clear();
-            this.prescriptionList = controller.getPatientPrescription(client.getUserID());
+            this.prescriptionList = controller.getActivePrescription(client.getUserID());
             loadPrescription();
         });
         this.add(createPrescription, adj);
@@ -143,7 +144,7 @@ public class PrescriptionsUI extends JPanel{
         adj.insets = new Insets(0, 40, 25, 40);
         this.add(scrollPane, adj);
 
-        this.prescriptionList = controller.getPatientPrescription(client.getUserID());
+        this.prescriptionList = controller.getActivePrescription(client.getUserID());
         loadPrescription();
         this.setFocusable(true);
     }
@@ -157,13 +158,14 @@ public class PrescriptionsUI extends JPanel{
     }
 
     private void addRow(Prescription a) {
-        Object[] row = new Object[6];
+        Object[] row = new Object[7];
         row[0] = a.getPrescriptionID();
         row[1] = a.getPrescriptionName();
         row[2] = a.getPrescriptionDose();
         row[3] = a.getPrescriptionFrequency();
         row[4] = a.getPrescriptionCondition();
         row[5] = a.getPrescriptionDate().toString();
+        row[6] = a.getPrescriptionEnd().toString();
         tableModel.addRow(row);
     }
 

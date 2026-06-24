@@ -12,6 +12,7 @@ public class PrescriptionCreationUI extends JDialog implements ActionListener{
     private TextFieldWithPlaceholder frequencyTextField;
     private TextFieldWithPlaceholder patientTextField;
     private JSpinner prescDateField;
+    private JSpinner prescEndField;
     private JButton submitButton;
     private UIConstants uiconst = new UIConstants();
     private Window parent;
@@ -62,9 +63,15 @@ public class PrescriptionCreationUI extends JDialog implements ActionListener{
         frequencyTextField = new TextFieldWithPlaceholder("Enter Prescription Frequency", 24);
         content.add(frequencyTextField.returnTextField(), formBoxConstraints);
         
-        // Date Prescribed Prescription
         formBoxConstraints.gridx = 0;
         formBoxConstraints.gridy = 3;
+        formBoxConstraints.gridwidth = 1;
+        JLabel prescStartLabel = new JLabel("Prescription Start: ");
+        content.add(prescStartLabel, formBoxConstraints);
+        
+        // Date Prescribed Prescription
+        formBoxConstraints.gridx = 0;
+        formBoxConstraints.gridy = 4;
         SpinnerDateModel dateModel = new SpinnerDateModel(new Date(), null, null, Calendar.DAY_OF_MONTH);
         prescDateField = new JSpinner(dateModel);
         JSpinner.DateEditor dateEditor = new JSpinner.DateEditor(prescDateField, "yyyy-MM-dd");
@@ -72,12 +79,27 @@ public class PrescriptionCreationUI extends JDialog implements ActionListener{
         content.add(prescDateField, formBoxConstraints);
         
         formBoxConstraints.gridx = 0;
-        formBoxConstraints.gridy = 3;
+        formBoxConstraints.gridy = 5;
+        formBoxConstraints.gridwidth = 1;
+        JLabel prescEndLabel = new JLabel("Prescription End: ");
+        content.add(prescEndLabel, formBoxConstraints);
+        
+        // Date Prescribed Prescription
+        formBoxConstraints.gridx = 0;
+        formBoxConstraints.gridy = 6;
+        SpinnerDateModel dateModel2 = new SpinnerDateModel(new Date(), null, null, Calendar.DAY_OF_MONTH);
+        prescEndField = new JSpinner(dateModel2);
+        JSpinner.DateEditor dateEditor2 = new JSpinner.DateEditor(prescEndField, "yyyy-MM-dd");
+        prescEndField.setEditor(dateEditor2);
+        content.add(prescEndField, formBoxConstraints);
+        
+        formBoxConstraints.gridx = 0;
+        formBoxConstraints.gridy = 7;
         formBoxConstraints.gridwidth = 1;
         patientTextField = new TextFieldWithPlaceholder("Enter Patient ID", 24);
         content.add(patientTextField.returnTextField(), formBoxConstraints);
 
-        formBoxConstraints.gridy = 4;
+        formBoxConstraints.gridy = 8;
         submitButton = new JButton("Create Prescription");
         submitButton.addActionListener(this);
         content.add(submitButton, formBoxConstraints);
@@ -94,7 +116,7 @@ public class PrescriptionCreationUI extends JDialog implements ActionListener{
     public void actionPerformed(ActionEvent e){
         String prescName, prescDose, prescCondition, prescFrequency;
         int patientID;
-        LocalDate prescDate;
+        LocalDate prescDate, prescEnd;
         
         try{            
             prescName = nameTextField.returnTextField().getText();
@@ -103,8 +125,10 @@ public class PrescriptionCreationUI extends JDialog implements ActionListener{
             prescFrequency = frequencyTextField.returnTextField().getText();
             patientID = Integer.parseInt(patientTextField.returnTextField().getText());
             java.util.Date dateValue = (java.util.Date) prescDateField.getValue();
+            java.util.Date endDateVal = (java.util.Date) prescEndField.getValue();
 
             prescDate = dateValue.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+            prescEnd = endDateVal.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
             
             this.nameTextField.returnTextField().setEnabled(false);
             this.doseTextField.returnTextField().setEnabled(false);
@@ -112,6 +136,7 @@ public class PrescriptionCreationUI extends JDialog implements ActionListener{
             this.frequencyTextField.returnTextField().setEnabled(false);
             this.patientTextField.returnTextField().setEnabled(false);
             this.prescDateField.setEnabled(false);
+            this.prescEndField.setEnabled(false);
 
         }catch (NumberFormatException ex){
             JOptionPane.showMessageDialog(this,
@@ -127,11 +152,11 @@ public class PrescriptionCreationUI extends JDialog implements ActionListener{
             ex.printStackTrace();
             return;
         }
-        registerPrescription(prescName, prescDose, prescCondition, prescFrequency, patientID, prescDate);
+        registerPrescription(prescName, prescDose, prescCondition, prescFrequency, patientID, prescDate, prescEnd);
     }
     
-    public void registerPrescription(String name, String dose, String condition, String frequency, int patient_ID, LocalDate date){
-        boolean success = controller.createPrescription(name, dose, condition, frequency, patient_ID, date);
+    public void registerPrescription(String name, String dose, String condition, String frequency, int patient_ID, LocalDate date, LocalDate end){
+        boolean success = controller.createPrescription(name, dose, condition, frequency, patient_ID, date, end);
         if(success){
             JOptionPane.showMessageDialog(this,
                             "Successfully created doctor", "Success",
@@ -147,6 +172,7 @@ public class PrescriptionCreationUI extends JDialog implements ActionListener{
             this.frequencyTextField.returnTextField().setEnabled(true);
             this.patientTextField.returnTextField().setEnabled(true);
             this.prescDateField.setEnabled(true);
+            this.prescEndField.setEnabled(false);
         }
     }
 }

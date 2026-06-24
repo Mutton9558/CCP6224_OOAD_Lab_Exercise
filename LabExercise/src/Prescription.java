@@ -4,7 +4,7 @@ import java.util.Random;
 public class Prescription{
 
     private String prescription_Name, prescription_Dose, prescription_Condition, prescription_Frequency;
-    private LocalDate prescription_Date;
+    private LocalDate prescription_Date, prescription_End;
     private int prescription_ID, prescription_Patient;
     private String prescription_Patient_Name;
 
@@ -23,7 +23,7 @@ public class Prescription{
 //        this.prescription_Patient = patient_ID;
 //   }
 
-   public Prescription(int id, String name, String dose, String condition, String frequency, int patient_ID, LocalDate date, String patient_name){
+   public Prescription(int id, String name, String dose, String condition, String frequency, int patient_ID, LocalDate date, LocalDate end, String patient_name){
         this.prescription_ID = id;
         this.prescription_Name = name;
         this.prescription_Dose = dose;
@@ -32,6 +32,7 @@ public class Prescription{
         this.prescription_Frequency = frequency;
         this.prescription_Patient_Name = patient_name;
         this.prescription_Date = date;
+        this.prescription_End = end;
    }
 
     //setters
@@ -83,6 +84,10 @@ public class Prescription{
 
     public LocalDate getPrescriptionDate(){
         return prescription_Date;
+    }
+    
+    public LocalDate getPrescriptionEnd(){
+        return prescription_End;
     }
 
     public int getPrescriptionID(){
