@@ -24,7 +24,6 @@ public class MainUI extends JFrame{
         // create instance of the main UIs
         HomePageUI homepage = new HomePageUI();
         
-        
 
         mainPanel.add(homepage, "HOME");
         

@@ -6,7 +6,7 @@ import java.util.*;
 
 public class HomePageUI extends JPanel{
 
-    public JButton butt1, butt2, butt3, butt4, butt5;
+    public JButton butt1, butt2, butt3, butt4, butt5, butt6;
     private JDialog aboutDialog, contactDialog;
 
     public HomePageUI() {

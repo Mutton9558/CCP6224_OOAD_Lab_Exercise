@@ -1,22 +1,3 @@
-//import java.awt.*;
-//import javax.swing.*;
-//
-////this is the side panel UI that is shared between receptionist and doctor
-////this UI shows up when the user clicks on the button called "Patient Records" at the side panel
-//public class PatientRecordsUI extends JPanel {
-//
-//    // THE FOLLOWING CONTENT IS SIMPLY TO TEST FUNCTIONALITY
-//    JLabel lb1;
-//    public PatientRecordsUI() {
-//
-//        //table of patient records
-//        //placeHOLDER for me(els)
-//        setBackground(Color.RED);
-//        lb1 = new JLabel("PATIENT RECORDS BUTTON WAS PRESSED");
-//        add(lb1);
-//        setVisible(true);
-//    }
-//}
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.*;
@@ -24,18 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PatientRecordsUI extends JPanel{
-    User activeClient;
-    UIConstants uiConstant = new UIConstants();
+    private final UIConstants uiConstant = new UIConstants();
 
     // Store Patients separately so the button editor can reference them by row
-    private List<User> PatientList = new ArrayList<>();
+    private List<User> patientList = new ArrayList<>();
     private DefaultTableModel tableModel;
     private JTable table;
 
     public PatientRecordsUI(User client, UserController controller) {
-
-        this.activeClient = client;
-        
         this.setLayout(new GridBagLayout());
         GridBagConstraints adj = new GridBagConstraints();
         this.setBackground(uiConstant.Azure);
@@ -47,7 +24,7 @@ public class PatientRecordsUI extends JPanel{
         adj.weighty = 0.0;
         adj.fill = GridBagConstraints.NONE;
         adj.gridy = 0;
-        JLabel panelTitle = new JLabel("Search for Patients");
+        JLabel panelTitle = new JLabel("Search for Active Patients");
         panelTitle.setFont(new Font("Sans-Serif", Font.BOLD, 24));
         panelTitle.setForeground(Color.WHITE);
         this.add(panelTitle, adj);
@@ -67,6 +44,8 @@ public class PatientRecordsUI extends JPanel{
         columns[1] = "Name";
         columns[2] = "Age";
         columns[3] = "Gender";
+//        columns[4] = "Office";
+//        columns[5] = "Specialisation";
 
         tableModel = new DefaultTableModel(columns, 0) {
 
@@ -95,9 +74,10 @@ public class PatientRecordsUI extends JPanel{
                             JOptionPane.INFORMATION_MESSAGE);
                     return;
                 }
+                
                 tableModel.setRowCount(0);
-                PatientList.clear();
-                PatientList.add(target);
+                patientList.clear();
+                patientList.add(target);
                 loadPatients();
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this,
@@ -125,8 +105,8 @@ public class PatientRecordsUI extends JPanel{
         JButton createPatient = new JButton("Register Patient");
         createPatient.addActionListener(e -> {
             Window window = SwingUtilities.getWindowAncestor(this);
-//            ReceptionistCreationUI dialog = new ReceptionistCreationUI(window);
-//            dialog.setVisible(true);
+            PatientCreationUI dialog = new PatientCreationUI(window, controller);
+            dialog.setVisible(true);
         });
         this.add(createPatient, adj);
 
@@ -154,25 +134,28 @@ public class PatientRecordsUI extends JPanel{
         adj.insets = new Insets(0, 40, 25, 40);
         this.add(scrollPane, adj);
 
-        this.PatientList = controller.getUsersByRole("Patient");
+        ArrayList<User> initialData = controller.getUsersByRole("Doctor");
+        patientList = initialData;
         loadPatients();
         this.setFocusable(true);
     }
 
     public void loadPatients() {
         tableModel.setRowCount(0);
-        for (User a : PatientList) {
+        for (User a : patientList) {
             addRow(a);
         }
         autoSizeColumns(table);
     }
 
     private void addRow(User a) {
-        Object[] row = new Object[4];
+        Object[] row = new Object[6];
         row[0] = a.getUserID();
         row[1] = a.getUserName();
         row[2] = a.getUserAge();
         row[3] = a.getUserGender();
+        row[4] = a.getOffice();
+        row[5] = a.getSpecialisation();
         tableModel.addRow(row);
     }
 
