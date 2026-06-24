@@ -11,7 +11,7 @@ public class UserProfileUI extends JPanel {
     GridBagConstraints gbc = new GridBagConstraints();
     GridBagConstraints gbc2 = new GridBagConstraints();
     public JButton backButton = new JButton("Back");
-    
+    private boolean showMedicalHistory = false;
     private User userProfile;
     private User viewer;
     private ArrayList<Appointment> appList;
@@ -103,25 +103,19 @@ public class UserProfileUI extends JPanel {
             JDialog editProfileDialog = new EditProfileUI(window, this.userProfile, system.getUserControllerInstance());
             editProfileDialog.setModal(true);
             editProfileDialog.setVisible(true);
-            
-            // 1. Fetch updated data from database/controller
             this.userProfile = system.getUserControllerInstance().searchUser(this.userProfile.getUserID());
-            
-            // 2. Remove the outdated component from infoPanel
+
             infoPanel.remove(profileInfoPanel);
-            
-            // 3. Create a fresh visual instance with updated user data
+
             profileInfoPanel = new ProfileInfoPanel(this.userProfile);
-            
-            // 4. Re-add it to the same GridBagLayout constraints
+
             GridBagConstraints updatedGbc = new GridBagConstraints();
             updatedGbc.gridx = 0;
             updatedGbc.gridy = 3;
             updatedGbc.anchor = GridBagConstraints.WEST;
             updatedGbc.insets = new Insets(10, 10, 10, 10);
             infoPanel.add(profileInfoPanel, updatedGbc);
-            
-            // 5. Force Swing to clear cache layout structural properties and repaint
+
             infoPanel.revalidate();
             infoPanel.repaint();
         });
@@ -193,7 +187,11 @@ public class UserProfileUI extends JPanel {
         // TABLES PRESCRIPTION //
         String[] columnNames2 = { "Medication Name", "Dose", "Frequency", "Condition" };
         DefaultTableModel model2 = new DefaultTableModel(columnNames2, 0);
-        model2.addRow(new Object[] { "Aspirine", "2 puffs", "1 daily", "Diabetes" });
+        ArrayList<Prescription> activePrescList = system.getPrescriptionControllerInstance().getActivePrescription(userProfile.getUserID());
+        for(Prescription a: activePrescList){
+            model2.addRow(new Object[] { a.getPrescriptionName(), a.getPrescriptionDose(), a.getPrescriptionFrequency(), a.getPrescriptionCondition()});
+        }
+        
         JTable PrescriptionsTable = new JTable(model2);
         JScrollPane scrollPane2 = new JScrollPane(PrescriptionsTable);
         scrollPane2.setPreferredSize(new Dimension(600, 110));
@@ -202,8 +200,92 @@ public class UserProfileUI extends JPanel {
         gbc.gridy = 3;
         tablePanel.add(scrollPane2, gbc);
         
-        
+        // setting for tablePanel
+        tablePanel.setBackground(uiConstants.DarkBlue);
+        JLabel PastAppointmentJLabel = new JLabel("Past Appointments");
+        PastAppointmentJLabel.setForeground(Color.WHITE);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(10, 10, 10, 10);
+        PastAppointmentJLabel.setVisible(this.showMedicalHistory);
+        tablePanel.add(PastAppointmentJLabel, gbc);
 
+        // TABLES ACTIVE APPOINTMENTS //
+        //userProfile 
+        String[] pastAppointmentColumns = { "ID", "Patient ID", "Patient Name", "Doctor ID", "Doctor Name", "Date", "Time",
+                "Location", "Status" };
+        DefaultTableModel model3 = new DefaultTableModel(pastAppointmentColumns, 0);
+        ArrayList<Appointment> pastApps = system.getAppointmentControllerInstance().getPastAppointments(userProfile.getUserID());
+        for(Appointment a : pastApps){
+            model3.addRow(new Object[] { a.getAppointmentID(), a.getPatientID(), system.getUserControllerInstance().searchUser(a.getPatientID()).getUserName(), a.getDoctorID(), system.getUserControllerInstance().searchUser(a.getDoctorID()).getUserName(), a.getAppointmentDate().toString(), a.getAppointmentTime().toString(), a.getLocation(),
+                a.getStatus()});
+        }
+        
+        JTable pastAppointmentTable = new JTable(model3);
+        JScrollPane scrollPane3 = new JScrollPane(pastAppointmentTable);
+        scrollPane3.setPreferredSize(new Dimension(600, 110));
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        scrollPane3.setVisible(this.showMedicalHistory);
+        tablePanel.add(scrollPane3, gbc);
+
+        JPanel PrescSubPanel2 = new JPanel(new BorderLayout());
+        PrescSubPanel2.setOpaque(false);
+        PrescSubPanel2.setPreferredSize(new Dimension(150, 20));
+
+        
+        // PRESCRIPTION -- right now it is non-functional as getting prescription function is not implemeted + diagnosis
+        // (Note: if these elements ever need to update dynamically, you would use a similar approach or table model updates)
+        JLabel pastPrescriptionsLabel = new JLabel("Past Prescriptions");
+        pastPrescriptionsLabel.setForeground(Color.WHITE);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        PrescSubPanel2.add(pastPrescriptionsLabel, BorderLayout.WEST);
+        PrescSubPanel2.setVisible(this.showMedicalHistory);
+        tablePanel.add(PrescSubPanel2, gbc);
+
+        // TABLES PRESCRIPTION //
+        String[] pastPrescColumnNames = { "Medication Name", "Dose", "Frequency", "Condition" };
+        DefaultTableModel model4 = new DefaultTableModel(pastPrescColumnNames, 0);
+        ArrayList<Prescription> pastPrescList = system.getPrescriptionControllerInstance().getPastPrescription(userProfile.getUserID());
+        for(Prescription a: pastPrescList){
+            model4.addRow(new Object[] { a.getPrescriptionName(), a.getPrescriptionDose(), a.getPrescriptionFrequency(), a.getPrescriptionCondition()});
+        }
+        JTable pastPrescriptionsTable = new JTable(model4);
+        JScrollPane scrollPane4 = new JScrollPane(pastPrescriptionsTable);
+        scrollPane4.setPreferredSize(new Dimension(600, 110));
+        tablePanel.add(scrollPane4);
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        scrollPane4.setVisible(this.showMedicalHistory);
+        tablePanel.add(scrollPane4, gbc);
+
+        ViewMedicalRecordsButton.addActionListener(e -> {
+            if(this.showMedicalHistory){
+                ActiveAppointmentJLabel.setVisible(true);
+                scrollPane1.setVisible(true);
+                PrescSubPanel.setVisible(true);
+                scrollPane2.setVisible(true);
+                PastAppointmentJLabel.setVisible(false);
+                scrollPane3.setVisible(false);
+                PrescSubPanel2.setVisible(false);
+                scrollPane4.setVisible(false);
+                ViewMedicalRecordsButton.setText("View Medical Records");
+            } else {
+                ActiveAppointmentJLabel.setVisible(false);
+                scrollPane1.setVisible(false);
+                PrescSubPanel.setVisible(false);
+                scrollPane2.setVisible(false);
+                PastAppointmentJLabel.setVisible(true);
+                scrollPane3.setVisible(true);
+                PrescSubPanel2.setVisible(true);
+                scrollPane4.setVisible(true);
+                ViewMedicalRecordsButton.setText("View Current Records");
+            }
+            this.showMedicalHistory = !this.showMedicalHistory;
+        });
+        
         //adding main panels 
         JSplitPane splitPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, infoPanel, tablePanel);
         splitPanel.setDividerLocation(550);

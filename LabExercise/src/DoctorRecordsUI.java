@@ -108,6 +108,7 @@ public class DoctorRecordsUI extends JPanel{
             DoctorCreationUI dialog = new DoctorCreationUI(window, controller);
             dialog.setVisible(true);
         });
+        createDoctor.setVisible(client.canAddDoctors());
         this.add(createDoctor, adj);
 
         adj.gridwidth = GridBagConstraints.REMAINDER;

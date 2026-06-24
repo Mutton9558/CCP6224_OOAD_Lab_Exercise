@@ -33,7 +33,8 @@ public class PrescriptionController {
                         rs.getString("prescription_condition"),
                         rs.getString("prescription_frequency"),
                         patientId,
-                        LocalDate.parse(rs.getString("prescription_date")),
+                        LocalDate.parse(rs.getString("prescription_start_date")),
+                        LocalDate.parse(rs.getString("prescription_end_date")),
                         uc.searchUser(patientId).getUserName()
                 );
                 this.prescMap.put(prescriptionId, recordedPrescriptions);
@@ -56,17 +57,31 @@ public class PrescriptionController {
         return this.prescMap.get(prescID);
     }
 //
-    public List<Prescription> getPatientPrescription(int patientID){
-        List<Prescription> patientPrescriptions = new ArrayList<Prescription>();
+    public ArrayList<Prescription> getActivePrescription(int patientID){
+        ArrayList<Prescription> patientPrescriptions = new ArrayList<Prescription>();
         prescMap.forEach((key, val) -> {
            if(val.getPrescriptionPatient() == patientID){
-               patientPrescriptions.add(val);
+               if(val.getPrescriptionEnd().isAfter(LocalDate.now())){
+                    patientPrescriptions.add(val);
+               }
+           } 
+        });
+        return patientPrescriptions;
+    }
+    
+    public ArrayList<Prescription> getPastPrescription(int patientID){
+        ArrayList<Prescription> patientPrescriptions = new ArrayList<Prescription>();
+        prescMap.forEach((key, val) -> {
+           if(val.getPrescriptionPatient() == patientID){
+               if(val.getPrescriptionEnd().isBefore(LocalDate.now())){
+                    patientPrescriptions.add(val);
+               }
            } 
         });
         return patientPrescriptions;
     }
 
-    public boolean createPrescription(String prescription_Name, String dose, String condition, String frequency, int patient_ID, LocalDate date){
+    public boolean createPrescription(String prescription_Name, String dose, String condition, String frequency, int patient_ID, LocalDate date, LocalDate end){
         
         User patient = UserController.getInstance().searchUser(patient_ID, "Patient");
         if(patient == null){
@@ -74,7 +89,7 @@ public class PrescriptionController {
             return false;
         }
         
-        String createPrescriptionRequest = "INSERT INTO Prescriptions (prescription_name, prescription_dosage, prescription_date, prescription_frequency, prescription_condition, prescription_target) VALUES (?, ?, ?, ?, ?, ?)";
+        String createPrescriptionRequest = "INSERT INTO Prescriptions (prescription_name, prescription_dosage, prescription_start_date, prescription_end_date, prescription_frequency, prescription_condition, prescription_target) VALUES (?, ?, ?, ?, ?, ?, ?)";
         
         try (Connection conn = DatabaseConfig.getConnection();
             PreparedStatement statement = conn.prepareStatement(createPrescriptionRequest, Statement.RETURN_GENERATED_KEYS)) {
@@ -82,6 +97,7 @@ public class PrescriptionController {
             statement.setString(1, prescription_Name);
             statement.setString(2, dose);
             statement.setString(3, date.toString());
+            statement.setString(3, end.toString());
             statement.setString(4, frequency);
             statement.setString(5, condition);
             statement.setInt(6, patient_ID);
@@ -91,7 +107,7 @@ public class PrescriptionController {
             String patientName = patient.getUserName();
            if (result.next()) {
                int newPrescriptionID = result.getInt(1);
-               Prescription newPrescription = new Prescription(newPrescriptionID,prescription_Name,dose,condition,frequency,patient_ID,date,patientName);
+               Prescription newPrescription = new Prescription(newPrescriptionID,prescription_Name,dose,condition,frequency,patient_ID,date, end, patientName);
                prescMap.put(newPrescriptionID, newPrescription);
                return true;
            } else {
