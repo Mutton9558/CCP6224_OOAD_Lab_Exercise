@@ -21,6 +21,21 @@ public class UIConstants {
     public static Image sizedBgImage = bgImage.getImage().getScaledInstance(1366, 768, Image.SCALE_SMOOTH);
     public static ImageIcon mainBg = new ImageIcon(sizedBgImage);
     
+    // advertisement
+    public static ImageIcon adImage = new ImageIcon(UIConstants.class.getResource("/images/ad.png"));
+    public static Image sizedAdImage = adImage.getImage().getScaledInstance(1200, 500, Image.SCALE_SMOOTH);
+    public static ImageIcon adImg = new ImageIcon(sizedAdImage);
+    
+    //about us
+    public static ImageIcon aboutUsImage = new ImageIcon(UIConstants.class.getResource("/images/about.png"));
+    public static Image sizedAboutUsImage = aboutUsImage.getImage().getScaledInstance(1200, 200, Image.SCALE_SMOOTH);
+    public static ImageIcon aboutUsImg = new ImageIcon(sizedAboutUsImage);
+    
+    //contact us
+    public static ImageIcon contactUsImage = new ImageIcon(UIConstants.class.getResource("/images/contact.png"));
+    public static Image sizedContactImage = contactUsImage.getImage().getScaledInstance(1200, 200, Image.SCALE_SMOOTH);
+    public static ImageIcon contactImg = new ImageIcon(sizedContactImage);
+    
     //profilepicture 
     public static ImageIcon pfp = new ImageIcon(UIConstants.class.getResource("/images/profilepic.png"));
     public static Image sizedpfp = pfp.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);

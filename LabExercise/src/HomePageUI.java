@@ -1,9 +1,13 @@
 import java.awt.*;
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.*;
 
-public class HomePageUI extends JPanel {
+public class HomePageUI extends JPanel{
 
     public JButton butt1, butt2, butt3, butt4, butt5;
+    private JDialog aboutDialog, contactDialog;
 
     public HomePageUI() {
 
@@ -64,8 +68,45 @@ public class HomePageUI extends JPanel {
         upperPanel.add(upperPanel_2, BorderLayout.SOUTH);
 
         JPanel centerPanel = new JPanel();
-        centerPanel.setBackground(UIConst.LightBlue);
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+        JLabel greetingLbl = new JLabel("Warm greetings! How may we assist you today?");
+        greetingLbl.setForeground(UIConstants.VeryDarkBlue);
+        greetingLbl.setFont(new Font("Arial", Font.PLAIN, 18));
+        JLabel adLbl = new JLabel(UIConstants.adImg);
+        
+        centerPanel.setBorder(BorderFactory.createEmptyBorder(20,40,20,40));
+        greetingLbl.setAlignmentX(Component.CENTER_ALIGNMENT);
+        adLbl.setAlignmentX(Component.CENTER_ALIGNMENT);
+ 
+        
+        // JDIALOGS
+        //get the parent frame 
+        Frame parent = (Frame)SwingUtilities.getWindowAncestor(this);
+        aboutDialog = new JDialog(parent, "About Us", true);
+        aboutDialog.setSize(1200, 200);
+        aboutDialog.setLocationRelativeTo(parent);
+        aboutDialog.setResizable(false);
+        JLabel abtLbl = new JLabel(UIConstants.aboutUsImg);
+        aboutDialog.add(abtLbl);
+        aboutDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        
+        contactDialog = new JDialog(parent, "About Us", true);
+        contactDialog.setSize(1200, 200);
+        contactDialog.setLocationRelativeTo(parent);
+        contactDialog.setResizable(false);
+        JLabel contactLbl = new JLabel(UIConstants.contactImg);
+        contactDialog.add(contactLbl);
+        contactDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        // JDIALOGS
+        
+        // ABT AND CONTACT US listeners
+        butt2.addActionListener(e->{aboutDialog.setVisible(true);});
+        butt1.addActionListener(e->{contactDialog.setVisible(true);});
+        // ABT AND CONTACT US listeners
 
+        centerPanel.setBackground(UIConst.LightBlue);
+        centerPanel.add(greetingLbl);
+        centerPanel.add(adLbl);
         add(upperPanel, BorderLayout.NORTH);
         add(centerPanel, BorderLayout.CENTER);
     }
