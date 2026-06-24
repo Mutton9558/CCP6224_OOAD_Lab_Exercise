@@ -106,9 +106,10 @@ public class ReceptionistRecordsUI extends JPanel{
         JButton createReceptionist = new JButton("Create Receptionist");
         createReceptionist.addActionListener(e -> {
             Window window = SwingUtilities.getWindowAncestor(this);
-//            ReceptionistCreationUI dialog = new ReceptionistCreationUI(window);
-//            dialog.setVisible(true);
+            ReceptionistCreationUI dialog = new ReceptionistCreationUI(window, controller);
+            dialog.setVisible(true);
         });
+        createReceptionist.setVisible(client.canAddReceptionist());
         this.add(createReceptionist, adj);
 
         adj.gridwidth = GridBagConstraints.REMAINDER;

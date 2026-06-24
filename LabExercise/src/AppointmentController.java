@@ -178,6 +178,17 @@ public class AppointmentController {
         }
     }
     
+    public ArrayList<Appointment> getPastAppointments(int userId){
+        ArrayList<Appointment> pastAppointments = new ArrayList<>();
+        this.appointmentMap.forEach((key, val) -> {
+            if(val.getPatientID() == userId || val.getDoctorID() == userId){
+                pastAppointments.add(val);
+            }
+        });
+        
+        return pastAppointments;
+    }
+    
     public ArrayList<Appointment> getAllAppointments(){
         ArrayList<Appointment> temp = new ArrayList<>();
         this.appointmentMap.forEach((key, val) -> {
