@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class DashboardPanels{
     private final SystemController system;
-    private final User client;
+    private User client;
     private ArrayList<DashboardPanel> panels = new ArrayList<>();
 
     public class ActiveAppointmentPanel implements DashboardPanel{
@@ -165,7 +165,7 @@ public class DashboardPanels{
         private GenerateReportUI panelUI;
         
         public GenerateReportPanel(){
-            this.panelUI = new GenerateReportUI();
+            this.panelUI = new GenerateReportUI(system.getUserControllerInstance(), system.getAppointmentControllerInstance());
         }
         
         @Override

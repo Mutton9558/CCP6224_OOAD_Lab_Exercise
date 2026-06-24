@@ -18,11 +18,13 @@ public class EditAppointmentUI extends JDialog implements ActionListener{
     private UIConstants uiconst = new UIConstants();
     private Window parent;
     private Appointment oldAppointment;
+    private AppointmentController controller;
     
-    public EditAppointmentUI(Window parent, Appointment target){
+    public EditAppointmentUI(Window parent, Appointment target, AppointmentController c){
         super(parent, "Edit Appointment", Dialog.ModalityType.APPLICATION_MODAL);
         this.parent = parent;
         this.oldAppointment = target;
+        this.controller = c;
         JPanel content = new JPanel();
         content.setLayout(new GridBagLayout());
         content.setBackground(this.uiconst.Azure);
@@ -136,7 +138,7 @@ public class EditAppointmentUI extends JDialog implements ActionListener{
             this.appointmentDateField.setEnabled(false);
             this.appointmentTimeField.setEnabled(false);
             this.locationTextField.setEnabled(false);
-            statusDropDown.setEnabled(false);
+            this.statusDropDown.setEnabled(false);
             
         } catch (java.time.format.DateTimeParseException ex){
             JOptionPane.showMessageDialog(this,
@@ -150,9 +152,20 @@ public class EditAppointmentUI extends JDialog implements ActionListener{
     }
     
     public void submitApproval(LocalDate appointmentDate, LocalTime appointmentTime, String appointmentLocation, String newStatus){
-        System.out.println("Submit");
-        JOptionPane.showMessageDialog(this,
-                            "Successfully edited Appointment with ID " + this.oldAppointment.getAppointmentID(), "Invalid Input",
+        boolean success = controller.editAppointment(this.oldAppointment.getAppointmentID(), appointmentDate, appointmentTime, newStatus, newStatus);
+        if(success){
+            JOptionPane.showMessageDialog(this,
+                            "Successfully edited Appointment with ID: " + this.oldAppointment.getAppointmentID(), "Success",
                             JOptionPane.INFORMATION_MESSAGE);
+            dispose();
+        } else {
+            JOptionPane.showMessageDialog(this,
+                            "Failed to edit appointment of ID:  " + this.oldAppointment.getAppointmentID() + ". Check your inputs again.", "Invalid Input",
+                            JOptionPane.INFORMATION_MESSAGE);
+            this.appointmentDateField.setEnabled(true);
+            this.appointmentTimeField.setEnabled(true);
+            this.locationTextField.setEnabled(true);
+            this.statusDropDown.setEnabled(true);
+        }
     }
 }

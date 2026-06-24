@@ -6,30 +6,31 @@ public class Prescription{
     private String prescription_Name, prescription_Dose, prescription_Condition, prescription_Frequency;
     private LocalDate prescription_Date;
     private int prescription_ID, prescription_Patient;
+    private String prescription_Patient_Name;
 
-   public Prescription(){
-        this.prescription_ID = 0;
-        this.prescription_Name = "Copium";
-   }
+//   public Prescription(){
+//        this.prescription_ID = 0;
+//        this.prescription_Name = "Copium";
+//   }
 
-   public Prescription(String name, String dose, String condition, String frequency, int patient_ID){
-        Random r = new Random();
-        this.prescription_ID = r.nextInt(100);
+//   public Prescription(String name, String dose, String condition, String frequency, int patient_ID, ){
+//        Random r = new Random();
+//        this.prescription_ID = r.nextInt(100);
+//        this.prescription_Name = name;
+//        this.prescription_Dose = dose;
+//        this.prescription_Condition = condition;
+//        this.prescription_Frequency = frequency;
+//        this.prescription_Patient = patient_ID;
+//   }
+
+   public Prescription(int id, String name, String dose, String condition, String frequency, int patient_ID, LocalDate date, String patient_name){
+        this.prescription_ID = id;
         this.prescription_Name = name;
         this.prescription_Dose = dose;
         this.prescription_Condition = condition;
-        this.prescription_Frequency = frequency;
-        this.prescription_Patient = patient_ID;
-   }
-
-   public Prescription(String name, String dose, String condition, String frequency, int patient_ID, LocalDate date){
-        Random r = new Random();
-        this.prescription_ID = r.nextInt(100);
-        this.prescription_Name = name;
-        this.prescription_Dose = dose;
-        this.prescription_Condition = condition;
         this.prescription_Patient = patient_ID;
         this.prescription_Frequency = frequency;
+        this.prescription_Patient_Name = patient_name;
    }
 
     //setters

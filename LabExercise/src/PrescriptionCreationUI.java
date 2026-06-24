@@ -105,12 +105,12 @@ public class PrescriptionCreationUI extends JDialog implements ActionListener{
 
             prescDate = dateValue.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
             
-            nameTextField.returnTextField().setEnabled(false);
-            doseTextField.returnTextField().setEnabled(false);
-            conditionTextField.returnTextField().setEnabled(false);
-            frequencyTextField.returnTextField().setEnabled(false);
-            patientTextField.returnTextField().setEnabled(false);
-            prescDateField.setEnabled(false);
+            this.nameTextField.returnTextField().setEnabled(false);
+            this.doseTextField.returnTextField().setEnabled(false);
+            this.conditionTextField.returnTextField().setEnabled(false);
+            this.frequencyTextField.returnTextField().setEnabled(false);
+            this.patientTextField.returnTextField().setEnabled(false);
+            this.prescDateField.setEnabled(false);
 
         }catch (NumberFormatException ex){
             JOptionPane.showMessageDialog(this,
@@ -130,11 +130,22 @@ public class PrescriptionCreationUI extends JDialog implements ActionListener{
     }
     
     public void registerPrescription(String name, String dose, String condition, String frequency, int patient_ID, LocalDate date){
-        controller.createPrescription(name, dose, condition, frequency, patient_ID, date);
-        System.out.println("Submit");
-        JOptionPane.showMessageDialog(this,
-                            "Successfully created doctor", "Invalid Input",
+        boolean success = controller.createPrescription(name, dose, condition, frequency, patient_ID, date);
+        if(success){
+            JOptionPane.showMessageDialog(this,
+                            "Successfully created doctor", "Success",
                             JOptionPane.INFORMATION_MESSAGE);
-        
+            dispose();
+        } else {
+            JOptionPane.showMessageDialog(this,
+                            "Could not add prescription. Please check your inputs", "Invalid Input",
+                            JOptionPane.INFORMATION_MESSAGE);
+            this.nameTextField.returnTextField().setEnabled(true);
+            this.doseTextField.returnTextField().setEnabled(true);
+            this.conditionTextField.returnTextField().setEnabled(true);
+            this.frequencyTextField.returnTextField().setEnabled(true);
+            this.patientTextField.returnTextField().setEnabled(true);
+            this.prescDateField.setEnabled(true);
+        }
     }
 }
