@@ -1,8 +1,10 @@
+import java.time.LocalDate;
+
 public class Receptionist extends User{
     public Receptionist(){}
     
-    public Receptionist(int id, String username, String password, String gender, int age){
-        super(id, username, password, gender, age);
+    public Receptionist(int id, String username, String password, String gender, LocalDate dob){
+        super(id, username, password, gender, dob);
     }
     
     @Override
@@ -15,10 +17,6 @@ public class Receptionist extends User{
         return false;
     };
 //    patient records
-    @Override
-    public boolean canViewSelfRecords(){
-        return false;
-    };
     
     public boolean canViewActiveAppointments(){
         return true;
@@ -55,10 +53,6 @@ public class Receptionist extends User{
     };
     
 //    doctor records
-    @Override
-    public boolean canViewMedicalRecords(){
-        return true;
-    };
     
     @Override
     public boolean canEditProfile(){
@@ -91,16 +85,6 @@ public class Receptionist extends User{
     }
     
     @Override
-    public boolean canEditUserProfileInfo(){
-        return true;
-    };
-    
-    @Override
-    public boolean canEditUserProfile(){
-        return true;
-    };
-    
-    @Override
     public boolean canEditDiagnosis(){
         return false;
     };
@@ -109,9 +93,19 @@ public class Receptionist extends User{
     public boolean canEditPrescription(){
         return false;
     };
+
+    @Override
+    public boolean canAddPatient(){
+        return true;
+    };
     
     @Override
-    public boolean hasMedicalRecords(){
+    public boolean canAddDoctors(){
+        return false;
+    };
+    
+    @Override
+    public boolean canAddReceptionist(){
         return false;
     };
 }

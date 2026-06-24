@@ -31,6 +31,7 @@ public class Prescription{
         this.prescription_Patient = patient_ID;
         this.prescription_Frequency = frequency;
         this.prescription_Patient_Name = patient_name;
+        this.prescription_Date = date;
    }
 
     //setters

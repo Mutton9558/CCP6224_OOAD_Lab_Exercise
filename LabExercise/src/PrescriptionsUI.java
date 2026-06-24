@@ -157,12 +157,13 @@ public class PrescriptionsUI extends JPanel{
     }
 
     private void addRow(Prescription a) {
-        Object[] row = new Object[5];
+        Object[] row = new Object[6];
         row[0] = a.getPrescriptionID();
         row[1] = a.getPrescriptionName();
         row[2] = a.getPrescriptionDose();
-        row[3] = a.getPrescriptionCondition();
-        row[4] = a.getPrescriptionFrequency();
+        row[3] = a.getPrescriptionFrequency();
+        row[4] = a.getPrescriptionCondition();
+        row[5] = a.getPrescriptionDate().toString();
         tableModel.addRow(row);
     }
 

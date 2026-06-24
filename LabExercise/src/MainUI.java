@@ -34,6 +34,7 @@ public class MainUI extends JFrame{
 
         homepage.butt4.setVisible(true);
         homepage.butt5.setVisible(false);
+        homepage.butt6.setVisible(false);
 
         homepage.butt4.addActionListener(event -> {
             LoginUI loginDialog = new LoginUI(this, loggedInSystem -> {
@@ -41,12 +42,22 @@ public class MainUI extends JFrame{
                 DashboardPanels panelList = new DashboardPanels(system);
                 ArrayList<DashboardPanel> panels = panelList.returnDashboardPanels();
                 DashboardUI dashboard = new DashboardUI(panels);
+                UserProfileUI profile = new UserProfileUI(system.getUserControllerInstance().getCurrentUser(), system);
+                dashboard.backButton.addActionListener(backEvent -> {
+                    cardLayout.show(mainPanel, "HOME");
+                });
+                
+                profile.backButton.addActionListener(backEvent -> {
+                    cardLayout.show(mainPanel, "HOME");
+                });
                 
                 mainPanel.add(dashboard, "DASHBOARD");
+                mainPanel.add(profile, "PROFILE");
                 
 
                 homepage.butt4.setVisible(false);
                 homepage.butt5.setVisible(true);
+                homepage.butt6.setVisible(true);
             });
             loginDialog.setModal(true);
             loginDialog.setVisible(true);
@@ -54,6 +65,7 @@ public class MainUI extends JFrame{
 
         //add Action listeners to the buttons that exist in those pages 
         homepage.butt5.addActionListener(event -> { cardLayout.show(mainPanel, "DASHBOARD");});
+        homepage.butt6.addActionListener(event -> { cardLayout.show(mainPanel, "PROFILE"); });
         //dashboard.btn2_m.addActionListener(event -> { cardLayout.show(mainPanel, "HOME");});
 
         // add the mainPanel to this frame 
@@ -70,7 +82,8 @@ public class MainUI extends JFrame{
 //        controller.loginUser(1004, "test04");
 //        User tempUser = controller.getCurrentUser();
 //        MainUI test1 = new MainUI(tempUser);
-          SystemController temp = new SystemController();
-          MainUI test = new MainUI(temp);
+        DatabaseInitialiser.initialiseDatabase();
+        SystemController system = new SystemController();
+        MainUI mainScreen = new MainUI(system);
     }
 }

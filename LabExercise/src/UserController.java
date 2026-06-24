@@ -9,6 +9,7 @@ import java.util.Map;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.function.Supplier;
+import java.time.LocalDate;
 
 public class UserController{
 
@@ -40,8 +41,8 @@ public class UserController{
                 recordedUser.setUserID(result.getInt("user_id"));
                 recordedUser.setUserName(result.getString("user_name"));
                 recordedUser.setUserPassword(result.getString("user_password"));
+                recordedUser.setDob(LocalDate.parse(result.getString("user_dob")));
                 recordedUser.setUserGender(result.getString("user_gender"));
-                recordedUser.setUserAge(result.getInt("user_age"));
                 recordedUser.setOffice(result.getString("office"));
                 recordedUser.setSpecialization(result.getString("specialization"));
                 userList.put(result.getInt("user_id"), recordedUser);
@@ -61,15 +62,15 @@ public class UserController{
     
 
     //User own registration
-    public void registerUser(String name, String password, String gender, int age, String role){ 
-        String createUserRequest = "INSERT INTO Users (user_name, user_password, user_age, user_gender, user_role) VALUES (?, ?, ?, ?, ?)";
+    public void registerUser(String name, String password, String gender, LocalDate dob, String role){ 
+        String createUserRequest = "INSERT INTO Users (user_name, user_password, user_dob, user_gender, user_role) VALUES (?, ?, ?, ?, ?)";
         
         try (Connection conn = DatabaseConfig.getConnection();
             PreparedStatement statement = conn.prepareStatement(createUserRequest, Statement.RETURN_GENERATED_KEYS)) {
 
             statement.setString(1, name);
             statement.setString(2, password);
-            statement.setInt(3, age);
+            statement.setString(3, dob.toString());
             statement.setString(4, gender);
             statement.setString(5, role);
             statement.executeUpdate();
@@ -81,7 +82,7 @@ public class UserController{
                newUser.setUserID(newUserId);
                newUser.setUserName(name);
                newUser.setUserPassword(password);
-               newUser.setUserAge(age);
+               newUser.setDob(dob);
                newUser.setUserGender(gender);
                
                userList.put(newUserId, newUser);
@@ -95,15 +96,15 @@ public class UserController{
     }
     
 //    overloaded for Doctors
-    public void registerUser(String name, String password, String gender, int age, String role, String office, String specialization){ 
-        String createUserRequest = "INSERT INTO Users (user_name, user_password, user_age, user_gender, user_role, office, specialization) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    public void registerUser(String name, String password, String gender, LocalDate dob, String role, String office, String specialization){ 
+        String createUserRequest = "INSERT INTO Users (user_name, user_password, user_dob, user_gender, user_role, office, specialization) VALUES (?, ?, ?, ?, ?, ?, ?)";
         
         try (Connection conn = DatabaseConfig.getConnection();
             PreparedStatement statement = conn.prepareStatement(createUserRequest, Statement.RETURN_GENERATED_KEYS)) {
 
             statement.setString(1, name);
             statement.setString(2, password);
-            statement.setInt(3, age);
+            statement.setString(3, dob.toString());
             statement.setString(4, gender);
             statement.setString(5, role);
             statement.setString(6, office);
@@ -117,7 +118,7 @@ public class UserController{
                newUser.setUserID(newUserId);
                newUser.setUserName(name);
                newUser.setUserPassword(password);
-               newUser.setUserAge(age);
+               newUser.setDob(dob);
                newUser.setUserGender(gender);
                newUser.setOffice(office);
                newUser.setSpecialization(specialization);
@@ -173,5 +174,28 @@ public class UserController{
     
     public User searchUser(int id){
         return userList.get(id);
+    }
+    
+    public boolean updateUser(int id, String name, LocalDate dob){
+        String query = "UPDATE Users SET user_name = ?, user_dob = ? WHERE user_id = ?";
+        
+        try (Connection conn = DatabaseConfig.getConnection();
+            PreparedStatement statement = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+
+            statement.setString(1, name);
+            statement.setString(2, dob.toString());
+            statement.setInt(3, id);
+            statement.executeUpdate();
+            
+            User target = this.userList.get(id);
+            target.setUserName(name);
+            target.setDob(dob);
+            
+            return true;
+        } catch (SQLException e){
+            System.out.println("Problem is updating usser");
+            e.printStackTrace();
+            return false;
+        }   
     }
 }

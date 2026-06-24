@@ -126,28 +126,20 @@ public class AppointmentController {
         return true;
     }
     
-    public ArrayList<Appointment> getPatientAppointments(int patientID){
+    public Appointment getAppointment(int id){
+        return this.appointmentMap.get(id);
+    }
+    
+    public ArrayList<Appointment> getUserAppointments(int id){
         ArrayList<Appointment> temp = new ArrayList<>();
+        
         this.appointmentMap.forEach((key, val) -> {
-            if(val.getPatientID() == patientID){
+            if(val.getPatientID() == id || val.getDoctorID() == id){
                 temp.add(val);
             }
         });
+        
         return temp;
-    }
-    
-    public ArrayList<Appointment> getDoctorAppointments(int doctorID){
-        ArrayList<Appointment> temp = new ArrayList<>();
-        this.appointmentMap.forEach((key, val) -> {
-           if(val.getDoctorID() == doctorID){
-               temp.add(val);
-           } 
-        });
-        return temp;
-    }
-    
-    public Appointment getAppointment(int id){
-        return this.appointmentMap.get(id);
     }
     
     public ArrayList<Appointment> getActiveAppointments(){

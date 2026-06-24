@@ -1,5 +1,7 @@
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.*;
+import java.time.LocalDate;
+import java.time.Period;
 
 public abstract class User implements UserPermission{
   
@@ -23,10 +25,9 @@ public abstract class User implements UserPermission{
 //    }
 
     private int user_ID;
-    private int user_Age;
+    private LocalDate dateOfBirth;
 //    private UserRole user_Role;
-    private String user_Name, user_Nationality, password, user_Gender, address, email, user_PhoneNumber;
-    private Date user_DateOfBirth;
+    private String user_Name, password, user_Gender;
 
 //    public User() {
 //        this.user_Name = "";
@@ -42,12 +43,12 @@ public abstract class User implements UserPermission{
     public User(){}
   
     // username is made my the receotionist and it is the USER ID !!!!
-    public User(int user_id, String name, String password, String gender, int age) {
+    public User(int user_id, String name, String password, String gender, LocalDate dob) {
         this.user_ID = user_id;
         this.user_Name = name;
         this.password = password;
         this.user_Gender = gender;
-        this.user_Age = age;
+        this.dateOfBirth = dob;
     }
 
     public int getUserID() {
@@ -58,29 +59,15 @@ public abstract class User implements UserPermission{
         return this.user_Name;
     }
     
-    
-    public String getUserNationality() {
-        return this.user_Name;
-    }
-    
-    public String getUserAddress() {
-        return this.address;
-    }
-    
-    public Date getUserDateOfBirth() {
-        return this.user_DateOfBirth;
-    }
-    
-    public String getUserPhoneNumber() {
-        return this.user_PhoneNumber;
-    }
-    
-    public String getUserEmail(){
-        return this.email;
-    }
 
     public int getUserAge() {
-        return this.user_Age;
+        LocalDate today = LocalDate.now();
+        int age = Period.between(this.dateOfBirth, today).getYears();
+        return age;
+    }
+    
+    public LocalDate getDob(){
+        return this.dateOfBirth;
     }
 
     public String getUserGender() {
@@ -120,29 +107,9 @@ public abstract class User implements UserPermission{
     public void setUserName(String userName) {
         this.user_Name = userName;
     }
-    
-      public void setUserNationality(String nationality) {
-        this.user_Nationality = nationality;
-    }
-      
-    public void setUserAddress(String address) {
-        this.address = address;
-    }
-    
-    public void setUserDateOfBirth(Date DOB) {
-        this.user_DateOfBirth = DOB;
-    }
-    
-    public void setUserPhoneNumber(String phoneNumber) {
-        this.user_PhoneNumber = phoneNumber;
-    }
-    
-    public void setUserEmail(String email){
-        this.email = email;
-    }
 
-    public void setUserAge(int userAge) {
-        this.user_Age = userAge;
+    public void setDob(LocalDate dob) {
+        this.dateOfBirth= dob;
     }
 
     public void setUserGender(String userGender) {
@@ -168,7 +135,6 @@ public abstract class User implements UserPermission{
     
     public abstract boolean canViewPrescriptions();
 //    patient records
-    public abstract boolean canViewSelfRecords();
     public abstract boolean canViewActiveAppointments();
     public abstract boolean canViewPatientRecords();
     public abstract boolean canViewDoctorRecords();
@@ -177,14 +143,17 @@ public abstract class User implements UserPermission{
     public abstract boolean canAddPrescriptions();
     public abstract boolean canAddDiagnosis();
     
-//    doctor records
-    public abstract boolean canViewMedicalRecords();
-    
+//    doctor records    
     public abstract boolean canEditProfile();
     public abstract boolean canAddAppointments();
     public abstract boolean canGenerateReport();  
     public abstract boolean canSearchAppointments();
     public abstract boolean canEditAppointments();
     public abstract boolean canSearchRecords();
+    public abstract boolean canEditDiagnosis();
+    public abstract boolean canEditPrescription();
+    public abstract boolean canAddPatient();
+    public abstract boolean canAddDoctors();
+    public abstract boolean canAddReceptionist();
 
 }
