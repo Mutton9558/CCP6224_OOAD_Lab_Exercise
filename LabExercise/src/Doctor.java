@@ -68,7 +68,7 @@ public class Doctor extends User{
     
     @Override
     public boolean canViewPrescriptions(){
-        return false;
+        return true;
     };
 //    patient records
     

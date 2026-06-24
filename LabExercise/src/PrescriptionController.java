@@ -35,7 +35,7 @@ public class PrescriptionController {
                         patientId,
                         LocalDate.parse(rs.getString("prescription_start_date")),
                         LocalDate.parse(rs.getString("prescription_end_date")),
-                        uc.searchUser(patientId).getUserName()
+                        rs.getInt("prescription_author")
                 );
                 this.prescMap.put(prescriptionId, recordedPrescriptions);
             }
@@ -56,32 +56,33 @@ public class PrescriptionController {
     public Prescription getPrescription(int prescID){
         return this.prescMap.get(prescID);
     }
+    
 //
-    public ArrayList<Prescription> getActivePrescription(int patientID){
-        ArrayList<Prescription> patientPrescriptions = new ArrayList<Prescription>();
+    public ArrayList<Prescription> getActivePrescription(int userID){
+        ArrayList<Prescription> prescriptions = new ArrayList<>();
         prescMap.forEach((key, val) -> {
-           if(val.getPrescriptionPatient() == patientID){
+           if(val.getPrescriptionPatient() == userID || val.getPrescriptionDoctor() == userID){
                if(val.getPrescriptionEnd().isAfter(LocalDate.now())){
-                    patientPrescriptions.add(val);
+                    prescriptions.add(val);
                }
            } 
         });
-        return patientPrescriptions;
+        return prescriptions;
     }
     
-    public ArrayList<Prescription> getPastPrescription(int patientID){
-        ArrayList<Prescription> patientPrescriptions = new ArrayList<Prescription>();
+    public ArrayList<Prescription> getPastPrescription(int userID){
+        ArrayList<Prescription> prescriptions = new ArrayList<>();
         prescMap.forEach((key, val) -> {
-           if(val.getPrescriptionPatient() == patientID){
+           if(val.getPrescriptionPatient() == userID || val.getPrescriptionDoctor() == userID){
                if(val.getPrescriptionEnd().isBefore(LocalDate.now())){
-                    patientPrescriptions.add(val);
+                    prescriptions.add(val);
                }
            } 
         });
-        return patientPrescriptions;
+        return prescriptions;
     }
 
-    public boolean createPrescription(String prescription_Name, String dose, String condition, String frequency, int patient_ID, LocalDate date, LocalDate end){
+    public boolean createPrescription(String prescription_Name, String dose, String condition, String frequency, int patient_ID, int doctor_ID, LocalDate date, LocalDate end){
         
         User patient = UserController.getInstance().searchUser(patient_ID, "Patient");
         if(patient == null){
@@ -89,7 +90,7 @@ public class PrescriptionController {
             return false;
         }
         
-        String createPrescriptionRequest = "INSERT INTO Prescriptions (prescription_name, prescription_dosage, prescription_start_date, prescription_end_date, prescription_frequency, prescription_condition, prescription_target) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String createPrescriptionRequest = "INSERT INTO Prescriptions (prescription_name, prescription_dosage, prescription_start_date, prescription_end_date, prescription_frequency, prescription_condition, prescription_target, prescription_author) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         
         try (Connection conn = DatabaseConfig.getConnection();
             PreparedStatement statement = conn.prepareStatement(createPrescriptionRequest, Statement.RETURN_GENERATED_KEYS)) {
@@ -97,17 +98,17 @@ public class PrescriptionController {
             statement.setString(1, prescription_Name);
             statement.setString(2, dose);
             statement.setString(3, date.toString());
-            statement.setString(3, end.toString());
-            statement.setString(4, frequency);
-            statement.setString(5, condition);
-            statement.setInt(6, patient_ID);
+            statement.setString(4, end.toString());
+            statement.setString(5, frequency);
+            statement.setString(6, condition);
+            statement.setInt(7, patient_ID);
+            statement.setInt(8, doctor_ID);
             statement.executeUpdate();
             
             ResultSet result = statement.getGeneratedKeys();
-            String patientName = patient.getUserName();
            if (result.next()) {
                int newPrescriptionID = result.getInt(1);
-               Prescription newPrescription = new Prescription(newPrescriptionID,prescription_Name,dose,condition,frequency,patient_ID,date, end, patientName);
+               Prescription newPrescription = new Prescription(newPrescriptionID,prescription_Name,dose,condition,frequency,patient_ID,date, end, doctor_ID);
                prescMap.put(newPrescriptionID, newPrescription);
                return true;
            } else {
