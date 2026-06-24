@@ -61,7 +61,7 @@ public class GenerateReportUI extends JPanel {
 
         ArrayList<User> doctors = userController.getUsersByRole("Doctor");
         for (User doc : doctors) {
-            int docAppointments = appointmentController.getDoctorAppointments(doc.getUserID()).size();
+            int docAppointments = appointmentController.getUserAppointments(doc.getUserID()).size();
             tableModel.addRow(new Object[]{
                 doc.getUserName(),
                 doc.getSpecialisation(),

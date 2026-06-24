@@ -1,11 +1,14 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.time.LocalDate;
 
 public class ReceptionistCreationUI extends JDialog implements ActionListener{
     private TextFieldWithPlaceholder nameTextField;
     private TextFieldWithPlaceholder passwordTextField;
-    private TextFieldWithPlaceholder ageTextField;
+    private JSpinner dateOfBirthField;
     private TextFieldWithPlaceholder genderTextField;
     private JButton submitButton;
     private UIConstants uiconst = new UIConstants();
@@ -44,16 +47,18 @@ public class ReceptionistCreationUI extends JDialog implements ActionListener{
         passwordTextField = new TextFieldWithPlaceholder("Enter Account Password", 24);
         content.add(passwordTextField.returnTextField(), formBoxConstraints);
         
-        // Age Text Box
-        formBoxConstraints.gridx = 0;
+        formBoxConstraints.gridx = 1;
         formBoxConstraints.gridy = 2;
-        ageTextField = new TextFieldWithPlaceholder("Enter Receptionist's Age", 24);
-        content.add(ageTextField.returnTextField(), formBoxConstraints);
+        SpinnerDateModel dateModel = new SpinnerDateModel(new Date(), null, null, Calendar.DAY_OF_MONTH);
+        dateOfBirthField = new JSpinner(dateModel);
+        JSpinner.DateEditor dateEditor = new JSpinner.DateEditor(dateOfBirthField, "yyyy-MM-dd");
+        dateOfBirthField.setEditor(dateEditor);
+        content.add(dateOfBirthField, formBoxConstraints);
         
         //Gender Text Box
          formBoxConstraints.gridx = 1;
         formBoxConstraints.gridwidth = 1;
-        formBoxConstraints.gridy = 2;
+        formBoxConstraints.gridy = 3;
         genderTextField = new TextFieldWithPlaceholder("Enter Receptionist's Gender", 24);
         content.add(genderTextField.returnTextField(), formBoxConstraints);
         
@@ -67,34 +72,47 @@ public class ReceptionistCreationUI extends JDialog implements ActionListener{
         pack();
         setLocationRelativeTo(parent);
         setResizable(false);
+        this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
     }
     
     @Override
     public void actionPerformed(ActionEvent e){
         String ReceptionistName, ReceptionistPassword, ReceptionistGender;
-        int ReceptionistAge; 
+        LocalDate dob;
         
         try{            
             ReceptionistName = nameTextField.returnTextField().getText();
             ReceptionistPassword = passwordTextField.returnTextField().getText();
-            ReceptionistAge = Integer.parseInt(passwordTextField.returnTextField().getText());
+            java.util.Date dateValue = (java.util.Date) dateOfBirthField.getValue();
+            
+            dob = dateValue.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
             ReceptionistGender = genderTextField.returnTextField().getText();
             
             nameTextField.returnTextField().setEnabled(false);
             passwordTextField.returnTextField().setEnabled(false);
-            ageTextField.returnTextField().setEnabled(false);
+            dateOfBirthField.setEnabled(false);
+            
+            if(dob.isAfter(LocalDate.now())){
+                JOptionPane.showMessageDialog(this,
+                            "Invalid Date of Birth", "Invalid Input",
+                            JOptionPane.WARNING_MESSAGE);
+                nameTextField.returnTextField().setEnabled(true);
+                passwordTextField.returnTextField().setEnabled(true);
+                dateOfBirthField.setEnabled(true);
+                return;
+            }
         } catch (NumberFormatException ex){
             JOptionPane.showMessageDialog(this,
-                            "Receptionist's Age must be a number", "Invalid Input",
+                            "Error creating receptionist", "Invalid Input",
                             JOptionPane.WARNING_MESSAGE);
             ex.printStackTrace();
             return;
         }
-        registerReceptionist(ReceptionistName, ReceptionistPassword, ReceptionistGender, ReceptionistAge, "Receptionist");
+        registerReceptionist(ReceptionistName, ReceptionistPassword, ReceptionistGender, dob, "Receptionist");
     }
     
-    public void registerReceptionist(String name, String password, String gender, int age, String role){
-        controller.registerUser(name, password, gender, age, role);
+    public void registerReceptionist(String name, String password, String gender, LocalDate dob, String role){
+        controller.registerUser(name, password, gender, dob, role);
         JOptionPane.showMessageDialog(this,
                             "Successfully created Receptionist", "Success",
                             JOptionPane.INFORMATION_MESSAGE);

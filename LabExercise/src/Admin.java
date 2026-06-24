@@ -1,8 +1,10 @@
+import java.time.LocalDate;
+
 public class Admin extends User{
     public Admin(){}
     
-    public Admin(int id, String name, String password, String gender, int age){
-        super(id, name, password, gender, age);
+    public Admin(int id, String name, String password, String gender, LocalDate dob){
+        super(id, name, password, gender, dob);
     }
 
     @Override
@@ -15,10 +17,6 @@ public class Admin extends User{
         return false;
     };
 //    patient records
-    @Override
-    public boolean canViewSelfRecords(){
-        return false;
-    };
     
     @Override
     public boolean canViewPatientRecords(){
@@ -57,11 +55,6 @@ public class Admin extends User{
     
 //    doctor records
     @Override
-    public boolean canViewMedicalRecords(){
-        return false;
-    };
-    
-    @Override
     public boolean canEditProfile(){
         return true;
     };
@@ -92,16 +85,6 @@ public class Admin extends User{
     }
     
     @Override
-    public boolean canEditUserProfileInfo(){
-        return true;
-    };
-    
-    @Override
-    public boolean canEditUserProfile(){
-        return true;
-    };
-    
-    @Override
     public boolean canEditDiagnosis(){
         return false;
     };
@@ -112,8 +95,18 @@ public class Admin extends User{
     };
     
     @Override
-    public boolean hasMedicalRecords(){
-        return false;
+    public boolean canAddPatient(){
+        return true;
+    };
+    
+    @Override
+    public boolean canAddDoctors(){
+        return true;
+    };
+    
+    @Override
+    public boolean canAddReceptionist(){
+        return true;
     };
 }
 

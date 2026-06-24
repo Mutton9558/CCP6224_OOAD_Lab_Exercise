@@ -1,11 +1,12 @@
 import java.util.*;
+import java.time.LocalDate;
 
 public class Doctor extends User{
     private String office, specialisation;
     private int doctorID;
 
-    public Doctor(int id, String username, String password, String gender, int age, String office, String specialisation){
-        super(id, username, password, gender, age);
+    public Doctor(int id, String username, String password, String gender, LocalDate dob, String office, String specialisation){
+        super(id, username, password, gender, dob);
         this.doctorID = id;
         this.office = office;
         this.specialisation = specialisation;
@@ -70,11 +71,8 @@ public class Doctor extends User{
         return false;
     };
 //    patient records
-    @Override
-    public boolean canViewSelfRecords(){
-        return false;
-    };
     
+    @Override
     public boolean canViewActiveAppointments(){
         return true;
     }
@@ -109,12 +107,6 @@ public class Doctor extends User{
         return true;
     };
     
-//    doctor records
-    @Override
-    public boolean canViewMedicalRecords(){
-        return true;
-    };
-    
     @Override
     public boolean canEditProfile(){
         return false;
@@ -146,16 +138,6 @@ public class Doctor extends User{
     }
     
     @Override
-    public boolean canEditUserProfileInfo(){
-        return false;
-    };
-    
-    @Override
-    public boolean canEditUserProfile(){
-        return true;
-    };
-    
-    @Override
     public boolean canEditDiagnosis(){
         return true;
     };
@@ -166,8 +148,17 @@ public class Doctor extends User{
     };
     
     @Override
-    public boolean hasMedicalRecords(){
+    public boolean canAddPatient(){
         return false;
     };
-
+    
+    @Override
+    public boolean canAddDoctors(){
+        return false;
+    };
+    
+    @Override
+    public boolean canAddReceptionist(){
+        return false;
+    };
 }

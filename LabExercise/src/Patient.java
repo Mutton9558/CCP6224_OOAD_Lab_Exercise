@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+
 public class Patient extends User {
 //    Both AppointmentController and PrescriptionController can just pull individual list from DB
 //    private Map<Integer, Prescription> PrescriptionList = new HashMap<>(); //Key is patient_ID, Value is Patient
@@ -6,8 +8,8 @@ public class Patient extends User {
     public Patient(){}
     
     //Patient will need an extra Prescriptions Array to store their prescriptions
-    public Patient(int id, String username, String password, String gender, int age){
-        super(id, username, password, gender, age);
+    public Patient(int id, String username, String password, String gender, LocalDate dob){
+        super(id, username, password, gender, dob);
     }
 
 //    @Override
@@ -44,11 +46,6 @@ public class Patient extends User {
     };
 //    patient records
     @Override
-    public boolean canViewSelfRecords(){
-        return true;
-    };
-    
-    @Override
     public boolean canViewActiveAppointments(){
         return true;
     }
@@ -84,10 +81,6 @@ public class Patient extends User {
     };
     
 //    doctor records
-    @Override
-    public boolean canViewMedicalRecords(){
-        return false;
-    };
     
     @Override
     public boolean canEditProfile(){
@@ -120,17 +113,6 @@ public class Patient extends User {
     }
     
     @Override
-    public boolean canEditUserProfileInfo(){
-        return false;
-    };
-    
-    @Override
-    public boolean canEditUserProfile(){
-        return false;
-    };
-    
-    
-    @Override
     public boolean canEditDiagnosis(){
         return false;
     };
@@ -141,8 +123,18 @@ public class Patient extends User {
     };
     
     @Override
-    public boolean hasMedicalRecords(){
-        return true;
+    public boolean canAddPatient(){
+        return false;
+    };
+    
+    @Override
+    public boolean canAddDoctors(){
+        return false;
+    };
+    
+    @Override
+    public boolean canAddReceptionist(){
+        return false;
     };
 }
 

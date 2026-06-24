@@ -80,6 +80,8 @@ public class AppointmentCreationUI extends JDialog implements ActionListener{
         pack();
         setLocationRelativeTo(parent);
         setResizable(false);
+        
+        this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
     }
     
     @Override

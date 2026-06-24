@@ -46,8 +46,4 @@ public class DatabaseInitialiser {
             e.printStackTrace();
         }
     }
-
-    public static void main(String[] args) {
-        initialiseDatabase();
-    }
 }

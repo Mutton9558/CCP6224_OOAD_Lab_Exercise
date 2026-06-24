@@ -27,7 +27,6 @@
             <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/Receptionist.java</file>
             <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/ActiveAppointmentsUI.java</file>
             <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/UIConstants.java</file>
-            <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/Diagnosis.java</file>
             <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/DoctorRecordsUI.java</file>
             <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/TextFieldWithPlaceholder.java</file>
             <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/MainUI.java</file>
@@ -40,7 +39,6 @@
             <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/DatabaseInitialiser.java</file>
             <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/DatabaseConfig.java</file>
             <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/GenerateReportUI.java</file>
-            <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/MedicalRecordsUI.java</file>
             <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/PatientRecordsUI.java</file>
             <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/DoctorCreationUI.java</file>
             <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/ReceptionistRecordsUI.java</file>
@@ -50,6 +48,9 @@
             <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/LoginUI.java</file>
             <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/LoginController.java</file>
             <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/ReceptionistCreationUI.java</file>
+            <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/ProfileInfoPanel.java</file>
+            <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/MedicalRecordsUI.java</file>
+            <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/EditProfileUI.java</file>
         </group>
     </open-files>
 </project-private>

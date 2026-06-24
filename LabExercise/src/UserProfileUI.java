@@ -10,23 +10,24 @@ public class UserProfileUI extends JPanel {
     UIConstants uiConstants = new UIConstants();
     GridBagConstraints gbc = new GridBagConstraints();
     GridBagConstraints gbc2 = new GridBagConstraints();
+    public JButton backButton = new JButton("Back");
     
     private User userProfile;
     private User viewer;
-    private UserController usrController;
     private ArrayList<Appointment> appList;
+    
+    // We keep track of the profile info panel instance so we can swap it out on reload
+    private ProfileInfoPanel profileInfoPanel;
 
-    public UserProfileUI(User userProfile, User viewer, ArrayList<Appointment> appList, UserController usrController) {
+    public UserProfileUI(User userProfile, SystemController system) {
 
         this.userProfile = userProfile;
-        this.viewer = viewer;
-        this.usrController = usrController;
-        this.appList = appList; 
+        this.viewer = system.getUserControllerInstance().getCurrentUser();
+        this.appList = system.getAppointmentControllerInstance().getActiveAppointmentsByID(userProfile.getUserID());
         
         //permissions
-        boolean hasMedicalRecords = userProfile.hasMedicalRecords();
-        boolean canEditProfileInfo = viewer.canEditUserProfileInfo();
-        boolean canEditProfile = viewer.canEditUserProfile();
+        boolean canEditProfileInfo = viewer.canEditProfile();
+        boolean canEditProfile = viewer.canEditProfile();
         boolean canEditDiag = viewer.canEditDiagnosis();
         boolean canEditPresc = viewer.canEditPrescription();
 
@@ -37,13 +38,12 @@ public class UserProfileUI extends JPanel {
         // northPanel settings
         JPanel northPanel = new JPanel(new GridBagLayout());
         northPanel.setBackground(uiConstants.DarkBlue);
-        JButton backButton = new JButton("back");
         backButton.setBackground(uiConstants.DarkBlue);
         backButton.setForeground(Color.WHITE);
         JButton ViewMedicalRecordsButton = new JButton("View Medical Records");
         ViewMedicalRecordsButton.setBackground(uiConstants.DarkBlue);
         ViewMedicalRecordsButton.setForeground(Color.WHITE);
-        ViewMedicalRecordsButton.setVisible(hasMedicalRecords);
+        ViewMedicalRecordsButton.setVisible(true);
 
         // Patient profile in the doctor's view and receptionist's view
         JButton UpdateButton = new JButton("Update");
@@ -95,16 +95,46 @@ public class UserProfileUI extends JPanel {
         GeneralInfoLabel.setForeground(Color.WHITE);
         gbc.gridx = 0;
         gbc.gridy = 2;
+        
         // receptionist/admin edit profile
-        JButton EditPatientProfile = new JButton("Edit");
-        EditPatientProfile.setBackground(uiConstants.VeryDarkBlue);
-        EditPatientProfile.setForeground(Color.WHITE);
-        EditPatientProfile.setVisible(canEditProfileInfo);
+        JButton EditProfileBtn = new JButton("Edit");
+        EditProfileBtn.addActionListener(e -> {
+            Window window = SwingUtilities.getWindowAncestor(this);
+            JDialog editProfileDialog = new EditProfileUI(window, this.userProfile, system.getUserControllerInstance());
+            editProfileDialog.setModal(true);
+            editProfileDialog.setVisible(true);
+            
+            // 1. Fetch updated data from database/controller
+            this.userProfile = system.getUserControllerInstance().searchUser(this.userProfile.getUserID());
+            
+            // 2. Remove the outdated component from infoPanel
+            infoPanel.remove(profileInfoPanel);
+            
+            // 3. Create a fresh visual instance with updated user data
+            profileInfoPanel = new ProfileInfoPanel(this.userProfile);
+            
+            // 4. Re-add it to the same GridBagLayout constraints
+            GridBagConstraints updatedGbc = new GridBagConstraints();
+            updatedGbc.gridx = 0;
+            updatedGbc.gridy = 3;
+            updatedGbc.anchor = GridBagConstraints.WEST;
+            updatedGbc.insets = new Insets(10, 10, 10, 10);
+            infoPanel.add(profileInfoPanel, updatedGbc);
+            
+            // 5. Force Swing to clear cache layout structural properties and repaint
+            infoPanel.revalidate();
+            infoPanel.repaint();
+        });
+        
+        EditProfileBtn.setBackground(uiConstants.VeryDarkBlue);
+        EditProfileBtn.setForeground(Color.WHITE);
+        EditProfileBtn.setVisible(canEditProfileInfo);
         infoSubPanel.add(GeneralInfoLabel, BorderLayout.WEST);
-        infoSubPanel.add(EditPatientProfile, BorderLayout.EAST);
+        infoSubPanel.add(EditProfileBtn, BorderLayout.EAST);
         infoPanel.add(infoSubPanel, gbc);
 
-        ProfileInfoPanel profileInfoPanel = new ProfileInfoPanel(userProfile);
+        // Initialized component assigned to field reference
+        profileInfoPanel = new ProfileInfoPanel(userProfile);
         gbc.gridx = 0;
         gbc.gridy = 3;
         infoPanel.add(profileInfoPanel, gbc);
@@ -131,7 +161,7 @@ public class UserProfileUI extends JPanel {
         DefaultTableModel model1 = new DefaultTableModel(columnNames1, 0);
         for(Appointment a : appList){
             
-            model1.addRow(new Object[] { a.getAppointmentID(), a.getPatientID(), usrController.searchUser(a.getPatientID(), "patient").getUserName(), a.getDoctorID(), usrController.searchUser(a.getDoctorID(), "doctor").getUserName(), a.getAppointmentDate().toString(), a.getAppointmentTime().toString(), a.getLocation(),
+            model1.addRow(new Object[] { a.getAppointmentID(), a.getPatientID(), system.getUserControllerInstance().searchUser(a.getPatientID()).getUserName(), a.getDoctorID(), system.getUserControllerInstance().searchUser(a.getDoctorID()).getUserName(), a.getAppointmentDate().toString(), a.getAppointmentTime().toString(), a.getLocation(),
                 a.getStatus()});
         }
         
@@ -148,6 +178,7 @@ public class UserProfileUI extends JPanel {
 
         
         // PRESCRIPTION -- right now it is non-functional as getting prescription function is not implemeted + diagnosis
+        // (Note: if these elements ever need to update dynamically, you would use a similar approach or table model updates)
         JLabel PrescriptionsLabel = new JLabel("Prescriptions");
         PrescriptionsLabel.setForeground(Color.WHITE);
         JButton AddPresc = new JButton("Add");
@@ -171,35 +202,7 @@ public class UserProfileUI extends JPanel {
         gbc.gridx = 0;
         gbc.gridy = 3;
         tablePanel.add(scrollPane2, gbc);
-
-
-        // DIAGNOSIS
-        JPanel DiagSubPanel = new JPanel(new BorderLayout());
-        DiagSubPanel.setOpaque(false);
-        DiagSubPanel.setPreferredSize(new Dimension(150, 20));
-        JLabel DiagnosisLabel = new JLabel("Diagnosis");
-        DiagnosisLabel.setForeground(Color.WHITE);
-        JButton AddDiag = new JButton("Add");
-        AddDiag.setBackground(uiConstants.VeryDarkBlue);
-        AddDiag.setForeground(Color.WHITE);
-        AddDiag.setVisible(canEditDiag);
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        DiagSubPanel.add(DiagnosisLabel, BorderLayout.WEST);
-        DiagSubPanel.add(AddDiag, BorderLayout.EAST);
-        tablePanel.add(DiagSubPanel, gbc);
-
-        // TABLES DIAGNOSIS //
-        String[] columnNames3 = { "Condition Name", "Date" };
-        DefaultTableModel model3 = new DefaultTableModel(columnNames3, 0);
-        model3.addRow(new Object[] { "Diabetes", "2026-07-06" });
-        JTable DiagnosisTable = new JTable(model3);
-        JScrollPane scrollPane3 = new JScrollPane(DiagnosisTable);
-        scrollPane3.setPreferredSize(new Dimension(600, 110));
-        gbc.gridx = 0;
-        gbc.gridy = 5;
-        tablePanel.add(scrollPane3, gbc);
-
+        
         
 
         //adding main panels 
@@ -208,6 +211,4 @@ public class UserProfileUI extends JPanel {
         add(northPanel, BorderLayout.NORTH);
         add(splitPanel, BorderLayout.CENTER);
     }
-
 }
-
