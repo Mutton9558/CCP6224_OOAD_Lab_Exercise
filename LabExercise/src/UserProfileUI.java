@@ -156,15 +156,14 @@ public class UserProfileUI extends JPanel {
 
         // TABLES ACTIVE APPOINTMENTS //
         //userProfile 
-        String[] columnNames1 = { "ID", "Patient ID", "Patient Name", "Doctor ID", "Doctor Name", "Date", "Time",
-                "Location", "Status" };
+        String[] columnNames1 = { "ID", "Patient", "Doctor", "Date And Time", "Location", "Status" };
         DefaultTableModel model1 = new DefaultTableModel(columnNames1, 0);
         for(Appointment a : appList){
             
             model1.addRow(new Object[] { a.getAppointmentID(), a.getPatientID(), system.getUserControllerInstance().searchUser(a.getPatientID()).getUserName(), a.getDoctorID(), system.getUserControllerInstance().searchUser(a.getDoctorID()).getUserName(), a.getAppointmentDate().toString(), a.getAppointmentTime().toString(), a.getLocation(),
                 a.getStatus()});
         }
-        
+
         JTable AppointmentTable = new JTable(model1);
         JScrollPane scrollPane1 = new JScrollPane(AppointmentTable);
         scrollPane1.setPreferredSize(new Dimension(600, 110));

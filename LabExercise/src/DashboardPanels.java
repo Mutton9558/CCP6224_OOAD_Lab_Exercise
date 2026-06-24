@@ -61,9 +61,11 @@ public class DashboardPanels{
     public class PatientRecordsPanel implements DashboardPanel{
 
         private PatientRecordsUI panelUI;
+        private UserController controller;
         
         public PatientRecordsPanel(){
-            this.panelUI = new PatientRecordsUI();
+            this.controller = system.getUserControllerInstance();
+            this.panelUI = new PatientRecordsUI(client, controller);
         }
         
         @Override
