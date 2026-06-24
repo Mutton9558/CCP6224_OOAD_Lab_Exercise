@@ -86,20 +86,12 @@ public class LoginUI extends JDialog implements ActionListener {
         submit.addActionListener(this);
         panel.add(submit, adj);
 
-        adj.gridx = 1;
-        adj.gridy = 6;
-        adj.anchor = GridBagConstraints.EAST;
-        adj.insets = new Insets(5, 10, 20, 50);
-        JLabel registerText = new JLabel("Don't have an account?");
-        registerText.setForeground(Color.WHITE);
-        registerText.setFont(new Font("Sans-Serif", Font.PLAIN, 12));
-        panel.add(registerText, adj);
-
         add(panel, BorderLayout.CENTER);
         setTitle("Please Login Here!");
         setSize(500, 420);
         setLocationRelativeTo(parent);
         setResizable(false);
+        this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
     }
 
     @Override

@@ -9,7 +9,7 @@ public class DashboardUI extends JPanel {
     CardLayout cardLayout1 = new CardLayout();
     CardLayout cardLayout2 = new CardLayout();
     JPanel westPanel, contentPanel, mainPanel, northPanel;
-    //JButton butt1, butt2, butt3, butt4, butt5;
+    public JButton backButton = new JButton("Back");
 
     // this is the main dashboard UI shared accross patient, receptionists, doctors and admin
     public DashboardUI(List<DashboardPanel> dashboardPanels) {
@@ -48,6 +48,7 @@ public class DashboardUI extends JPanel {
 //        Iterates over dashboard panels and creates the appropriate side button and content panel
         for(DashboardPanel i : dashboardPanels){
            JButton sidebarButton = new JButton(i.getName());
+           sidebarButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, sidebarButton.getPreferredSize().height));
            sidebarButton.setVisible(i.isVisible());
            contentPanel.add(i.getPanel(), i.getName());
            sidebarButton.addActionListener(event -> {
@@ -55,7 +56,9 @@ public class DashboardUI extends JPanel {
             });
            sidePanel.add(sidebarButton);
         }
-        
+        backButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, backButton.getPreferredSize().height));
+        backButton.setVisible(true);
+        sidePanel.add(backButton);
 //        
         westPanel.add(sidePanel, "sidePanel");
         cardLayout1.show(westPanel, "sidePanel");

@@ -46,15 +46,17 @@ public class HomePageUI extends JPanel{
         butt3.setBackground(UIConst.DarkBlue);
         butt3.setForeground(Color.WHITE);
 
-        // shawn pls hide this once user is logged in
         butt4 = new JButton("Login");
         butt4.setBackground(UIConst.DarkBlue);
         butt4.setForeground(Color.WHITE);
 
-        // shawn pls make this appear once user is logged in and hidden when just starting
         butt5 = new JButton("Dashboard");
         butt5.setBackground(UIConst.DarkBlue);
         butt5.setForeground(Color.WHITE);
+        
+        butt6 = new JButton("My Profile");
+        butt6.setBackground(UIConst.DarkBlue);
+        butt6.setForeground(Color.WHITE);
         // buttons
         
         JPanel upperPanel_2 = new JPanel(new FlowLayout());
@@ -65,6 +67,7 @@ public class HomePageUI extends JPanel{
         upperPanel_2.add(butt3);
         upperPanel_2.add(butt4);
         upperPanel_2.add(butt5);
+        upperPanel_2.add(butt6);
         upperPanel.add(upperPanel_2, BorderLayout.SOUTH);
 
         JPanel centerPanel = new JPanel();

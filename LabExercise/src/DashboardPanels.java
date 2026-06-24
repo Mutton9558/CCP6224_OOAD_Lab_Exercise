@@ -58,30 +58,6 @@ public class DashboardPanels{
         }
     }
     
-    public class MedicalRecordsPanel implements DashboardPanel{
-
-        private MedicalRecordsUI panelUI;
-        
-        public MedicalRecordsPanel(){
-            this.panelUI = new MedicalRecordsUI();
-        }
-        
-        @Override
-        public String getName(){
-            return "Medical Records";
-        }
-        
-        @Override
-        public boolean isVisible(){
-            return client.canViewSelfRecords();
-        }
-        
-        @Override
-        public JPanel getPanel(){
-            return panelUI;
-        }
-    }
-    
     public class PatientRecordsPanel implements DashboardPanel{
 
         private PatientRecordsUI panelUI;
@@ -190,7 +166,6 @@ public class DashboardPanels{
         
         this.panels.add(new ActiveAppointmentPanel());
         this.panels.add(new PrescriptionPanel());
-        this.panels.add(new MedicalRecordsPanel());
         this.panels.add(new PatientRecordsPanel());
         this.panels.add(new DoctorRecordsPanel());
         this.panels.add(new ReceptionistRecordsPanel());
