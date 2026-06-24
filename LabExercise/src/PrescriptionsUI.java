@@ -110,7 +110,7 @@ public class PrescriptionsUI extends JPanel{
         JButton createPrescription = new JButton("Create Prescription");
         createPrescription.addActionListener(e -> {
             Window window = SwingUtilities.getWindowAncestor(this);
-            PrescriptionCreationUI dialog = new PrescriptionCreationUI(window, controller);
+            PrescriptionCreationUI dialog = new PrescriptionCreationUI(window, client, controller);
             dialog.setModal(true);
             dialog.setVisible(true);
             
@@ -118,6 +118,7 @@ public class PrescriptionsUI extends JPanel{
             this.prescriptionList = controller.getActivePrescription(client.getUserID());
             loadPrescription();
         });
+        createPrescription.setVisible(client.canAddPrescriptions());
         this.add(createPrescription, adj);
 
         adj.gridwidth = GridBagConstraints.REMAINDER;
