@@ -36,9 +36,7 @@ public class MainUI extends JFrame{
 
         homepage.butt4.addActionListener(event -> {
             LoginUI loginDialog = new LoginUI(this, system, loggedInSystem -> {
-                System.out.println("Callback fired!");
                 SwingUtilities.invokeLater(() -> {  // ADD THIS
-                    System.out.println("Inside invokeLater");
                     DashboardPanels panelList = new DashboardPanels(system);
                     ArrayList<DashboardPanel> panels = panelList.returnDashboardPanels();
                     dashboard = new DashboardUI(panels);
