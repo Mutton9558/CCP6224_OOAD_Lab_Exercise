@@ -17,11 +17,13 @@ public class PrescriptionCreationUI extends JDialog implements ActionListener{
     private UIConstants uiconst = new UIConstants();
     private Window parent;
     private final PrescriptionController controller;
+    private User client;
     
-    public PrescriptionCreationUI(Window parent, PrescriptionController controller){
+    public PrescriptionCreationUI(Window parent, User client, PrescriptionController controller){
         super(parent, "Create Prescription", Dialog.ModalityType.APPLICATION_MODAL);
         this.controller = controller;
         this.parent = parent;
+        this.client = client;
         JPanel content = new JPanel();
         content.setLayout(new GridBagLayout());
         content.setBackground(uiconst.Azure);
@@ -46,32 +48,32 @@ public class PrescriptionCreationUI extends JDialog implements ActionListener{
         
          // Dose Text Box
         formBoxConstraints.gridx = 0;
-        formBoxConstraints.gridy = 1;
+        formBoxConstraints.gridy = 2;
         formBoxConstraints.gridwidth = 1;
         doseTextField = new TextFieldWithPlaceholder("Enter Prescription Dose", 24);
         content.add(doseTextField.returnTextField(), formBoxConstraints);
 
         // Condition Text Box
         formBoxConstraints.gridx = 0;
-        formBoxConstraints.gridy = 2;
+        formBoxConstraints.gridy = 3;
         conditionTextField = new TextFieldWithPlaceholder("Enter Prescription Condition", 24);
         content.add(conditionTextField.returnTextField(), formBoxConstraints);
         
         // Frequency Text Box
-        formBoxConstraints.gridx = 1;
-        formBoxConstraints.gridy = 2;
+        formBoxConstraints.gridx = 0;
+        formBoxConstraints.gridy = 4;
         frequencyTextField = new TextFieldWithPlaceholder("Enter Prescription Frequency", 24);
         content.add(frequencyTextField.returnTextField(), formBoxConstraints);
         
         formBoxConstraints.gridx = 0;
-        formBoxConstraints.gridy = 3;
+        formBoxConstraints.gridy = 5;
         formBoxConstraints.gridwidth = 1;
         JLabel prescStartLabel = new JLabel("Prescription Start: ");
         content.add(prescStartLabel, formBoxConstraints);
         
         // Date Prescribed Prescription
-        formBoxConstraints.gridx = 0;
-        formBoxConstraints.gridy = 4;
+        formBoxConstraints.gridx = 1;
+        formBoxConstraints.gridy = 5;
         SpinnerDateModel dateModel = new SpinnerDateModel(new Date(), null, null, Calendar.DAY_OF_MONTH);
         prescDateField = new JSpinner(dateModel);
         JSpinner.DateEditor dateEditor = new JSpinner.DateEditor(prescDateField, "yyyy-MM-dd");
@@ -79,13 +81,13 @@ public class PrescriptionCreationUI extends JDialog implements ActionListener{
         content.add(prescDateField, formBoxConstraints);
         
         formBoxConstraints.gridx = 0;
-        formBoxConstraints.gridy = 5;
+        formBoxConstraints.gridy = 6;
         formBoxConstraints.gridwidth = 1;
         JLabel prescEndLabel = new JLabel("Prescription End: ");
         content.add(prescEndLabel, formBoxConstraints);
         
         // Date Prescribed Prescription
-        formBoxConstraints.gridx = 0;
+        formBoxConstraints.gridx = 1;
         formBoxConstraints.gridy = 6;
         SpinnerDateModel dateModel2 = new SpinnerDateModel(new Date(), null, null, Calendar.DAY_OF_MONTH);
         prescEndField = new JSpinner(dateModel2);
@@ -98,8 +100,8 @@ public class PrescriptionCreationUI extends JDialog implements ActionListener{
         formBoxConstraints.gridwidth = 1;
         patientTextField = new TextFieldWithPlaceholder("Enter Patient ID", 24);
         content.add(patientTextField.returnTextField(), formBoxConstraints);
-
-        formBoxConstraints.gridy = 8;
+        
+        formBoxConstraints.gridy = 9;
         submitButton = new JButton("Create Prescription");
         submitButton.addActionListener(this);
         content.add(submitButton, formBoxConstraints);
@@ -115,7 +117,7 @@ public class PrescriptionCreationUI extends JDialog implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e){
         String prescName, prescDose, prescCondition, prescFrequency;
-        int patientID;
+        int patientID, doctorID;
         LocalDate prescDate, prescEnd;
         
         try{            
@@ -129,6 +131,8 @@ public class PrescriptionCreationUI extends JDialog implements ActionListener{
 
             prescDate = dateValue.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
             prescEnd = endDateVal.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+            
+            doctorID = this.client.getUserID();
             
             this.nameTextField.returnTextField().setEnabled(false);
             this.doseTextField.returnTextField().setEnabled(false);
@@ -152,14 +156,14 @@ public class PrescriptionCreationUI extends JDialog implements ActionListener{
             ex.printStackTrace();
             return;
         }
-        registerPrescription(prescName, prescDose, prescCondition, prescFrequency, patientID, prescDate, prescEnd);
+        registerPrescription(prescName, prescDose, prescCondition, prescFrequency, patientID, doctorID, prescDate, prescEnd);
     }
     
-    public void registerPrescription(String name, String dose, String condition, String frequency, int patient_ID, LocalDate date, LocalDate end){
-        boolean success = controller.createPrescription(name, dose, condition, frequency, patient_ID, date, end);
+    public void registerPrescription(String name, String dose, String condition, String frequency, int patient_ID, int doctorID, LocalDate date, LocalDate end){
+        boolean success = controller.createPrescription(name, dose, condition, frequency, patient_ID, doctorID, date, end);
         if(success){
             JOptionPane.showMessageDialog(this,
-                            "Successfully created doctor", "Success",
+                            "Successfully created prescription", "Success",
                             JOptionPane.INFORMATION_MESSAGE);
             dispose();
         } else {

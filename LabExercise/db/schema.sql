@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS Prescriptions(
     prescription_frequency VARCHAR NOT NULL,
     prescription_condition VARCHAR NOT NULL,
     prescription_target INTEGER,
+    prescription_author INTEGER,
     FOREIGN KEY(prescription_target) REFERENCES Users(user_id)
 );
 
@@ -42,4 +43,4 @@ INSERT OR IGNORE INTO Users VALUES (1004, 'SYED ZAKI HUSAIN WAFA BIN SYED RIYAD 
 
 INSERT OR IGNORE INTO Appointments VALUES (2001, 1001, 1002, '2026-06-04', '12:58:00', "Elsa's Office", 'Scheduled');   
 
-INSERT OR IGNORE INTO Prescriptions VALUES (3001, 'Panadol', '100ml', '2026-06-04', '2026-06-06', 'Twice a day', 'Fever', 1001);
+INSERT OR IGNORE INTO Prescriptions VALUES (3001, 'Panadol', '100ml', '2026-06-04', '2026-06-06', 'Twice a day', 'Fever', 1001, 1002);
