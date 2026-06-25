@@ -68,7 +68,7 @@ public class DoctorRecordsUI extends JPanel{
             JDialog profileDialog = new JDialog();
             //get the parent frame 
             Frame parent = (Frame)SwingUtilities.getWindowAncestor(this);
-            profileDialog = new JDialog(parent, "Dcotor Profile", true);
+            profileDialog = new JDialog(parent, "Doctor Profile", true);
             profileDialog.setSize(1366, 768);
             profileDialog.setLocationRelativeTo(parent);
             profileDialog.setResizable(false);
@@ -169,14 +169,14 @@ public class DoctorRecordsUI extends JPanel{
     }
 
     private void addRow(User a) {
-        Object[] row = new Object[8];
+        Object[] row = new Object[7];
         row[0] = a.getUserID();
         row[1] = a.getUserName();
         row[2] = a.getUserAge();
         row[3] = a.getUserGender();
         row[4] = a.getOffice();
         row[5] = a.getSpecialisation();
-        row[7] = "View";
+        row[6] = "View";
         tableModel.addRow(row);
     }
 
