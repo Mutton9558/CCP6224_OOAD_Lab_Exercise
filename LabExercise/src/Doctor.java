@@ -161,4 +161,20 @@ public class Doctor extends User{
     public boolean canAddReceptionist(){
         return false;
     };
-}
+    
+     @Override
+    public boolean canViewPatientProfile(){
+        return true;
+    };
+    
+    @Override
+    public boolean canViewDoctorProfile(){
+        return false;
+    };
+    
+    @Override
+    public boolean canViewReceptionistProfile(){
+        return false;
+    };
+    
+}  

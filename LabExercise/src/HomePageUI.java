@@ -6,7 +6,7 @@ import java.util.*;
 
 public class HomePageUI extends JPanel{
 
-    public JButton butt1, butt2, butt3, butt4, butt5;
+    public JButton butt1, butt2, butt3, butt4, butt5, butt6;
     private JDialog aboutDialog, contactDialog;
 
     public HomePageUI() {
@@ -42,7 +42,7 @@ public class HomePageUI extends JPanel{
         butt2.setBackground(UIConst.DarkBlue);
         butt2.setForeground(Color.WHITE);
 
-        butt3 = new JButton("Find a Doctor");
+        butt3 = new JButton("Logout");
         butt3.setBackground(UIConst.DarkBlue);
         butt3.setForeground(Color.WHITE);
 

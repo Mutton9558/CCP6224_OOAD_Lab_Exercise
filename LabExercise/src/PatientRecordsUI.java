@@ -1,22 +1,3 @@
-//import java.awt.*;
-//import javax.swing.*;
-//
-////this is the side panel UI that is shared between receptionist and doctor
-////this UI shows up when the user clicks on the button called "Patient Records" at the side panel
-//public class PatientRecordsUI extends JPanel {
-//
-//    // THE FOLLOWING CONTENT IS SIMPLY TO TEST FUNCTIONALITY
-//    JLabel lb1;
-//    public PatientRecordsUI() {
-//
-//        //table of patient records
-//        //placeHOLDER for me(els)
-//        setBackground(Color.RED);
-//        lb1 = new JLabel("PATIENT RECORDS BUTTON WAS PRESSED");
-//        add(lb1);
-//        setVisible(true);
-//    }
-//}
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.*;
@@ -24,18 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PatientRecordsUI extends JPanel{
-    User activeClient;
-    UIConstants uiConstant = new UIConstants();
+    private final UIConstants uiConstant = new UIConstants();
 
     // Store Patients separately so the button editor can reference them by row
-    private List<User> PatientList = new ArrayList<>();
+    private List<User> patientList = new ArrayList<>();
     private DefaultTableModel tableModel;
     private JTable table;
 
-    public PatientRecordsUI(User client, UserController controller) {
-
-        this.activeClient = client;
-        
+    public PatientRecordsUI(User client, UserController controller, SystemController system) {
         this.setLayout(new GridBagLayout());
         GridBagConstraints adj = new GridBagConstraints();
         this.setBackground(uiConstant.Azure);
@@ -47,7 +24,7 @@ public class PatientRecordsUI extends JPanel{
         adj.weighty = 0.0;
         adj.fill = GridBagConstraints.NONE;
         adj.gridy = 0;
-        JLabel panelTitle = new JLabel("Search for Patients");
+        JLabel panelTitle = new JLabel("Search for Active Patients");
         panelTitle.setFont(new Font("Sans-Serif", Font.BOLD, 24));
         panelTitle.setForeground(Color.WHITE);
         this.add(panelTitle, adj);
@@ -61,24 +38,44 @@ public class PatientRecordsUI extends JPanel{
         boolean canSearch = client.canSearchRecords();
         searchField.returnTextField().setVisible(canSearch);
         this.add(searchField.returnTextField(), adj);
-
-        String[] columns = new String[4];
+        
+        String[] columns = new String[5];
         columns[0] = "ID";
         columns[1] = "Name";
         columns[2] = "Age";
         columns[3] = "Gender";
+        columns[4] = "View Profile";
 
         tableModel = new DefaultTableModel(columns, 0) {
 
             @Override
             public Class<?> getColumnClass(int col) {
-                return col == 6 ? JButton.class : Object.class;
+                return col == 5 ? JButton.class : Object.class;
             }
         };
 
         table = new JTable(tableModel);
         table.setRowHeight(32);
+            
+        //render the button called "view"
+        table.getColumn("View Profile").setCellRenderer(new ButtonRenderer());
+        table.getColumn("View Profile").setCellEditor(new ButtonEditor(table, row->{
+            User patient = patientList.get(row);
+            UserProfileUI profile = new UserProfileUI(patient, system);
+            
+            JDialog profileDialog = new JDialog();
+            //get the parent frame 
+            Frame parent = (Frame)SwingUtilities.getWindowAncestor(this);
+            profileDialog = new JDialog(parent, "Patient Profile", true);
+            profileDialog.setSize(1366, 768);
+            profileDialog.setLocationRelativeTo(parent);
+            profileDialog.setResizable(false);
+            profileDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            profileDialog.add(profile);
+            profileDialog.setVisible(true);
+       }));
 
+    
         adj.gridy = 2;
         adj.gridwidth = 1;
         JButton searchButton = new JButton("Search");
@@ -95,9 +92,10 @@ public class PatientRecordsUI extends JPanel{
                             JOptionPane.INFORMATION_MESSAGE);
                     return;
                 }
+                
                 tableModel.setRowCount(0);
-                PatientList.clear();
-                PatientList.add(target);
+                patientList.clear();
+                patientList.add(target);
                 loadPatients();
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this,
@@ -125,9 +123,10 @@ public class PatientRecordsUI extends JPanel{
         JButton createPatient = new JButton("Register Patient");
         createPatient.addActionListener(e -> {
             Window window = SwingUtilities.getWindowAncestor(this);
-//            ReceptionistCreationUI dialog = new ReceptionistCreationUI(window);
-//            dialog.setVisible(true);
+            PatientCreationUI dialog = new PatientCreationUI(window, controller);
+            dialog.setVisible(true);
         });
+        createPatient.setVisible(client.canAddPatient());
         this.add(createPatient, adj);
 
         adj.gridwidth = GridBagConstraints.REMAINDER;
@@ -154,25 +153,27 @@ public class PatientRecordsUI extends JPanel{
         adj.insets = new Insets(0, 40, 25, 40);
         this.add(scrollPane, adj);
 
-        this.PatientList = controller.getUsersByRole("Patient");
+        ArrayList<User> initialData = controller.getUsersByRole("Patient");
+        patientList = initialData;
         loadPatients();
         this.setFocusable(true);
     }
 
     public void loadPatients() {
         tableModel.setRowCount(0);
-        for (User a : PatientList) {
+        for (User a : patientList) {
             addRow(a);
         }
         autoSizeColumns(table);
     }
 
     private void addRow(User a) {
-        Object[] row = new Object[4];
+        Object[] row = new Object[5];
         row[0] = a.getUserID();
         row[1] = a.getUserName();
         row[2] = a.getUserAge();
         row[3] = a.getUserGender();
+        row[4] = "View";
         tableModel.addRow(row);
     }
 

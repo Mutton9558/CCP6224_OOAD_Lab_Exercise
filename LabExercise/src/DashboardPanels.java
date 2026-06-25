@@ -65,7 +65,7 @@ public class DashboardPanels{
         
         public PatientRecordsPanel(){
             this.controller = system.getUserControllerInstance();
-            this.panelUI = new PatientRecordsUI(client, controller);
+            this.panelUI = new PatientRecordsUI(client, controller, system);
         }
         
         @Override
@@ -91,7 +91,7 @@ public class DashboardPanels{
         
         public DoctorRecordsPanel(){
             this.controller = system.getUserControllerInstance();
-            this.panelUI = new DoctorRecordsUI(client, controller);
+            this.panelUI = new DoctorRecordsUI(client, controller, system);
         }
         
         @Override
@@ -117,7 +117,7 @@ public class DashboardPanels{
         
         public ReceptionistRecordsPanel(){
             this.controller = system.getUserControllerInstance();
-            this.panelUI = new ReceptionistRecordsUI(client, controller);
+            this.panelUI = new ReceptionistRecordsUI(client, controller, system);
         }
         
         @Override

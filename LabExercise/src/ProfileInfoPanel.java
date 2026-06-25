@@ -6,7 +6,7 @@ public class ProfileInfoPanel extends JPanel {
     public ProfileInfoPanel(User user) {
 
         setBackground(Color.WHITE);
-        //setPreferredSize(new Dimension(300, 500));
+//      setPreferredSize(new Dimension(300, 500));
         setLayout(new GridLayout(4, 2));
 
         add(new JLabel("User ID:"));

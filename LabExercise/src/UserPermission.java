@@ -3,6 +3,9 @@ public interface UserPermission {
     public boolean canViewPrescriptions();
     public boolean canViewActiveAppointments();
     public boolean canViewPatientRecords();
+    public boolean canViewPatientProfile();
+    public boolean canViewDoctorProfile();
+    public boolean canViewReceptionistProfile();
     public boolean canViewDoctorRecords();
     public boolean canViewReceptionistRecords();
     public boolean canUpdateAppointments();
