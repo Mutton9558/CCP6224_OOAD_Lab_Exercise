@@ -118,6 +118,7 @@ public class PrescriptionsUI extends JPanel{
             this.prescriptionList = controller.getActivePrescription(client.getUserID());
             loadPrescription();
         });
+        createPrescription.setVisible(client.canAddPrescriptions());
         this.add(createPrescription, adj);
 
         adj.gridwidth = GridBagConstraints.REMAINDER;

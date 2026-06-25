@@ -12,10 +12,12 @@ public class LoginUI extends JDialog implements ActionListener {
 
     private UIConstants uiConstant = new UIConstants();
     private LoginController.LoginCallback callback;
+    private LoginController controller;
 
-    public LoginUI(Window parent, LoginController.LoginCallback callback) {
+    public LoginUI(Window parent, SystemController system, LoginController.LoginCallback callback) {
         super(parent, "Login", Dialog.ModalityType.APPLICATION_MODAL);
         this.callback = callback;
+        this.controller = new LoginController(system);
 
         // main panel - blue background same as other UIs
         panel = new JPanel(new GridBagLayout());
@@ -115,7 +117,7 @@ public class LoginUI extends JDialog implements ActionListener {
         }
 
         // validate login
-        LoginController controller = LoginController.getInstance();
+//        LoginController controller = LoginController.getInstance();
         boolean success = controller.validateLogin(userID, password);
 
         if (success) {

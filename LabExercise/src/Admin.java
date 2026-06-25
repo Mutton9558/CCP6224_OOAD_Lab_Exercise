@@ -108,6 +108,21 @@ public class Admin extends User{
     public boolean canAddReceptionist(){
         return true;
     };
+    
+    @Override
+    public boolean canViewPatientProfile(){
+        return false;
+    };
+    
+    @Override
+    public boolean canViewDoctorProfile(){
+        return true;
+    };
+    
+    @Override
+    public boolean canViewReceptionistProfile(){
+        return true;
+    };
 }
 
 

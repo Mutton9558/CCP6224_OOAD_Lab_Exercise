@@ -72,7 +72,7 @@ public class Patient extends User {
     
     @Override
     public boolean canAddPrescriptions(){
-        return false;
+        return true;
     };
     
     @Override
@@ -134,6 +134,20 @@ public class Patient extends User {
     
     @Override
     public boolean canAddReceptionist(){
+        return false;
+    };
+         @Override
+    public boolean canViewPatientProfile(){
+        return false;
+    };
+    
+    @Override
+    public boolean canViewDoctorProfile(){
+        return false;
+    };
+    
+    @Override
+    public boolean canViewReceptionistProfile(){
         return false;
     };
 }

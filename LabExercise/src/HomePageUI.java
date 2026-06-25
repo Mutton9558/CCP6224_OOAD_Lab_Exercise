@@ -42,7 +42,7 @@ public class HomePageUI extends JPanel{
         butt2.setBackground(UIConst.DarkBlue);
         butt2.setForeground(Color.WHITE);
 
-        butt3 = new JButton("Find a Doctor");
+        butt3 = new JButton("Logout");
         butt3.setBackground(UIConst.DarkBlue);
         butt3.setForeground(Color.WHITE);
 

@@ -4,19 +4,19 @@ public class LoginController {
         void onLoginSuccess(SystemController system);
     }
 
-    private static LoginController instance;
+//    private static LoginController instance;
     private SystemController system;
 
-    private LoginController() {
-        this.system = new SystemController();
+    public LoginController(SystemController system) {
+        this.system = system;
     }
 
-    public static LoginController getInstance() {
-        if (instance == null) {
-            instance = new LoginController();
-        }
-        return instance;
-    }
+//    public static LoginController getInstance() {
+//        if (instance == null) {
+//            instance = new LoginController();
+//        }
+//        return instance;
+//    }
 
     // returns true if login succeeded, false if not
     public boolean validateLogin(int userID, String password) {

@@ -12,7 +12,7 @@ public class PatientRecordsUI extends JPanel{
     private DefaultTableModel tableModel;
     private JTable table;
 
-    public PatientRecordsUI(User client, UserController controller) {
+    public PatientRecordsUI(User client, UserController controller, SystemController system) {
         this.setLayout(new GridBagLayout());
         GridBagConstraints adj = new GridBagConstraints();
         this.setBackground(uiConstant.Azure);
@@ -38,26 +38,44 @@ public class PatientRecordsUI extends JPanel{
         boolean canSearch = client.canSearchRecords();
         searchField.returnTextField().setVisible(canSearch);
         this.add(searchField.returnTextField(), adj);
-
-        String[] columns = new String[4];
+        
+        String[] columns = new String[5];
         columns[0] = "ID";
         columns[1] = "Name";
         columns[2] = "Age";
         columns[3] = "Gender";
-//        columns[4] = "Office";
-//        columns[5] = "Specialisation";
+        columns[4] = "View Profile";
 
         tableModel = new DefaultTableModel(columns, 0) {
 
             @Override
             public Class<?> getColumnClass(int col) {
-                return col == 6 ? JButton.class : Object.class;
+                return col == 5 ? JButton.class : Object.class;
             }
         };
 
         table = new JTable(tableModel);
         table.setRowHeight(32);
+            
+        //render the button called "view"
+        table.getColumn("View Profile").setCellRenderer(new ButtonRenderer());
+        table.getColumn("View Profile").setCellEditor(new ButtonEditor(table, row->{
+            User patient = patientList.get(row);
+            UserProfileUI profile = new UserProfileUI(patient, system);
+            
+            JDialog profileDialog = new JDialog();
+            //get the parent frame 
+            Frame parent = (Frame)SwingUtilities.getWindowAncestor(this);
+            profileDialog = new JDialog(parent, "Patient Profile", true);
+            profileDialog.setSize(1366, 768);
+            profileDialog.setLocationRelativeTo(parent);
+            profileDialog.setResizable(false);
+            profileDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            profileDialog.add(profile);
+            profileDialog.setVisible(true);
+       }));
 
+    
         adj.gridy = 2;
         adj.gridwidth = 1;
         JButton searchButton = new JButton("Search");
@@ -108,6 +126,7 @@ public class PatientRecordsUI extends JPanel{
             PatientCreationUI dialog = new PatientCreationUI(window, controller);
             dialog.setVisible(true);
         });
+        createPatient.setVisible(client.canAddPatient());
         this.add(createPatient, adj);
 
         adj.gridwidth = GridBagConstraints.REMAINDER;
@@ -134,7 +153,7 @@ public class PatientRecordsUI extends JPanel{
         adj.insets = new Insets(0, 40, 25, 40);
         this.add(scrollPane, adj);
 
-        ArrayList<User> initialData = controller.getUsersByRole("Doctor");
+        ArrayList<User> initialData = controller.getUsersByRole("Patient");
         patientList = initialData;
         loadPatients();
         this.setFocusable(true);
@@ -149,13 +168,12 @@ public class PatientRecordsUI extends JPanel{
     }
 
     private void addRow(User a) {
-        Object[] row = new Object[6];
+        Object[] row = new Object[5];
         row[0] = a.getUserID();
         row[1] = a.getUserName();
         row[2] = a.getUserAge();
         row[3] = a.getUserGender();
-        row[4] = a.getOffice();
-        row[5] = a.getSpecialisation();
+        row[4] = "View";
         tableModel.addRow(row);
     }
 
