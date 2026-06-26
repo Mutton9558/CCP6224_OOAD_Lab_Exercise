@@ -72,6 +72,14 @@ public class PatientRecordsUI extends JPanel{
             profileDialog.setResizable(false);
             profileDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             profileDialog.add(profile);
+            
+            profile.backButton.addActionListener(e -> {
+                java.awt.Window dialog = SwingUtilities.getWindowAncestor(profile.backButton);
+                if (dialog != null) {
+                    dialog.dispose();
+                }
+            });
+            
             profileDialog.setVisible(true);
        }));
 

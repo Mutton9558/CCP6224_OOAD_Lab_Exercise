@@ -42,11 +42,11 @@ public class MainUI extends JFrame{
                     dashboard = new DashboardUI(panels);
                     profile = new UserProfileUI(system.getUserControllerInstance().getCurrentUser(), system);
                     dashboard.backButton.addActionListener(backEvent -> {
-                    cardLayout.show(mainPanel, "HOME");
+                        cardLayout.show(mainPanel, "HOME");
                     });
                 
-                     profile.backButton.addActionListener(backEvent -> {
-                    cardLayout.show(mainPanel, "HOME");
+                    profile.backButton.addActionListener(backEvent -> {
+                        cardLayout.show(mainPanel, "HOME");
                     });
                 
                     mainPanel.add(dashboard, "DASHBOARD");
