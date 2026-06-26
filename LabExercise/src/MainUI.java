@@ -3,8 +3,10 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 public class MainUI extends JFrame{
-
     
+    private DashboardUI dashboard;
+    private UserProfileUI profile;
+
     public MainUI(SystemController system){
         super("MeowMeow Hospital Main Page!");
         CardLayout cardLayout = new CardLayout();
@@ -18,46 +20,46 @@ public class MainUI extends JFrame{
         
         // set the image icon of the window
         setIconImage(UIconst.windowIcon.getImage());
-        
         JPanel mainPanel = new JPanel(cardLayout);
 
         // create instance of the main UIs
         HomePageUI homepage = new HomePageUI();
-        
-        
-
         mainPanel.add(homepage, "HOME");
-        
-
         //show home page first 
         cardLayout.show(mainPanel, "HOME");
 
-        homepage.butt4.setVisible(true);
-        homepage.butt5.setVisible(false);
-        homepage.butt6.setVisible(false);
+        loggedOutButtonState(homepage);
+//        homepage.butt3.setVisible(false);
+//        homepage.butt4.setVisible(true);
+//        homepage.butt5.setVisible(false);
+//        homepage.butt6.setVisible(false);
 
         homepage.butt4.addActionListener(event -> {
-            LoginUI loginDialog = new LoginUI(this, loggedInSystem -> {
-                
-                DashboardPanels panelList = new DashboardPanels(system);
-                ArrayList<DashboardPanel> panels = panelList.returnDashboardPanels();
-                DashboardUI dashboard = new DashboardUI(panels);
-                UserProfileUI profile = new UserProfileUI(system.getUserControllerInstance().getCurrentUser(), system);
-                dashboard.backButton.addActionListener(backEvent -> {
+            LoginUI loginDialog = new LoginUI(this, system, loggedInSystem -> {
+                SwingUtilities.invokeLater(() -> {  // ADD THIS
+                    DashboardPanels panelList = new DashboardPanels(system);
+                    ArrayList<DashboardPanel> panels = panelList.returnDashboardPanels();
+                    dashboard = new DashboardUI(panels);
+                    profile = new UserProfileUI(system.getUserControllerInstance().getCurrentUser(), system);
+                    dashboard.backButton.addActionListener(backEvent -> {
                     cardLayout.show(mainPanel, "HOME");
-                });
+                    });
                 
-                profile.backButton.addActionListener(backEvent -> {
+                     profile.backButton.addActionListener(backEvent -> {
                     cardLayout.show(mainPanel, "HOME");
-                });
+                    });
                 
-                mainPanel.add(dashboard, "DASHBOARD");
-                mainPanel.add(profile, "PROFILE");
+                    mainPanel.add(dashboard, "DASHBOARD");
+                    mainPanel.add(profile, "PROFILE");
+                    mainPanel.revalidate();
+                    mainPanel.repaint();
                 
-
-                homepage.butt4.setVisible(false);
-                homepage.butt5.setVisible(true);
-                homepage.butt6.setVisible(true);
+                    loggedInButtonState(homepage);
+//                homepage.butt3.setVisible(true);
+//                homepage.butt4.setVisible(false);
+//                homepage.butt5.setVisible(true);
+//                homepage.butt6.setVisible(true);
+                 });
             });
             loginDialog.setModal(true);
             loginDialog.setVisible(true);
@@ -66,15 +68,42 @@ public class MainUI extends JFrame{
         //add Action listeners to the buttons that exist in those pages 
         homepage.butt5.addActionListener(event -> { cardLayout.show(mainPanel, "DASHBOARD");});
         homepage.butt6.addActionListener(event -> { cardLayout.show(mainPanel, "PROFILE"); });
-        //dashboard.btn2_m.addActionListener(event -> { cardLayout.show(mainPanel, "HOME");});
 
+        //action listener for Logout
+        homepage.butt3.addActionListener(event ->{
+            system.getUserControllerInstance().userLogout();
+            loggedOutButtonState(homepage);            
+            if(dashboard != null){
+                mainPanel.remove(dashboard);
+                dashboard = null;
+            }
+            if(profile != null){
+                mainPanel.remove(profile);
+                profile = null;
+            }
+            cardLayout.show(mainPanel, "HOME");
+        }
+        );
+ 
         // add the mainPanel to this frame 
         mainPanel.setOpaque(false);
         bgImage.add(mainPanel, BorderLayout.CENTER);
         setContentPane(bgImage);
         setVisible(true);
-
     }
+        void loggedInButtonState(HomePageUI homepage){
+            homepage.butt3.setVisible(true);
+            homepage.butt4.setVisible(false);
+            homepage.butt5.setVisible(true);
+            homepage.butt6.setVisible(true);
+        }
+        
+        void loggedOutButtonState(HomePageUI homepage){
+            homepage.butt3.setVisible(false);
+            homepage.butt4.setVisible(true);
+            homepage.butt5.setVisible(false);
+            homepage.butt6.setVisible(false);
+        }
         
     public static void main(String[] args) {
 //        Just to test pls remove later

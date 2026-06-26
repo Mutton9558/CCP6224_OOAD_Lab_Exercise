@@ -198,4 +198,8 @@ public class UserController{
             return false;
         }   
     }
+    
+    public void userLogout(){
+        currentUser = null;
+    }
 }
