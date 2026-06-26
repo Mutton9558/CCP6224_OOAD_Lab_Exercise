@@ -65,7 +65,9 @@ public class DoctorRecordsUI extends JPanel{
             User doctor = doctorList.get(row);
             UserProfileUI profile = new UserProfileUI(doctor, system);
             
+            
             JDialog profileDialog = new JDialog();
+            
             //get the parent frame 
             Frame parent = (Frame)SwingUtilities.getWindowAncestor(this);
             profileDialog = new JDialog(parent, "Doctor Profile", true);
@@ -74,7 +76,15 @@ public class DoctorRecordsUI extends JPanel{
             profileDialog.setResizable(false);
             profileDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             profileDialog.add(profile);
+            profile.backButton.addActionListener(e -> {
+                java.awt.Window dialog = SwingUtilities.getWindowAncestor(profile.backButton);
+                if (dialog != null) {
+                    dialog.dispose();
+                }
+            });
+            
             profileDialog.setVisible(true);
+            
        }));  
 
         adj.gridy = 2;
