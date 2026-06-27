@@ -141,7 +141,7 @@ public class AppointmentCreationUI extends JDialog implements ActionListener{
             dispose();
         } else {
             JOptionPane.showMessageDialog(this,
-                            "Could not create appointment. Check if your details are correct!", "Error Occured",
+                            "Could not create appointment. Either incorrect details or conflicting time!", "Error Occured",
                             JOptionPane.WARNING_MESSAGE);
             this.patientTextField.returnTextField().setEnabled(true);
             this.doctorTextField.returnTextField().setEnabled(true);

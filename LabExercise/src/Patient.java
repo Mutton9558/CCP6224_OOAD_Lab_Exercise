@@ -12,29 +12,6 @@ public class Patient extends User {
         super(id, username, password, gender, dob);
     }
 
-//    @Override
-//    public int getUserID(){
-//        return this.patient_ID;
-//    }
-
-//    PrescriptionController should handle
-//    public Map<Integer, Prescription> getPrescriptionList(){
-//        return this.PrescriptionList;
-//    }
-//
-//    public Map<Integer, Appointment> getAppointmentList(){
-//        return this.AppointmentList;
-//    }
-//
-//    //Setters
-//    public void setPrescriptionList(Map<Integer, Prescription> prescriptionList){
-//        this.PrescriptionList = prescriptionList;
-//    }
-//
-//    public void setAppointmentList(Map<Integer, Appointment> appointmentList){
-//        this.AppointmentList = appointmentList;
-//    }
-    
     @Override
     public String returnRole(){
         return "Patient";
