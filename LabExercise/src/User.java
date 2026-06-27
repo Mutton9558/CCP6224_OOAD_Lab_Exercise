@@ -3,7 +3,7 @@ import java.util.*;
 import java.time.LocalDate;
 import java.time.Period;
 
-public abstract class User implements UserPermission{
+public abstract class User implements AppointmentPermission, PrescriptionPermission,RecordPermission, ProfilePermission{
   
 //    public enum UserRole {
 //        PATIENT(100),

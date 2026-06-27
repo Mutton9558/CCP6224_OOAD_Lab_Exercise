@@ -23,7 +23,7 @@
             <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/Prescription.java</file>
             <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/HomePageUI.java</file>
             <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/DashboardUI.java</file>
-            <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/UserPermission.java</file>
+            <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/AppointmentPermission.java</file>
             <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/Receptionist.java</file>
             <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/ActiveAppointmentsUI.java</file>
             <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/UIConstants.java</file>
@@ -51,6 +51,10 @@
             <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/ProfileInfoPanel.java</file>
             <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/MedicalRecordsUI.java</file>
             <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/EditProfileUI.java</file>
+            <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/PrescriptionPermission.java</file>
+            <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/RecordPermission.java</file>
+            <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/ProfilePermission.java</file>
+            <file>file:/C:/Users/User/Desktop/mmu/Bachelor%20of%20CompSci%20MMU/Year%202/OOAD/LabExercise/CCP6224_OOAD_Lab_Exercise/LabExercise/src/AdminPermission.java</file>
         </group>
     </open-files>
 </project-private>
