@@ -14,7 +14,8 @@ public class Appointment {
     private String location;
     private String status;
     
-    public Appointment(int appointmentID, int patientID, int doctorID, String patientName, String doctorName, LocalDate date, LocalTime time, String location, String status){
+    public Appointment(int appointmentID, int patientID, int doctorID, String patientName, String doctorName, 
+            LocalDate date, LocalTime time, String location, String status){
         this.appointmentID = appointmentID;
         this.patient_ID = patientID;
         this.doctor_ID = doctorID;
@@ -61,11 +62,4 @@ public class Appointment {
     public String getStatus(){
         return this.status;
     }
-    
-//    public void editAppointment(LocalDate newDate, LocalTime newTime, String newStatus){
-//        this.appointmentDate = newDate;
-//        this.appointmentTime = newTime;
-//        this.status = newStatus;
-////        db update pls use AppointmentController
-//    }
 }
