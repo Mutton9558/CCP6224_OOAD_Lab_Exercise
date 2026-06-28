@@ -96,7 +96,7 @@ public class Admin extends User{
     
     @Override
     public boolean canAddPatient(){
-        return false;
+        return true;
     };
     
     @Override

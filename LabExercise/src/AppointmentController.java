@@ -55,27 +55,20 @@ public class AppointmentController {
     }
         
     public boolean createAppointment(int patientID, int doctorID, LocalDate date,
-            LocalTime time, String location){
-        
+        LocalTime time, String location) {
+
         UserController userController = UserController.getInstance();
         User patient = userController.searchUser(patientID, "Patient");
         User doctor = userController.searchUser(doctorID, "Doctor");
-        
-        LocalDateTime curDateTime = LocalDateTime.now();
-        if(LocalDateTime.of(date, time).isBefore(curDateTime)){
-//            user try booking a date that has past
-            return false;
-        }
-        
-        if(patient == null || doctor == null){
-//            fail
-            return false;
-        }
-        
-        LocalTime windowStart = time.minusMinutes(30);
-        LocalTime windowEnd = time.plusMinutes(30);
 
-        String query = """
+        if (patient == null || doctor == null) return false;
+
+        if (LocalDateTime.of(date, time).isBefore(LocalDateTime.now())) return false;
+
+        LocalTime windowStart = time.minusMinutes(30);
+        LocalTime windowEnd   = time.plusMinutes(30);
+
+        String checkQuery = """
             SELECT COUNT(*) FROM Appointments
             WHERE appointment_date = ?
               AND appointment_status != 'Cancelled'
@@ -84,51 +77,50 @@ public class AppointmentController {
               AND (patient_id = ? OR doctor_id = ?)
             """;
 
-        try (Connection conn = DatabaseConfig.getConnection();
-             PreparedStatement statement = conn.prepareStatement(query)) {
+        String insertQuery = """
+            INSERT INTO Appointments
+                (patient_id, doctor_id, appointment_date, appointment_time, appointment_location, appointment_status)
+            VALUES (?,?,?,?,?,?)
+            """;
 
-            statement.setString(1, date.toString());
-            statement.setString(2, windowStart.toString());
-            statement.setString(3, windowEnd.toString());
-            statement.setInt(4, patientID);
-            statement.setInt(5, doctorID);
-
-            ResultSet rs = statement.executeQuery();
-            if (rs.next()) {
-                if(rs.getInt(1) > 0){
+        try (Connection conn = DatabaseConfig.getConnection()) {
+            try (PreparedStatement check = conn.prepareStatement(checkQuery)) {
+                check.setString(1, date.toString());
+                check.setString(2, windowStart.toString());
+                check.setString(3, windowEnd.toString());
+                check.setInt(4, patientID);
+                check.setInt(5, doctorID);
+                ResultSet rs = check.executeQuery();
+                if (rs.next() && rs.getInt(1) > 0) {
                     System.out.println("Conflict found");
                     return false;
-                } else {
-                    String patientName = patient.getUserName();
-                    String doctorName = doctor.getUserName();
-                    String request = "INSERT INTO Appointments (patient_id, doctor_id, appointment_date, appointment_time, appointment_location, appointment_status) VALUES (?,?,?,?,?,?)";
-            //        automatically closes when exit
-                    try(Connection conn2 = DatabaseConfig.getConnection();
-                            PreparedStatement statement2 = conn2.prepareStatement(request, Statement.RETURN_GENERATED_KEYS)){
-                        statement2.setInt(1, patientID);
-                        statement2.setInt(2, doctorID);
-                        statement2.setString(3, date.toString());
-                        statement2.setString(4, time.toString());
-                        statement2.setString(5, location);
-                        statement2.setString(6, "Scheduled");
-                        statement2.executeUpdate();
-
-                        ResultSet result = statement.getGeneratedKeys();
-
-                        if (result.next()) {
-                           int appointmentID = result.getInt(1);
-                           Appointment newAppointment = new Appointment(appointmentID, patientID, doctorID, patientName, doctorName, date, time, location, "Scheduled");
-                           this.appointmentMap.put(appointmentID, newAppointment);
-                       } else {
-                           System.out.println("Fail to add user into the database");
-                           return false;
-                       }
-                    } catch (SQLException e){
-                        System.out.println(e);
-                        return false;
-                    }   
                 }
             }
+
+            try (PreparedStatement insert = conn.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
+                insert.setInt(1, patientID);
+                insert.setInt(2, doctorID);
+                insert.setString(3, date.toString());
+                insert.setString(4, time.toString());
+                insert.setString(5, location);
+                insert.setString(6, "Scheduled");
+                insert.executeUpdate();
+
+                ResultSet keys = insert.getGeneratedKeys(); // ← was wrongly using `statement`
+                if (keys.next()) {
+                    int appointmentID = keys.getInt(1);
+                    Appointment newAppointment = new Appointment(
+                        appointmentID, patientID, doctorID,
+                        patient.getUserName(), doctor.getUserName(),
+                        date, time, location, "Scheduled"
+                    );
+                    this.appointmentMap.put(appointmentID, newAppointment);
+                } else {
+                    System.out.println("Failed to retrieve generated key");
+                    return false;
+                }
+            }
+
         } catch (SQLException e) {
             System.out.println(e);
             return false;
