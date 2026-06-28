@@ -15,19 +15,4 @@ public class DatabaseConfig {
         }
         return DriverManager.getConnection(URL);
     }
-
-    public static void main(String[] args) {
-        System.out.println("Attempting to connect to the database...");
-        try (Connection conn = getConnection()) {
-            try (Statement stmt = conn.createStatement()) {
-                stmt.execute("PRAGMA foreign_keys = ON");
-            }
-            if (conn != null) {
-                System.out.println("Success! Connected to SQLite database.");
-            }
-        } catch (SQLException e) {
-            System.err.println("Connection failed!");
-            e.printStackTrace();
-        }
-    }
 }
