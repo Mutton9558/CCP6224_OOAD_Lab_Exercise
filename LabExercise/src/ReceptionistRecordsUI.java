@@ -136,6 +136,11 @@ public class ReceptionistRecordsUI extends JPanel{
             Window window = SwingUtilities.getWindowAncestor(this);
             ReceptionistCreationUI dialog = new ReceptionistCreationUI(window, controller);
             dialog.setVisible(true);
+            dialog.setModal(true);
+            
+            this.ReceptionistList.clear();
+            this.ReceptionistList = controller.getUsersByRole("Receptionist");
+            loadReceptionists();
         });
         createReceptionist.setVisible(client.canAddReceptionist());
         this.add(createReceptionist, adj);

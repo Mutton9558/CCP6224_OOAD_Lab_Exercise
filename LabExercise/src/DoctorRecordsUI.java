@@ -136,6 +136,11 @@ public class DoctorRecordsUI extends JPanel{
             Window window = SwingUtilities.getWindowAncestor(this);
             DoctorCreationUI dialog = new DoctorCreationUI(window, controller);
             dialog.setVisible(true);
+            dialog.setModal(true);
+            
+            this.doctorList.clear();
+            this.doctorList = controller.getUsersByRole("Doctor");
+            loadDoctors();
         });
         createDoctor.setVisible(client.canAddDoctors());
         this.add(createDoctor, adj);
