@@ -139,7 +139,7 @@ public class ReceptionistRecordsUI extends JPanel{
             dialog.setModal(true);
             
             this.ReceptionistList.clear();
-            this.ReceptionistList = controller.getUsersByRole("Receptionist");
+            this.ReceptionistList.addAll(controller.getUsersByRole("Receptionist"));
             loadReceptionists();
         });
         createReceptionist.setVisible(client.canAddReceptionist());

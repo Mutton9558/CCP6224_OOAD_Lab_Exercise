@@ -135,7 +135,7 @@ public class PatientRecordsUI extends JPanel{
             dialog.setVisible(true);
             
             this.patientList.clear();
-            this.patientList = controller.getUsersByRole("Patient");
+            this.patientList.addAll(controller.getUsersByRole("Patient"));
             loadPatients();
         });
         createPatient.setVisible(client.canAddPatient());

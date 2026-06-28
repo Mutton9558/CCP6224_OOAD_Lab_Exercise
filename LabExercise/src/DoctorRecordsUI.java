@@ -139,7 +139,7 @@ public class DoctorRecordsUI extends JPanel{
             dialog.setModal(true);
             
             this.doctorList.clear();
-            this.doctorList = controller.getUsersByRole("Doctor");
+            this.doctorList.addAll(controller.getUsersByRole("Doctor"));
             loadDoctors();
         });
         createDoctor.setVisible(client.canAddDoctors());

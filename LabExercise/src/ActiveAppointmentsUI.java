@@ -79,7 +79,7 @@ public class ActiveAppointmentsUI extends JPanel {
             table.getColumn("Edit").setCellEditor(
                     new EditButtonEditor(appointmentList, this, ()-> {
                         this.appointmentList.clear();
-                        this.appointmentList = this.appointmentController.getActiveAppointmentsByRole(client.getUserID(), client.returnRole());
+                        this.appointmentList.addAll(this.appointmentController.getActiveAppointmentsByRole(client.getUserID(), client.returnRole()));
                         loadAppointments();
                     })
             );
@@ -137,7 +137,7 @@ public class ActiveAppointmentsUI extends JPanel {
             dialog.setVisible(true);
             
             this.appointmentList.clear();
-            this.appointmentList = this.appointmentController.getActiveAppointmentsByRole(client.getUserID(), client.returnRole());
+            this.appointmentList.addAll(appointmentController.getActiveAppointmentsByRole(client.getUserID(), client.returnRole()));
             loadAppointments();
         });
         this.add(createAppointment, adj);
