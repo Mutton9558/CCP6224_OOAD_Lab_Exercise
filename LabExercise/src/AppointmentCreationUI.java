@@ -20,6 +20,7 @@ public class AppointmentCreationUI extends JDialog implements ActionListener{
     public AppointmentCreationUI(Window parent, AppointmentController appointmentController){
         super(parent, "Create Appointment", Dialog.ModalityType.APPLICATION_MODAL);
         this.parent = parent;
+        this.appointmentController = appointmentController;
         JPanel content = new JPanel();
         content.setLayout(new GridBagLayout());
         content.setBackground(uiconst.Azure);

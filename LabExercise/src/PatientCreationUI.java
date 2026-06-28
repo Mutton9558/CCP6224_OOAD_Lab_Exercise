@@ -116,6 +116,7 @@ public class PatientCreationUI extends JDialog implements ActionListener{
         JOptionPane.showMessageDialog(this,
                             "Successfully created Patient", "Success",
                             JOptionPane.INFORMATION_MESSAGE);
+        this.dispose();
         
     }
 }
